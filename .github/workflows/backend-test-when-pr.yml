@@ -8,6 +8,7 @@ on:
       - eom-tae-in
       - S2ungHo
       - zoid79
+      - sosow0212
 
 permissions:
   contents: read
