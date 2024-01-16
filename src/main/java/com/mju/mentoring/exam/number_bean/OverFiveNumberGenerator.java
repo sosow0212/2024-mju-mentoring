@@ -5,8 +5,10 @@ import org.springframework.stereotype.Component;
 //@Component
 public class OverFiveNumberGenerator implements NumberGenerator {
 
+    private final int TEN = 10;
+
     @Override
     public int generate() {
-        return 10;
+        return TEN;
     }
 }
