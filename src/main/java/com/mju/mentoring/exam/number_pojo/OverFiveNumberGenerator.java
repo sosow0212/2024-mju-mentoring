@@ -1,7 +1,5 @@
-package com.mju.mentoring.exam.number_bean;
+package com.mju.mentoring.exam.number_pojo;
 
-
-//@Component
 public class OverFiveNumberGenerator implements NumberGenerator {
 
     @Override
