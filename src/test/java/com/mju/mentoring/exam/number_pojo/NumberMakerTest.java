@@ -33,8 +33,7 @@ class NumberMakerTest {
     void 숫자가_5보다_작은_경우_false_를_반환한다() {
         // given
         NumberMaker numberMaker = null;
-        // numberMaker = new NumberMaker(XXX) -> 주석 풀고 구현하기!
-
+        numberMaker = new NumberMaker(new UnderFiveNumberGenerator());
         // when
         boolean result = numberMaker.isHigherThanFive();
 
