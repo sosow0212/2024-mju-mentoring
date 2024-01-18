@@ -13,8 +13,9 @@ public class BoardJpaRepositoryImpl implements BoardRepository {
     private final BoardJpaRepository boardJpaRepository;
 
     @Override
-    public Board save(final Board board) {
-        return boardJpaRepository.save(board);
+    public Long save(final Board board) {
+        boardJpaRepository.save(board);
+        return board.getId();
     }
 
     @Override
