@@ -32,18 +32,17 @@ public class BoardController {
         List<BoardResponse> response = boardService.findAll().stream()
                 .map(BoardResponse::from)
                 .toList();
-
         return ResponseEntity.ok(response);
     }
 
     @GetMapping("/boards/{id}")
-    public ResponseEntity<BoardResponse> findById(@PathVariable final Long id) {
+    public ResponseEntity<BoardResponse> findById(@PathVariable("id") final Long id) {
         Board board = boardService.findById(id);
         return ResponseEntity.ok(BoardResponse.from(board));
     }
 
     @PutMapping("/boards/{id}")
-    public ResponseEntity<Void> update(@PathVariable final Long id, final BoardUpdateRequest request) {
+    public ResponseEntity<Void> update(@PathVariable("id") final Long id,@RequestBody final BoardUpdateRequest request) {
         boardService.update(id, request);
 
         return ResponseEntity.ok()
@@ -51,7 +50,7 @@ public class BoardController {
     }
 
     @DeleteMapping("/boards/{id}")
-    public ResponseEntity<Void> deleteById(@PathVariable final Long id) {
+    public ResponseEntity<Void> deleteById(@PathVariable("id") final Long id) {
         boardService.delete(id);
         return ResponseEntity.noContent()
                 .build();

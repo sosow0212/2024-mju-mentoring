@@ -38,6 +38,8 @@ public class BoardService {
         Board board = boardRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("게시글이 없습니다"));
 
+        System.out.println(request.getTitle());
+        System.out.println(request.getContent());
         board.update(request.getTitle(), request.getContent());
     }
 
