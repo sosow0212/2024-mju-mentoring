@@ -42,6 +42,8 @@ dependencies {
     // db
     runtimeOnly 'com.h2database:h2'
     runtimeOnly 'com.mysql:mysql-connector-j'
+    //mariadb
+    runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
 
     // flyway
     implementation 'org.flywaydb:flyway-core'
