@@ -29,7 +29,7 @@ public class BoardController {
     @PostMapping
     public ResponseEntity<BoardCreateResponse> create(@RequestBody final BoardCreateRequest request) {
         Long newBoardId = boardService.save(request);
-        BoardCreateResponse response = BoardCreateResponse.from(newBoardId);
+        BoardCreateResponse response = new BoardCreateResponse(newBoardId);
 
         URI newBoardURI = URI.create("/boards/" + newBoardId);
 
@@ -40,7 +40,7 @@ public class BoardController {
     @GetMapping("/{id}")
     public ResponseEntity<BoardSearchResponse> find(@PathVariable final Long id) {
         Board findBoard = boardService.find(id);
-        BoardSearchResponse response = BoardSearchResponse.of(
+        BoardSearchResponse response = new BoardSearchResponse(
                 findBoard.getId(),
                 findBoard.getTitle(),
                 findBoard.getContent()
@@ -53,7 +53,7 @@ public class BoardController {
     public ResponseEntity<BoardUpdateResponse> updateText(@PathVariable Long id,
                                                           @RequestBody final BoardTextUpdateRequest request) {
         boardService.updateText(id, request);
-        BoardUpdateResponse response = BoardUpdateResponse.from(id);
+        BoardUpdateResponse response = new BoardUpdateResponse(id);
 
         return ResponseEntity.ok(response);
     }
