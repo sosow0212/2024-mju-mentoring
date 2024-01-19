@@ -30,11 +30,8 @@ public class Board {
         return new Board(title, content);
     }
 
-    public void updateTitle(final String title) {
+    public void updateText(final String title, final String content) {
         this.title = title;
-    }
-
-    public void updateContent(final String content) {
         this.content = content;
     }
 }

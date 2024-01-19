@@ -3,7 +3,7 @@ package com.mju.mentoring.board.service;
 import com.mju.mentoring.board.domain.Board;
 import com.mju.mentoring.board.domain.BoardRepository;
 import com.mju.mentoring.board.service.dto.BoardCreateRequest;
-import com.mju.mentoring.board.service.dto.BoardUpdateRequest;
+import com.mju.mentoring.board.service.dto.BoardTextUpdateRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,11 +29,10 @@ public class BoardService {
     }
 
     @Transactional
-    public void update(final Long id, final BoardUpdateRequest request) {
+    public void updateText(final Long id, final BoardTextUpdateRequest request) {
         Board targetBoard = find(id);
 
-        targetBoard.updateTitle(request.title());
-        targetBoard.updateContent(request.content());
+        targetBoard.updateText(request.title(), request.content());
     }
 
     @Transactional

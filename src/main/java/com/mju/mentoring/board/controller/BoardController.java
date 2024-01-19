@@ -6,7 +6,7 @@ import com.mju.mentoring.board.controller.dto.BoardUpdateResponse;
 import com.mju.mentoring.board.domain.Board;
 import com.mju.mentoring.board.service.BoardService;
 import com.mju.mentoring.board.service.dto.BoardCreateRequest;
-import com.mju.mentoring.board.service.dto.BoardUpdateRequest;
+import com.mju.mentoring.board.service.dto.BoardTextUpdateRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -50,9 +50,9 @@ public class BoardController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<BoardUpdateResponse> update(@PathVariable Long id,
-                                                      @RequestBody final BoardUpdateRequest request) {
-        boardService.update(id, request);
+    public ResponseEntity<BoardUpdateResponse> updateText(@PathVariable Long id,
+                                                          @RequestBody final BoardTextUpdateRequest request) {
+        boardService.updateText(id, request);
         BoardUpdateResponse response = BoardUpdateResponse.from(id);
 
         return ResponseEntity.ok(response);
