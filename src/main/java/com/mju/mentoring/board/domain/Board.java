@@ -21,13 +21,9 @@ public class Board {
 
     private String content;
 
-    private Board(final String title, final String content) {
+    public Board(final String title, final String content) {
         this.title = title;
         this.content = content;
-    }
-
-    public static Board of(final String title, final String content) {
-        return new Board(title, content);
     }
 
     public void updateText(final String title, final String content) {

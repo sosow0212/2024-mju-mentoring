@@ -25,13 +25,9 @@ public class Member {
 
     private String password;
 
-    private Member(final String username, final String nickname, final String password) {
+    public Member(final String username, final String nickname, final String password) {
         this.username = username;
         this.nickname = nickname;
         this.password = password;
-    }
-
-    public static Member of(final String username, final String nickname, final String password) {
-        return new Member(username, nickname, password);
     }
 }
