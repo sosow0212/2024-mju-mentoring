@@ -1,7 +1,9 @@
 package com.mju.mentoring.board.controller;
 
 import com.mju.mentoring.board.controller.dto.BoardResponse;
+import com.mju.mentoring.board.domain.Board;
 import com.mju.mentoring.board.service.BoardService;
+import com.mju.mentoring.board.service.BoardUpdateRequest;
 import com.mju.mentoring.board.service.dto.BoardCreateRequest;
 import java.net.URI;
 import java.util.List;
@@ -48,8 +50,12 @@ public class BoardController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Void> updateById(@PathVariable final Long id) {
+    public ResponseEntity<Void> updateById(@PathVariable(name = "id") final Long id,
+        @RequestBody BoardUpdateRequest boardUpdateRequest) {
+        boardService.update(id, boardUpdateRequest);
 
+        return ResponseEntity.ok()
+            .build();
     }
 
     @DeleteMapping("/{id}")
