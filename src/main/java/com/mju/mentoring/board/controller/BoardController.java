@@ -33,12 +33,18 @@ public class BoardController {
 
     @GetMapping
     public ResponseEntity<List<BoardResponse>> findAll() {
+        List<BoardResponse> boardResponses = boardService.findAll().stream()
+            .map(BoardResponse::from)
+            .toList();
 
+        return ResponseEntity.ok(boardResponses);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<BoardResponse> findBoardById(@PathVariable final Long id) {
+    public ResponseEntity<BoardResponse> findBoardById(@PathVariable(name = "id") final Long id) {
+        Board board = boardService.findById(id);
 
+        return ResponseEntity.ok(BoardResponse.from(board));
     }
 
     @PutMapping("/{id}")
