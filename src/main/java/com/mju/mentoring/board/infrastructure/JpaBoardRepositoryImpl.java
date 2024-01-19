@@ -8,7 +8,7 @@ import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
-public class BoardJpaRepositoryImpl implements BoardRepository {
+public class JpaBoardRepositoryImpl implements BoardRepository {
 
     private final BoardJpaRepository boardJpaRepository;
 
