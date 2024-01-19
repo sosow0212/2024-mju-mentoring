@@ -27,13 +27,11 @@ public class BoardService {
     }
 
     @Transactional
-    public Board update(final Long id, final BoardUpdateRequest request) {
+    public void update(final Long id, final BoardUpdateRequest request) {
         Board targetBoard = find(id);
 
         targetBoard.updateTitle(request.title());
         targetBoard.updateContent(request.content());
-
-        return targetBoard;
     }
 
     @Transactional
