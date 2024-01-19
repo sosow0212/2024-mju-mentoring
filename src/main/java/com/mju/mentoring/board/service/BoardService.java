@@ -18,7 +18,9 @@ public class BoardService {
     @Transactional
     public Long save(final BoardCreateRequest request) {
         Board newBoard = Board.of(request.title(), request.content());
-        return boardRepository.save(newBoard);
+        boardRepository.save(newBoard);
+
+        return newBoard.getId();
     }
 
     public Board find(final Long id) {
