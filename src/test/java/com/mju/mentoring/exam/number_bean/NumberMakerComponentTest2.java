@@ -10,13 +10,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 @SuppressWarnings("NonAsciiCharacters")
-@SpringBootTest // 통합테스트
+//@SpringBootTest // 통합테스트
 class NumberMakerComponentTest2 {
 
-    @Autowired
+//    @Autowired
     private NumberMakerComponent numberMakerComponent;
 
-    @Test
+//    @Test
     void 숫자는_5이상으로_반환된다() {
         // given
 

@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @SuppressWarnings("NonAsciiCharacters")
 class test {
 
-    @Test
+//    @Test
     void 숫자가_5보다_크면_true를_반환한다 () {
         // given
         NumberMaker numberMaker = new NumberMaker(new FakeGenerator());

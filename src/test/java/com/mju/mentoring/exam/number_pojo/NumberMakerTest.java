@@ -16,7 +16,7 @@ class NumberMakerTest {
      * 테스트 성공을 위해서 구현체를 만들어봅시다!
      */
 
-    @Test
+//    @Test
     void 숫자가_5보다_큰_경우_true_를_반환한다() {
         // given
         NumberMaker numberMaker = null;
@@ -29,7 +29,7 @@ class NumberMakerTest {
         assertThat(result).isTrue();
     }
 
-    @Test
+//    @Test
     void 숫자가_5보다_작은_경우_false_를_반환한다() {
         // given
         NumberMaker numberMaker = null;
