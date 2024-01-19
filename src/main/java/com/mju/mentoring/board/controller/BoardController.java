@@ -3,6 +3,7 @@ package com.mju.mentoring.board.controller;
 import com.mju.mentoring.board.controller.dto.BoardResponse;
 import com.mju.mentoring.board.service.BoardService;
 import com.mju.mentoring.board.service.dto.BoardCreateRequest;
+import java.net.URI;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +25,10 @@ public class BoardController {
 
     @PostMapping
     public ResponseEntity<Void> save(@RequestBody final BoardCreateRequest boardCreateRequest) {
+        Long createdBardId = boardService.save(boardCreateRequest);
 
+        return ResponseEntity.created(URI.create("/boards/" + createdBardId))
+            .build();
     }
 
     @GetMapping
