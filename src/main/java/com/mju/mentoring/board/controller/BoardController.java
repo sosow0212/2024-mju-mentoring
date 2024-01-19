@@ -1,8 +1,10 @@
 package com.mju.mentoring.board.controller;
 
 import com.mju.mentoring.board.controller.dto.BoardResponse;
+import com.mju.mentoring.board.service.BoardService;
 import com.mju.mentoring.board.service.dto.BoardCreateRequest;
 import java.util.List;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,8 +16,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/boards")
 public class BoardController {
+
+    private final BoardService boardService;
 
     @PostMapping
     public ResponseEntity<Void> save(@RequestBody final BoardCreateRequest boardCreateRequest) {
