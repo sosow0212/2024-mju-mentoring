@@ -59,7 +59,10 @@ public class BoardController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteById(@PathVariable final Long id) {
+    public ResponseEntity<Void> deleteById(@PathVariable(name = "id") final Long id) {
+        boardService.deleteById(id);
 
+        return ResponseEntity.ok()
+            .build();
     }
 }

@@ -27,4 +27,9 @@ public class BoardRepositoryImpl implements BoardRepository {
     public Optional<Board> findById(final Long id) {
         return boardJpaRepository.findById(id);
     }
+
+    @Override
+    public void deleteById(final Long id) {
+        boardJpaRepository.deleteById(id);
+    }
 }
