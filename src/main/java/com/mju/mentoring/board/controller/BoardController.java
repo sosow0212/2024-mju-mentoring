@@ -62,6 +62,7 @@ public class BoardController {
     public ResponseEntity<Void> deleteById(@PathVariable final Long id) {
         boardService.deleteById(id);
 
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.noContent()
+                .build();
     }
 }
