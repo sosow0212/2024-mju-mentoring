@@ -23,20 +23,20 @@ public class BoardService {
         return newBoard.getId();
     }
 
-    public Board find(final Long id) {
+    public Board findById(final Long id) {
         return boardRepository.findById(id)
                 .orElseThrow(() -> new IllegalStateException("해당 게시물이 없습니다."));
     }
 
     @Transactional
     public void updateText(final Long id, final BoardTextUpdateRequest request) {
-        Board targetBoard = find(id);
+        Board targetBoard = findById(id);
 
         targetBoard.updateText(request.title(), request.content());
     }
 
     @Transactional
-    public void delete(final Long id) {
+    public void deleteById(final Long id) {
         boardRepository.deleteById(id);
     }
 }

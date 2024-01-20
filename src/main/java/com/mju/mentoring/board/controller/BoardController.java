@@ -38,8 +38,8 @@ public class BoardController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<BoardSearchResponse> find(@PathVariable final Long id) {
-        Board findBoard = boardService.find(id);
+    public ResponseEntity<BoardSearchResponse> findById(@PathVariable final Long id) {
+        Board findBoard = boardService.findById(id);
         BoardSearchResponse response = new BoardSearchResponse(
                 findBoard.getId(),
                 findBoard.getTitle(),
@@ -59,8 +59,8 @@ public class BoardController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable final Long id) {
-        boardService.delete(id);
+    public ResponseEntity<Void> deleteById(@PathVariable final Long id) {
+        boardService.deleteById(id);
 
         return ResponseEntity.noContent().build();
     }
