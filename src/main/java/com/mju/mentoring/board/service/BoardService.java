@@ -23,7 +23,11 @@ public class BoardService {
         return newBoard.getId();
     }
 
-    public Board findById(final Long id) {
+    public Board searchById(final Long id) {
+        return findById(id);
+    }
+
+    private Board findById(final Long id) {
         return boardRepository.findById(id)
                 .orElseThrow(() -> new IllegalStateException("해당 게시물이 없습니다."));
     }

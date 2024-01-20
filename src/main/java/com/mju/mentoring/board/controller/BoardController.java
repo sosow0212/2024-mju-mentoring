@@ -39,7 +39,7 @@ public class BoardController {
 
     @GetMapping("/{id}")
     public ResponseEntity<BoardSearchResponse> findById(@PathVariable final Long id) {
-        Board findBoard = boardService.findById(id);
+        Board findBoard = boardService.searchById(id);
         BoardSearchResponse response = new BoardSearchResponse(
                 findBoard.getId(),
                 findBoard.getTitle(),
