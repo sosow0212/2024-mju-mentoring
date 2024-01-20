@@ -50,7 +50,7 @@ public class BoardController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<BoardUpdateResponse> updateText(@PathVariable Long id,
+    public ResponseEntity<BoardUpdateResponse> updateText(@PathVariable final Long id,
                                                           @RequestBody final BoardTextUpdateRequest request) {
         boardService.updateText(id, request);
         BoardUpdateResponse response = new BoardUpdateResponse(id);
