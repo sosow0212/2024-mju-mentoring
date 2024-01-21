@@ -1,10 +1,10 @@
-package com.mju.mentoring.board.controller;
+package com.mju.mentoring.board.ui;
 
-import com.mju.mentoring.board.controller.dto.BoardResponse;
+import com.mju.mentoring.board.ui.dto.BoardResponse;
 import com.mju.mentoring.board.domain.Board;
-import com.mju.mentoring.board.service.BoardService;
-import com.mju.mentoring.board.service.BoardUpdateRequest;
-import com.mju.mentoring.board.service.dto.BoardCreateRequest;
+import com.mju.mentoring.board.application.BoardService;
+import com.mju.mentoring.board.application.BoardUpdateRequest;
+import com.mju.mentoring.board.application.dto.BoardCreateRequest;
 import java.net.URI;
 import java.util.List;
 import lombok.RequiredArgsConstructor;

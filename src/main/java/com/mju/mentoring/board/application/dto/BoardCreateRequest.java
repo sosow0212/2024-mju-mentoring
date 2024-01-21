@@ -1,4 +1,4 @@
-package com.mju.mentoring.board.service.dto;
+package com.mju.mentoring.board.application.dto;
 
 public class BoardCreateRequest {
 

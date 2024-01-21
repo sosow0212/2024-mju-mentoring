@@ -1,8 +1,8 @@
-package com.mju.mentoring.board.service;
+package com.mju.mentoring.board.application;
 
 import com.mju.mentoring.board.domain.Board;
 import com.mju.mentoring.board.domain.BoardRepository;
-import com.mju.mentoring.board.service.dto.BoardCreateRequest;
+import com.mju.mentoring.board.application.dto.BoardCreateRequest;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

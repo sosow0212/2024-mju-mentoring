@@ -1,4 +1,4 @@
-package com.mju.mentoring.board.controller.dto;
+package com.mju.mentoring.board.ui.dto;
 
 import com.mju.mentoring.board.domain.Board;
 

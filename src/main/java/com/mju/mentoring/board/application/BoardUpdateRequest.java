@@ -1,4 +1,4 @@
-package com.mju.mentoring.board.service;
+package com.mju.mentoring.board.application;
 
 public class BoardUpdateRequest {
 
