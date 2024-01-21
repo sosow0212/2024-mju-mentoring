@@ -2,7 +2,7 @@ package com.mju.mentoring.exam.number_bean;
 
 import org.springframework.stereotype.Component;
 
-@Component
+//@Component
 public class RandomNumberGenerator implements NumberGenerator {
 
     @Override
