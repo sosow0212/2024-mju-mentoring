@@ -20,8 +20,7 @@ public class Board {
     private String title;
     private String content;
 
-
-    public Board(String title, String content) {
+    public Board(final String title, final String content) {
         this.title = title;
         this.content = content;
     }

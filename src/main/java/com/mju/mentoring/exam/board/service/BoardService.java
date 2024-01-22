@@ -14,6 +14,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Service
 public class BoardService {
+
     private final BoardRepository boardRepository;
     @Transactional
     public Long save(final BoardCreateRequest request) {
@@ -29,22 +30,22 @@ public class BoardService {
 
     @Transactional(readOnly = true)
     public Board findById(final Long id) {
-        return boardRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("게시글이 없습니다"));
+        Board board = findByIdOrThrowException(id);
+        return board;
     }
 
     @Transactional
     public void update(final Long id, final BoardUpdateRequest request) {
-        Board board = boardRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("게시글이 없습니다"));
-
-        System.out.println(request.getTitle());
-        System.out.println(request.getContent());
+        Board board = findByIdOrThrowException(id);
         board.update(request.getTitle(), request.getContent());
     }
 
     @Transactional
     public void delete(final Long id) {
         boardRepository.deleteById(id);
+    }
+    public Board findByIdOrThrowException(Long id) {
+        return boardRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("게시글이 없습니다"));
     }
 }

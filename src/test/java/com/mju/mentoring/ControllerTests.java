@@ -3,6 +3,7 @@ package com.mju.mentoring;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mju.mentoring.exam.board.domain.Board;
 import com.mju.mentoring.exam.board.infrastructure.BoardRepositoryImpl;
+import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,17 +11,15 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
 import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 class ControllerTests {
@@ -34,10 +33,7 @@ class ControllerTests {
     public void setup(){
         mvc = MockMvcBuilders.webAppContextSetup(context).build();
     }
-    @BeforeEach
-    public void delete(){
-        boardRepository.deleteById(1L);
-    }
+
     @Test
     void updateTest() throws Exception {
         String title = "test title";
@@ -46,19 +42,20 @@ class ControllerTests {
         String posturl = "http://localhost:8080/boards";
         mvc.perform(post(posturl).contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(new ObjectMapper().writeValueAsString(newBoard)));
-
         String newtitle = "updated title";
         String newcontent = "updated content";
         Board updateBoard = new Board(newtitle,newcontent);
         String puturl = "http://localhost:8080/boards/1";
+
         mvc.perform(put(puturl).contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(new ObjectMapper().writeValueAsString(updateBoard)))
                 .andExpect(status().is2xxSuccessful());
 
         List<Board> boards = boardRepository.findAll();
         Board board = boards.get(0);
-        assertThat(board.getTitle()).isEqualTo(updateBoard.getTitle());
-        assertThat(board.getContent()).isEqualTo(updateBoard.getContent());
+        SoftAssertions softAssertions = new SoftAssertions();
+        softAssertions.assertThat(board.getTitle()).isEqualTo(updateBoard.getTitle());
+        softAssertions.assertThat(board.getContent()).isEqualTo(updateBoard.getContent());
     }
     @Test
     void createTest() throws Exception {
@@ -66,6 +63,7 @@ class ControllerTests {
         String content = "test content";
         Board newBoard = new Board(title,content);
         String url = "http://localhost:8080/boards";
+
         mvc.perform(post(url)
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(new ObjectMapper().writeValueAsString(newBoard)))
@@ -73,8 +71,9 @@ class ControllerTests {
 
         List<Board> boards = boardRepository.findAll();
         Board board = boards.get(0);
-        assertThat(board.getTitle()).isEqualTo(newBoard.getTitle());
-        assertThat(board.getContent()).isEqualTo(newBoard.getContent());
+        SoftAssertions softAssertions = new SoftAssertions();
+        softAssertions.assertThat(board.getTitle()).isEqualTo(newBoard.getTitle());
+        softAssertions.assertThat(board.getContent()).isEqualTo(newBoard.getContent());
 
     }
     @Test
@@ -83,17 +82,17 @@ class ControllerTests {
         String content = "test content";
         Board newBoard = new Board(title,content);
         String url = "http://localhost:8080/boards";
-        mvc.perform(post(url)
-                        .contentType(MediaType.APPLICATION_JSON_UTF8)
+        mvc.perform(post(url).contentType(MediaType.APPLICATION_JSON_UTF8)
                         .content(new ObjectMapper().writeValueAsString(newBoard)))
                 .andExpect(status().is2xxSuccessful());
-
         String deleteurl = "http://localhost:8080/boards/1";
-        mvc.perform(RestDocumentationRequestBuilders.delete(deleteurl)
-                        .contentType(MediaType.APPLICATION_JSON_UTF8))
+
+        mvc.perform(RestDocumentationRequestBuilders.delete(deleteurl).contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(status().is2xxSuccessful());
+
         List<Board> boards = boardRepository.findAll();
-        assertThat(boards.size()==0);
+        SoftAssertions softAssertions = new SoftAssertions();
+        softAssertions.assertThat(boards.size()==0);
     }
     @Test
     void getTest() throws Exception {
@@ -118,5 +117,4 @@ class ControllerTests {
 //                .andExpect(status().is2xxSuccessful());
 //        assertThat(boardList.size()==1);
     }
-
 }

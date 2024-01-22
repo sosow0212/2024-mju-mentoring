@@ -17,14 +17,14 @@ import java.util.List;
 @Controller
 @RequiredArgsConstructor
 public class BoardController {
+
     @Autowired
     private final BoardService boardService;
 
     @PostMapping("/boards")
     public ResponseEntity<Void> save(@RequestBody final BoardCreateRequest boardCreateRequest) {
         Long boardId = boardService.save(boardCreateRequest);
-        return ResponseEntity.created(URI.create("/boards/" + boardId))
-                .build();
+        return ResponseEntity.created(URI.create("/boards/" + boardId)).build();
     }
 
     @GetMapping("/boards")
@@ -44,15 +44,12 @@ public class BoardController {
     @PutMapping("/boards/{id}")
     public ResponseEntity<Void> update(@PathVariable("id") final Long id,@RequestBody final BoardUpdateRequest request) {
         boardService.update(id, request);
-
-        return ResponseEntity.ok()
-                .build();
+        return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/boards/{id}")
     public ResponseEntity<Void> deleteById(@PathVariable("id") final Long id) {
         boardService.delete(id);
-        return ResponseEntity.noContent()
-                .build();
+        return ResponseEntity.noContent().build();
     }
 }
