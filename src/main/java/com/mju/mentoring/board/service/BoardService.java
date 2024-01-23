@@ -2,6 +2,7 @@ package com.mju.mentoring.board.service;
 
 import com.mju.mentoring.board.domain.Board;
 import com.mju.mentoring.board.domain.BoardRepository;
+import com.mju.mentoring.board.exception.exceptions.BoardNotFoundException;
 import com.mju.mentoring.board.service.dto.BoardCreateRequest;
 import com.mju.mentoring.board.service.dto.BoardUpdateRequest;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +19,7 @@ public class BoardService {
 
     @Transactional
     public Long save(final BoardCreateRequest request) {
-        Board board = new Board(request.getTitle(), request.getContent());
+        Board board = new Board(request.title(), request.content());
         Board savedBoard = boardRepository.save(board);
 
         return savedBoard.getId();
@@ -31,14 +32,17 @@ public class BoardService {
 
     @Transactional(readOnly = true)
     public Board findById(final Long id) {
-        return boardRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("게시글 없다"));
+        return findBoard(id);
     }
 
-    @Transactional
+    private Board findBoard(final Long id) {
+        return boardRepository.findById(id)
+                .orElseThrow(BoardNotFoundException::new);
+    }
+
+    @Transactional // 쓰기 지연, 변경 감지
     public void update(final Long id, final BoardUpdateRequest request) {
-        Board board = boardRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("게시글 없다"));
+        Board board = findBoard(id);
 
         board.update(request.getTitle(), request.getContent());
     }
