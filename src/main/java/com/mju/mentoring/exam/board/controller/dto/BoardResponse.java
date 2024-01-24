@@ -17,8 +17,8 @@ public class BoardResponse {
     public static BoardResponse from(final Board board) {
         return new BoardResponse(
                 board.getId(),
-                board.getTitle(),
-                board.getContent()
+                board.getBoardDescription().getTitle(),
+                board.getBoardDescription().getContent()
         );
     }
 

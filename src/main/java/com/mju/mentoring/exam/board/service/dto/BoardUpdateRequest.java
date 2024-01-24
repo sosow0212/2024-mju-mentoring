@@ -1,5 +1,10 @@
 package com.mju.mentoring.exam.board.service.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+
+@AllArgsConstructor
+@NoArgsConstructor
 public class BoardUpdateRequest {
     private String title;
     private String content;

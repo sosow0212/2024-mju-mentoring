@@ -3,6 +3,7 @@ package com.mju.mentoring.exam.board.service;
 
 import com.mju.mentoring.exam.board.domain.Board;
 import com.mju.mentoring.exam.board.domain.BoardRepository;
+import com.mju.mentoring.exam.board.exception.BoardNotFoundException;
 import com.mju.mentoring.exam.board.service.dto.BoardCreateRequest;
 import com.mju.mentoring.exam.board.service.dto.BoardUpdateRequest;
 import lombok.RequiredArgsConstructor;
@@ -46,6 +47,6 @@ public class BoardService {
     }
     public Board findByIdOrThrowException(Long id) {
         return boardRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("게시글이 없습니다"));
+                .orElseThrow(() -> new BoardNotFoundException());
     }
 }
