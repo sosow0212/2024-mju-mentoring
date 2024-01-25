@@ -2,6 +2,7 @@ package com.mju.mentoring.board.service;
 
 import com.mju.mentoring.board.domain.Board;
 import com.mju.mentoring.board.domain.BoardRepository;
+import com.mju.mentoring.board.exception.exceptions.BoardNotFoundException;
 import com.mju.mentoring.board.service.dto.BoardCreateRequest;
 import com.mju.mentoring.board.service.dto.BoardTextUpdateRequest;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +30,7 @@ public class BoardService {
 
     private Board findById(final Long id) {
         return boardRepository.findById(id)
-                .orElseThrow(() -> new IllegalStateException("해당 게시물이 없습니다."));
+                .orElseThrow(BoardNotFoundException::new);
     }
 
     @Transactional
@@ -41,6 +42,7 @@ public class BoardService {
 
     @Transactional
     public void deleteById(final Long id) {
-        boardRepository.deleteById(id);
+        Board targetBoard = findById(id);
+        boardRepository.delete(targetBoard);
     }
 }

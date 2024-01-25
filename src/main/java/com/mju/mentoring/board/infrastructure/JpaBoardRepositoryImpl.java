@@ -23,7 +23,7 @@ public class JpaBoardRepositoryImpl implements BoardRepository {
     }
 
     @Override
-    public void deleteById(final Long id) {
-        boardJpaRepository.deleteById(id);
+    public void delete(final Board board) {
+        boardJpaRepository.delete(board);
     }
 }
