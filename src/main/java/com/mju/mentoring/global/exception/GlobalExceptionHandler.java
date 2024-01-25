@@ -1,5 +1,8 @@
 package com.mju.mentoring.global.exception;
 
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,15 +23,19 @@ public class GlobalExceptionHandler {
         String errorMessage = Objects.requireNonNull(exception.getBindingResult().getFieldError())
                 .getDefaultMessage();
 
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(new ExceptionResponse(errorMessage));
+        return createExceptionResponseWithStatusAndMessage(BAD_REQUEST, errorMessage);
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<ExceptionResponse> handleIllegalArgumentException(final IllegalArgumentException exception) {
         log.error(exception.getMessage());
 
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(new ExceptionResponse(INTERNAL_SERVER_ERROR_MESSAGE));
+        return createExceptionResponseWithStatusAndMessage(INTERNAL_SERVER_ERROR, INTERNAL_SERVER_ERROR_MESSAGE);
+    }
+
+    public static ResponseEntity<ExceptionResponse> createExceptionResponseWithStatusAndMessage(final HttpStatus status,
+                                                                                          final String message) {
+        return ResponseEntity.status(status)
+                .body(new ExceptionResponse(message));
     }
 }
