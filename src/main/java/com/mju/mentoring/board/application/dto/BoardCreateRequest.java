@@ -1,18 +1,5 @@
 package com.mju.mentoring.board.application.dto;
 
-public class BoardCreateRequest {
+public record BoardCreateRequest(String title, String content) {
 
-    private String title;
-    private String content;
-
-    public BoardCreateRequest() {
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public String getContent() {
-        return content;
-    }
 }

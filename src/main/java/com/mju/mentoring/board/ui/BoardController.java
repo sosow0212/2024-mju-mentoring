@@ -3,7 +3,7 @@ package com.mju.mentoring.board.ui;
 import com.mju.mentoring.board.ui.dto.BoardResponse;
 import com.mju.mentoring.board.domain.Board;
 import com.mju.mentoring.board.application.BoardService;
-import com.mju.mentoring.board.application.BoardUpdateRequest;
+import com.mju.mentoring.board.application.dto.BoardUpdateRequest;
 import com.mju.mentoring.board.application.dto.BoardCreateRequest;
 import java.net.URI;
 import java.util.List;
