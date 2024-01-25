@@ -10,7 +10,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity //클래스를 엔티티로 선언 - 이 어노테이션을 붙임으로써 JPA가 해당 클래스를 관리하게 됨
-@Data // lombok - 컨틀롤러의 board.get 이용 //@Data에 @Getter @Setter가 포함되어 있음.
+//@Data // lombok - 컨틀롤러의 board.get 이용 //@Data에 @Getter @Setter가 포함되어 있음.
+@Getter
 @NoArgsConstructor  // 기본 생성자 생성 lombok
 //엔티티 선언을 통해 DB에 저장되는 객체들을 구현한다.
 public class Board {
@@ -23,9 +24,6 @@ public class Board {
 
     private String content; // 글 내용
 
-    public Board() {
-    }
-
     public Board(String title, String content) {
         this.title = title;
         this.content = content;
@@ -36,4 +34,3 @@ public class Board {
         this.content = content;
     }
 }
-
