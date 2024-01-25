@@ -1,5 +1,6 @@
 package com.mju.mentoring.board.domain;
 
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -17,17 +18,22 @@ public class Board {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String title;
-
-    private String content;
+    @Embedded
+    public BoardText boardText;
 
     public Board(final String title, final String content) {
-        this.title = title;
-        this.content = content;
+        this.boardText = new BoardText(title, content);
     }
 
     public void updateText(final String title, final String content) {
-        this.title = title;
-        this.content = content;
+        this.boardText = boardText.update(title, content);
+    }
+
+    public String getTitle() {
+        return boardText.getTitle();
+    }
+
+    public String getContent() {
+        return boardText.getContent();
     }
 }
