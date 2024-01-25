@@ -1,7 +1,6 @@
 package com.mju.mentoring.board.domain;
 
 import static com.mju.mentoring.board.fixture.BoardFixtures.게시글_id_없음;
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 import org.junit.jupiter.api.DisplayNameGeneration;
@@ -24,8 +23,8 @@ class BoardTest {
 
         // then
         assertSoftly((softly) -> {
-            assertThat(originBoard.getTitle()).isEqualTo(editTitle);
-            assertThat(originBoard.getContent()).isEqualTo(editContent);
+            softly.assertThat(originBoard.getTitle()).isEqualTo(editTitle);
+            softly.assertThat(originBoard.getContent()).isEqualTo(editContent);
         });
     }
 }
