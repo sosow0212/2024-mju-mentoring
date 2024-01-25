@@ -29,13 +29,15 @@ public class BoardService {
 
     @Transactional //데이터베이스와 작업을 수행할 때 사용
     public BoardDto save(BoardDto boardDto){
-        Board board = new Board();
-        board.setTitle(boardDto.getTitle()); // boardDto의 제목을 가져와서 board에 설정
-        board.setContent(boardDto.getContent()); // boardDto의 내용을 가져와서 board에 설정
+        Board board = new Board(boardDto.getTitle(), boardDto.getContent());
+        //Board board = new Board();
+        //board.setTitle(boardDto.getTitle()); // boardDto의 제목을 가져와서 board에 설정
+        //board.setContent(boardDto.getContent()); // boardDto의 내용을 가져와서 board에 설정
         Board savedBoard = boardRepository.save(board); // board를 DB에 저장
         return new BoardDto(savedBoard.getId(), savedBoard.getTitle(), savedBoard.getContent()); // BoardDto 생성
     }
 
+    @Transactional(readOnly = true)
     public List<BoardDto> findAll() {
         List<Board> boardDtos = boardRepository.findAll(); // 모든 게시글 조회
         return boardDtos.stream() // 스트림으로 변환

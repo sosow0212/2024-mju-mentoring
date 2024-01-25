@@ -23,6 +23,14 @@ public class Board {
 
     private String content; // 글 내용
 
+    public Board() {
+    }
+
+    public Board(String title, String content) {
+        this.title = title;
+        this.content = content;
+    }
+
     public void update(String title, String content) {
         this.title = title;
         this.content = content;
