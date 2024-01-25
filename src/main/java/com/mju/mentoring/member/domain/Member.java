@@ -1,5 +1,6 @@
 package com.mju.mentoring.member.domain;
 
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -12,19 +13,20 @@ public class Member {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    String username;
-    String password;
+    @Embedded
+    AuthInformation authInformation;
     String nickname;
 
     protected Member() {
 
     }
 
-    public Member(final Long id, final String username, final String password,
-        final String nickname) {
-        this.id = id;
-        this.username = username;
-        this.password = password;
+    private Member(final AuthInformation authInformation, final String nickname) {
+        this.authInformation = authInformation;
         this.nickname = nickname;
+    }
+
+    public static Member of(final String username, final String password, final String nickname) {
+        return new Member(AuthInformation.of(username, password), nickname);
     }
 }
