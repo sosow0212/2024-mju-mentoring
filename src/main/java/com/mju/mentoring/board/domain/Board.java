@@ -19,7 +19,7 @@ public class Board {
     private Long id;
 
     @Embedded
-    public BoardText boardText;
+    private BoardText boardText;
 
     public Board(final String title, final String content) {
         this.boardText = new BoardText(title, content);
