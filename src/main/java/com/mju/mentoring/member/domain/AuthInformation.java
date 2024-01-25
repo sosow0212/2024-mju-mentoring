@@ -1,12 +1,15 @@
 package com.mju.mentoring.member.domain;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import java.util.Objects;
 
 @Embeddable
 public class AuthInformation {
 
+    @Column(unique = true, nullable = false)
     String username;
+    @Column(nullable = false)
     String password;
 
     protected AuthInformation() {

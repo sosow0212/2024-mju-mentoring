@@ -1,5 +1,6 @@
 package com.mju.mentoring.member.domain;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -15,6 +16,8 @@ public class Member {
 
     @Embedded
     AuthInformation authInformation;
+
+    @Column(unique = true, nullable = false)
     String nickname;
 
     protected Member() {
