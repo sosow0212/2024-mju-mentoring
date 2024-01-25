@@ -10,6 +10,7 @@ import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import java.util.List;
 import java.util.Optional;
 
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
@@ -47,6 +48,26 @@ public class BoardJpaRepositoryTest {
             softly.assertThat(findBoard.get())
                     .usingRecursiveComparison()
                     .isEqualTo(targetBoard);
+        });
+    }
+
+    @Test
+    void 여러_게시글을_조회한다() {
+        // given
+        Board boardOne = 게시글_id_없음();
+        Board boardTwo = 게시글_id_없음();
+
+        boardJpaRepository.save(boardOne);
+        boardJpaRepository.save(boardTwo);
+
+        // when
+        List<Board> boards = boardJpaRepository.findAll();
+
+        // then
+        assertSoftly((softly) -> {
+            softly.assertThat(boards.size()).isEqualTo(2);
+            softly.assertThat(boards.contains(boardOne)).isTrue();
+            softly.assertThat(boards.contains(boardTwo)).isTrue();
         });
     }
 

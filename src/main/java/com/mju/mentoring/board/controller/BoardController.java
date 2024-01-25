@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import java.net.URI;
+import java.util.List;
 
 @RequiredArgsConstructor
 @RequestMapping("/boards")
@@ -47,6 +48,16 @@ public class BoardController {
         );
 
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping()
+    public ResponseEntity<List<BoardSearchResponse>> findAll() {
+        List<Board> allBoards = boardService.findAll();
+        List<BoardSearchResponse> responses = allBoards.stream()
+                .map(board -> new BoardSearchResponse(board.getId(), board.getTitle(), board.getContent()))
+                .toList();
+
+        return ResponseEntity.ok(responses);
     }
 
     @PatchMapping("/{id}")

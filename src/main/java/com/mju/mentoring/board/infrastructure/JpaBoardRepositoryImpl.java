@@ -4,6 +4,7 @@ import com.mju.mentoring.board.domain.Board;
 import com.mju.mentoring.board.domain.BoardRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
+import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -20,6 +21,11 @@ public class JpaBoardRepositoryImpl implements BoardRepository {
     @Override
     public Optional<Board> findById(final Long id) {
         return boardJpaRepository.findById(id);
+    }
+
+    @Override
+    public List<Board> findAll() {
+        return boardJpaRepository.findAll();
     }
 
     @Override

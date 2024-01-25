@@ -8,6 +8,7 @@ import com.mju.mentoring.board.service.dto.BoardTextUpdateRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -31,6 +32,10 @@ public class BoardService {
     private Board findById(final Long id) {
         return boardRepository.findById(id)
                 .orElseThrow(BoardNotFoundException::new);
+    }
+
+    public List<Board> findAll() {
+        return boardRepository.findAll();
     }
 
     @Transactional
