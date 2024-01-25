@@ -1,6 +1,5 @@
 package com.mju.mentoring.exam.board.service;
 
-
 import com.mju.mentoring.exam.board.domain.Board;
 import com.mju.mentoring.exam.board.domain.BoardRepository;
 import com.mju.mentoring.exam.board.exception.BoardNotFoundException;

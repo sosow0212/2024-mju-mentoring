@@ -6,9 +6,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class BoardCreateRequest {
+
     private String title;
     private String content;
-
 
     public String getTitle() {
         return title;

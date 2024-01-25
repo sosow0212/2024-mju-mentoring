@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface BoardRepository {
+
     Board save(final Board board);
 
     Optional<Board> findById(final Long id);
