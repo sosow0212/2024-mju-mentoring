@@ -1,5 +1,6 @@
 package com.mju.mentoring.board.domain;
 
+import static com.mju.mentoring.board.fixture.BoardFixtures.게시글_id_없음;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
@@ -14,11 +15,9 @@ class BoardTest {
     @Test
     void 글의_제목과_내용을_수정한다() {
         // given
-        String originTitle = "title";
-        String originContent = "content";
         String editTitle = "title (edited)";
         String editContent = "content (edited)";
-        Board originBoard = new Board(originTitle, originContent);
+        Board originBoard = 게시글_id_없음();
 
         // when
         originBoard.updateText(editTitle, editContent);
