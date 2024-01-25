@@ -23,6 +23,10 @@ public class Board {
         this.description = description;
     }
 
+    public static Board of(final String title, final String content) {
+        return new Board(Description.of(title, content));
+    }
+
     public void update(final String title, final String content) {
         this.description = Description.of(title, content);
     }
