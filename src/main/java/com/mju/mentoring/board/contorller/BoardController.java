@@ -1,6 +1,5 @@
 package com.mju.mentoring.board.contorller;
 
-import com.mju.mentoring.board.domain.Board;
 import com.mju.mentoring.board.dto.BoardDto;
 import com.mju.mentoring.board.service.BoardService;
 import org.springframework.http.ResponseEntity;

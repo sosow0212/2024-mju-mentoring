@@ -34,14 +34,14 @@ public class BoardService {
         //board.setTitle(boardDto.getTitle()); // boardDto의 제목을 가져와서 board에 설정
         //board.setContent(boardDto.getContent()); // boardDto의 내용을 가져와서 board에 설정
         Board savedBoard = boardRepository.save(board); // board를 DB에 저장
-        return new BoardDto(savedBoard.getId(), savedBoard.getTitle(), savedBoard.getContent()); // BoardDto 생성
+        return new BoardDto(savedBoard.getId(), savedBoard.getBoardContent().getTitle(), savedBoard.getBoardContent().getContent()); // BoardDto 생성
     }
 
     @Transactional(readOnly = true)
     public List<BoardDto> findAll() {
         List<Board> boardDtos = boardRepository.findAll(); // 모든 게시글 조회
         return boardDtos.stream() // 스트림으로 변환
-                .map(board -> new BoardDto(board.getId(), board.getTitle(), board.getContent())) //Board에서 각각 BoardDto로 변환
+                .map(board -> new BoardDto(board.getId(), board.getBoardContent().getTitle(), board.getBoardContent().getTitle())) //Board에서 각각 BoardDto로 변환
                 .collect(Collectors.toList()); //리스트로 반환
     }
 
@@ -53,7 +53,7 @@ public class BoardService {
         //board.setContent(boardDetails.getContent()); //content 업데이트
         board.update(boardDetails.getTitle(), boardDetails.getContent()); //도메인 객체의 update 메서드를 이용한 데이터 업데이트
         Board updateBoard = boardRepository.save(board); //업데이트된 게시글을 DB에 저장
-        return new BoardDto(updateBoard.getId(), updateBoard.getTitle(), updateBoard.getContent()); //BoardDto 생성
+        return new BoardDto(updateBoard.getId(), updateBoard.getBoardContent().getTitle(), updateBoard.getBoardContent().getContent()); //BoardDto 생성
     }
 
     @Transactional
