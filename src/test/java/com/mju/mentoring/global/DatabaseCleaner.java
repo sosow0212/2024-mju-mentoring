@@ -1,13 +1,43 @@
 package com.mju.mentoring.global;
 
-import static org.springframework.test.context.TestExecutionListeners.MergeMode.MERGE_WITH_DEFAULTS;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.metamodel.EntityType;
+import java.util.List;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.stereotype.Component;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import org.springframework.test.context.TestExecutionListeners;
+@Component
+@ActiveProfiles("test")
+public class DatabaseCleaner implements InitializingBean {
 
-@Retention(RetentionPolicy.RUNTIME)
-@TestExecutionListeners(listeners = DatabaseCleanListener.class, mergeMode = MERGE_WITH_DEFAULTS)
-public @interface DatabaseCleaner {
+    @PersistenceContext
+    private EntityManager entityManager;
+    private List<String> tables;
 
+    @Override
+    public void afterPropertiesSet() {
+        this.tables = entityManager.getMetamodel()
+            .getEntities()
+            .stream()
+            .filter(e -> e.getJavaType().getAnnotation(Entity.class) != null)
+            .map(EntityType::getName)
+            .toList();
+    }
+
+    @Transactional
+    public void execute() {
+        entityManager.flush();
+        entityManager.createNativeQuery("SET REFERENTIAL_INTEGRITY FALSE");
+        tables.forEach(this::truncateTable);
+        entityManager.createNativeQuery("SET REFERENTIAL_INTEGRITY TRUE");
+    }
+
+    public void truncateTable(final String table) {
+        entityManager.createNativeQuery("TRUNCATE TABLE " + table)
+            .executeUpdate();
+    }
 }
