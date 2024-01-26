@@ -6,7 +6,7 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class BoardDto {
-    private Integer id;
+    private Long id;
     private String title;
     private String content;
 }

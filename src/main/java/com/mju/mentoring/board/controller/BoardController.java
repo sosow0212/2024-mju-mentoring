@@ -1,4 +1,4 @@
-package com.mju.mentoring.board.contorller;
+package com.mju.mentoring.board.controller;
 
 import com.mju.mentoring.board.dto.BoardDto;
 import com.mju.mentoring.board.service.BoardService;
@@ -12,9 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
-
-
-
 import java.util.List;
 
 //Controller : 스프링 MVC 중 컨트롤러 역할, Client가 요청을 하면 그 요청을 실질적으로 수행하는 서비스를 호출함

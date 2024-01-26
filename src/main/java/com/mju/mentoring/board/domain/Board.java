@@ -14,7 +14,7 @@ public class Board {
 
     @Id //테이블의 기본키에 사용할 속성을 지정합니다.
     @GeneratedValue(strategy = GenerationType.IDENTITY) //기본키 생성을 데이터베이스에 위임,// Mysql 데이터베이스의 경우 AUTO_INCREMENT를 사용하여 기본키를 생성
-    private Integer id; //기본키
+    private Long id; //기본키
 
     @Embedded
     private BoardContent boardContent;
