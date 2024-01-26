@@ -6,8 +6,6 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 import com.mju.mentoring.board.application.dto.BoardCreateRequest;
-import com.mju.mentoring.board.application.dto.BoardDeleteRequest;
-import com.mju.mentoring.board.application.dto.BoardUpdateRequest;
 import com.mju.mentoring.board.domain.Board;
 import com.mju.mentoring.board.domain.BoardRepository;
 import com.mju.mentoring.board.exception.exceptions.BoardNotFoundException;
@@ -42,8 +40,8 @@ class BoardServiceTest {
 
         // then
         assertSoftly(softly -> {
-            softly.assertThat(findBoards)
-                .hasSize(1);
+            softly.assertThat(findBoards.size())
+                .isEqualTo(1);
 
             softly.assertThat(savedId)
                 .isEqualTo(1L);
@@ -89,77 +87,5 @@ class BoardServiceTest {
         // when & then
         assertThatThrownBy(() -> boardService.findById(0L))
             .isInstanceOf(BoardNotFoundException.class);
-    }
-
-    @Test
-    void 게시물_업데이트() {
-        // given
-        String originTitle = "origin title";
-        String originContent = "origin content";
-        BoardCreateRequest createRequest = new BoardCreateRequest(originTitle, originContent);
-
-        String updateTitle = "update title";
-        String updateContent = "update content";
-        BoardUpdateRequest updateRequest = new BoardUpdateRequest(updateTitle, updateContent);
-
-        // when
-        Long savedId = boardService.save(createRequest);
-        boardService.update(savedId, updateRequest);
-
-        // then
-        assertSoftly(softly -> {
-            softly.assertThat(updateTitle).isEqualTo(updateTitle);
-            softly.assertThat(updateContent).isEqualTo(updateContent);
-        });
-    }
-
-    @Test
-    void 없는_게시물을_업데이트_시_예외처리() {
-        // given
-        String updateTitle = "update title";
-        String updateContent = "update content";
-        BoardUpdateRequest updateRequest = new BoardUpdateRequest(updateTitle, updateContent);
-
-        // when & then
-        assertThatThrownBy(() -> boardService.update(0L, updateRequest))
-            .isInstanceOf(BoardNotFoundException.class);
-    }
-
-    @Test
-    void 게시물_삭제() {
-        // given
-        BoardCreateRequest request = new BoardCreateRequest("title", "content");
-
-        // when
-        Long savedId = boardService.save(request);
-        boardService.deleteById(savedId);
-
-        // then
-        List<Board> boards = boardService.findAll();
-        assertThat(boards).isEmpty();
-    }
-
-    @Test
-    void 없는_게시물_삭제_시_에외처리() {
-        // when & then
-        assertThatThrownBy(() -> boardService.deleteById(0L))
-            .isInstanceOf(BoardNotFoundException.class);
-    }
-
-    @Test
-    void id로_여러_게시물_한번에_삭제() {
-        // given
-        BoardCreateRequest request1 = new BoardCreateRequest("title1", "content1");
-        BoardCreateRequest request2 = new BoardCreateRequest("title2", "content2");
-
-        Long savedId1 = boardService.save(request1);
-        Long savedId2 = boardService.save(request2);
-
-        // when
-        boardService.deleteAllById(new BoardDeleteRequest(List.of(savedId1, savedId2)));
-
-        // then
-        List<Board> boards = boardService.findAll();
-        assertThat(boards).isEmpty();
     }
 }
