@@ -2,7 +2,6 @@ package com.mju.mentoring.board.controller;
 
 import static com.mju.mentoring.board.fixture.BoardFixtures.게시글_id_없음;
 import static com.mju.mentoring.board.fixture.BoardFixtures.게시글_id_있음;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
@@ -15,12 +14,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mju.mentoring.board.domain.Board;
+import com.mju.mentoring.board.exception.exceptions.BoardNotFoundException;
 import com.mju.mentoring.board.service.BoardService;
 import com.mju.mentoring.board.service.dto.BoardCreateRequest;
 import com.mju.mentoring.board.service.dto.BoardTextUpdateRequest;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -51,9 +54,9 @@ class BoardControllerTest {
         String createTitle = "title";
         String createContent = "content";
         BoardCreateRequest request = new BoardCreateRequest(createTitle, createContent);
-        Board newBoard = 게시글_id_없음();
+        Board newBoard = 게시글_id_있음();
 
-        when(boardService.save(eq(request))).thenReturn(newBoard.getId());
+        when(boardService.save(request)).thenReturn(newBoard.getId());
 
         // when & then
         mockMvc.perform(post("/boards")
@@ -99,7 +102,9 @@ class BoardControllerTest {
     @Test
     void 게시글을_수정한다() throws Exception {
         // given
-        BoardTextUpdateRequest request = new BoardTextUpdateRequest("title (edited)", "content (edited)");
+        String editTitle = "title (edited)";
+        String editContent = "content (edited)";
+        BoardTextUpdateRequest request = new BoardTextUpdateRequest(editTitle, editContent);
         Board savedBoard = 게시글_id_있음();
         Long boardId = savedBoard.getId();
 
@@ -122,5 +127,86 @@ class BoardControllerTest {
         mockMvc.perform(delete("/boards/{id}", boardId)
                 .contentType(APPLICATION_JSON))
                 .andExpect(status().isNoContent());
+
+        verify(boardService).deleteById(boardId);
+    }
+
+    @Nested
+    class 예외_테스트 {
+
+        @ParameterizedTest(name = "제목이 [{0}]인 경우")
+        @NullAndEmptySource
+        void 저장할_게시글의_제목이_null_이거나_비어있으면_안된다(final String createTitle) throws Exception {
+            // given
+            String createContent = "content";
+            BoardCreateRequest request = new BoardCreateRequest(createTitle, createContent);
+
+            // when & then
+            mockMvc.perform(post("/boards")
+                            .contentType(APPLICATION_JSON)
+                            .content(objectMapper.writeValueAsString(request)))
+                    .andExpect(status().isBadRequest())
+                    .andExpect(jsonPath("$.error").exists());
+        }
+
+        @ParameterizedTest(name = "내용이 [{0}]인 경우")
+        @NullAndEmptySource
+        void 저장할_게시글의_내용이_null_이거나_비어있으면_안된다(final String createContent) throws Exception {
+            // given
+            String createTitle = "title";
+            BoardCreateRequest request = new BoardCreateRequest(createTitle, createContent);
+
+            // when & then
+            mockMvc.perform(post("/boards")
+                            .contentType(APPLICATION_JSON)
+                            .content(objectMapper.writeValueAsString(request)))
+                    .andExpect(status().isBadRequest())
+                    .andExpect(jsonPath("$.error").exists());
+        }
+
+        @ParameterizedTest(name = "제목이 [{0}]인 경우")
+        @NullAndEmptySource
+        void 수정할_게시글의_제목이_null_이거나_비어있으면_안된다(final String editTitle) throws Exception {
+            // given
+            String editContent = "content (edited)";
+            BoardTextUpdateRequest request = new BoardTextUpdateRequest(editTitle, editContent);
+            Board savedBoard = 게시글_id_있음();
+            Long boardId = savedBoard.getId();
+
+            // when & then
+            mockMvc.perform(patch("/boards/{id}", boardId)
+                            .contentType(APPLICATION_JSON)
+                            .content(objectMapper.writeValueAsString(request)))
+                    .andExpect(status().isBadRequest())
+                    .andExpect(jsonPath("$.error").exists());
+        }
+
+        @ParameterizedTest(name = "내용이 [{0}]인 경우")
+        @NullAndEmptySource
+        void 수정할_게시글의_내용이_null_이거나_비어있으면_안된다(final String editContent) throws Exception {
+            // given
+            String editTitle = "title (edited)";
+            BoardTextUpdateRequest request = new BoardTextUpdateRequest(editTitle, editContent);
+            Board savedBoard = 게시글_id_있음();
+            Long boardId = savedBoard.getId();
+
+            // when & then
+            mockMvc.perform(patch("/boards/{id}", boardId)
+                            .contentType(APPLICATION_JSON)
+                            .content(objectMapper.writeValueAsString(request)))
+                    .andExpect(status().isBadRequest())
+                    .andExpect(jsonPath("$.error").exists());
+        }
+
+        @Test
+        void id에_맞는_게시글이_없으면_예외가_발생한다() throws Exception {
+            // given
+            Long searchId = 100L;
+            when(boardService.searchById(searchId)).thenThrow(BoardNotFoundException.class);
+
+            // when & then
+            mockMvc.perform(get("/boards/{id}", searchId))
+                    .andExpect(status().isNotFound());
+        }
     }
 }
