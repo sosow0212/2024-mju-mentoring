@@ -7,6 +7,7 @@ import com.mju.mentoring.board.domain.Board;
 import com.mju.mentoring.board.service.BoardService;
 import com.mju.mentoring.board.service.dto.BoardCreateRequest;
 import com.mju.mentoring.board.service.dto.BoardTextUpdateRequest;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -28,7 +29,7 @@ public class BoardController {
     private final BoardService boardService;
 
     @PostMapping
-    public ResponseEntity<BoardCreateResponse> create(@RequestBody final BoardCreateRequest request) {
+    public ResponseEntity<BoardCreateResponse> create(@RequestBody @Valid final BoardCreateRequest request) {
         Long newBoardId = boardService.save(request);
         BoardCreateResponse response = new BoardCreateResponse(newBoardId);
 
@@ -62,7 +63,7 @@ public class BoardController {
 
     @PatchMapping("/{id}")
     public ResponseEntity<BoardUpdateResponse> updateText(@PathVariable final Long id,
-                                                          @RequestBody final BoardTextUpdateRequest request) {
+                                                          @RequestBody @Valid final BoardTextUpdateRequest request) {
         boardService.updateText(id, request);
         BoardUpdateResponse response = new BoardUpdateResponse(id);
 
