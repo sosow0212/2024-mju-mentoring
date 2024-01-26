@@ -21,7 +21,7 @@ public class BoardFakeRepository implements BoardRepository {
     public Board save(final Board board) {
         Board savedBoard = Board.builder()
             .id(id)
-            .description(board.copyDescription())
+            .description(board.getDescription())
             .build();
 
         db.put(id++, savedBoard);
@@ -42,24 +42,10 @@ public class BoardFakeRepository implements BoardRepository {
     }
 
     @Override
-    public void delete(final Board board) {
-        if (!db.containsValue(board)) {
+    public void deleteById(final Long id) {
+        if (!db.containsKey(id)) {
             return;
         }
-
-        Long boardId = db.keySet()
-            .stream()
-            .filter(key -> db.get(key).equals(board))
-            .findAny()
-            .get();
-
-        db.remove(boardId);
-    }
-
-    @Override
-    public void deleteAllById(final List<Long> ids) {
-        ids.stream()
-            .filter(db::containsKey)
-            .forEach(db::remove);
+        db.remove(id);
     }
 }
