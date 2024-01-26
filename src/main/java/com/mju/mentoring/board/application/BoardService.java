@@ -4,6 +4,7 @@ import com.mju.mentoring.board.application.dto.BoardUpdateRequest;
 import com.mju.mentoring.board.domain.Board;
 import com.mju.mentoring.board.domain.BoardRepository;
 import com.mju.mentoring.board.application.dto.BoardCreateRequest;
+import com.mju.mentoring.board.exception.exceptions.BoardNotFoundException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -30,7 +31,7 @@ public class BoardService {
 
     public Board findById(final Long id) {
         return boardRepository.findById(id)
-            .orElseThrow(IllegalArgumentException::new);
+            .orElseThrow(BoardNotFoundException::new);
     }
 
     @Transactional
