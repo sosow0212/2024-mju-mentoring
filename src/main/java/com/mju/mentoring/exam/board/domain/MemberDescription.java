@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Embeddable
 public class MemberDescription {
 
-    @Column(nullable = false)
+    @Column(nullable = false,unique=true)
     private String username;
 
     @Column(nullable = false)

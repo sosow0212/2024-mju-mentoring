@@ -76,19 +76,22 @@ class BoardJpaRepositoryTest {
         // then
         assertSoftly(softly -> {
             softly.assertThat(foundBoards).size().isEqualTo(3);
-            softly.assertThat(foundBoards.get(0))
+            for(int i=0;i<3;i++)
+            softly.assertThat(foundBoards.get(i))
                     .usingRecursiveComparison()
                     .ignoringFields("id");
         });
     }
     @Test
     void 게시글을_삭제한다() {
+        //given
         Board board = 게시글_생성_id없음();
-        Board savedBoard = boardJpaRepository.save(board);
         boardJpaRepository.delete(board);
 
+        // when
         List<Board> foundBoards = boardJpaRepository.findAll();
 
-        assertThat(foundBoards.size()==0);
+        //then
+        assertThat(foundBoards).hasSize(0);
     }
 }

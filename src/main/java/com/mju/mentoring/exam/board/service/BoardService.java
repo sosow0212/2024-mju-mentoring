@@ -18,7 +18,7 @@ public class BoardService {
     private final BoardRepository boardRepository;
     @Transactional
     public Long save(final BoardCreateRequest request) {
-        Board board = new Board(request.getTitle(), request.getContent());
+        Board board = new Board(request.title(), request.content());
         Board savedBoard = boardRepository.save(board);
         return savedBoard.getId();
     }
@@ -37,14 +37,15 @@ public class BoardService {
     @Transactional
     public void update(final Long id, final BoardUpdateRequest request) {
         Board board = findByIdOrThrowException(id);
-        board.update(request.getTitle(), request.getContent());
+        board.update(request.title(), request.content());
     }
 
     @Transactional
     public void delete(final Long id) {
         boardRepository.deleteById(id);
     }
-    public Board findByIdOrThrowException(Long id) {
+
+    private Board findByIdOrThrowException(Long id) {
         return boardRepository.findById(id)
                 .orElseThrow(() -> new BoardNotFoundException());
     }

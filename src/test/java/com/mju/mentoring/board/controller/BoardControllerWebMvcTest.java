@@ -55,9 +55,8 @@ class BoardControllerWebMvcTest {
     void 게시글을_저장한다() throws Exception {
         // given
         BoardCreateRequest req = new BoardCreateRequest("title", "content");
-        Board savedBoard = 게시글_생성();
 
-        when(boardService.save(eq(req))).thenReturn(savedBoard.getId());
+        when(boardService.save(eq(req))).thenReturn(1L);
 
         // when & then
         mockMvc.perform(post("/boards")
@@ -89,9 +88,10 @@ class BoardControllerWebMvcTest {
 
     @Test
     void 게시글을_변경한다() throws Exception {
-        //given
-        BoardUpdateRequest req = new BoardUpdateRequest("title", "content");
+        // given
+        BoardCreateRequest req = new BoardCreateRequest("title", "content");
 
+        // when & then
         mockMvc.perform(put("/boards/1")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(req))
@@ -100,6 +100,7 @@ class BoardControllerWebMvcTest {
     }
     @Test
     void 게시글을_삭제한다() throws Exception {
+        // given
         List<Board> response = List.of(게시글_생성());
         when(boardService.findAll()).thenReturn(response);
 
