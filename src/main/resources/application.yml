@@ -12,7 +12,18 @@ spring:
       pool:
         size: 10
 
-auth:
-  jwt:
-    secret-key: eyJhbGciOiJIUzI1NiJ9eyJSb2xlIjoiQWRtaW4iLCJJc3N1ZXIiOiJJc3N1ZXIiLCJVc2VybmFtZSI6IkphdmFJblVzZSIsImV4cCI6MTY5ODUxMjMwMSwiaWF0IjoxNjk4NTEyMzAxfQkMdVrwZRf8VyrDh0RH56LUQWZWM7eRKrzWm6MBqzvrk
-    expired-second: 604800000
+---
+
+spring:
+  profiles:
+    active: test
+  datasource:
+    url: jdbc:h2:tcp://localhost/~/test
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+
