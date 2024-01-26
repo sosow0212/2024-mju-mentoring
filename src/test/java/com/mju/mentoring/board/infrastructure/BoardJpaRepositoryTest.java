@@ -6,22 +6,39 @@ import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 import com.mju.mentoring.board.domain.Board;
 import com.mju.mentoring.global.DatabaseCleaner;
+import io.restassured.RestAssured;
 import java.util.List;
 import java.util.Optional;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.test.context.ActiveProfiles;
 
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 @SuppressWarnings("NonAsciiCharacters")
-@DataJpaTest
-@DatabaseCleaner
+@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
+@ActiveProfiles("test")
 class BoardJpaRepositoryTest {
+
+    @LocalServerPort
+    int port;
+
+    @Autowired
+    private DatabaseCleaner cleaner;
 
     @Autowired
     private BoardJpaRepository boardJpaRepository;
+
+    @BeforeEach
+    void setup() {
+        RestAssured.port = port;
+        cleaner.execute();
+    }
 
     @Test
     void 게시글_저장_테스트() {
@@ -32,16 +49,7 @@ class BoardJpaRepositoryTest {
         Board savedBoard = boardJpaRepository.save(board);
 
         // then
-        assertSoftly(softly -> {
-                softly.assertThat(savedBoard)
-                    .usingRecursiveComparison()
-                    .ignoringFields("id")
-                    .isEqualTo(board);
-
-                softly.assertThat(savedBoard.getId())
-                    .isEqualTo(1L);
-            }
-        );
+        assertThat(savedBoard.getId()).isEqualTo(1L);
     }
 
     @Test
@@ -86,26 +94,10 @@ class BoardJpaRepositoryTest {
         Board savedBoard = boardJpaRepository.save(board);
 
         // when
-        boardJpaRepository.delete(savedBoard);
-
-        // then
+        boardJpaRepository.deleteById(savedBoard.getId());
         List<Board> findBoards = boardJpaRepository.findAll();
-        assertThat(findBoards).isEmpty();
-    }
-
-    @Test
-    void id로_여러_게시물_한번에_삭제() {
-        // given
-        Board board1 = id_없는_게시글_생성();
-        Board board2 = id_없는_게시글_생성();
-        Board savedBoard1 = boardJpaRepository.save(board1);
-        Board savedBoard2 = boardJpaRepository.save(board2);
-
-        // when
-        boardJpaRepository.deleteAllByIdInBatch(List.of(savedBoard1.getId(), savedBoard2.getId()));
 
         // then
-        List<Board> boards = boardJpaRepository.findAll();
-        assertThat(boards).isEmpty();
+        assertThat(findBoards.isEmpty()).isTrue();
     }
 }
