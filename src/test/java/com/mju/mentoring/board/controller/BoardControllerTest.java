@@ -24,7 +24,7 @@ import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.NullAndEmptySource;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -32,6 +32,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.test.web.servlet.MockMvc;
 import java.util.List;
+import java.util.stream.Stream;
 
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 @SuppressWarnings("NonAsciiCharacters")
@@ -140,12 +141,11 @@ class BoardControllerTest {
     @Nested
     class 예외_테스트 {
 
-        @ParameterizedTest(name = "제목이 [{0}]인 경우")
-        @NullAndEmptySource
-        void 저장할_게시글의_제목이_null_이거나_비어있으면_안된다(final String createTitle) throws Exception {
+        @ParameterizedTest(name = "제목이 [{0}], 내용이 [{1}]인 경우")
+        @MethodSource("exceptionTitleAndContent")
+        void 저장할_게시글의_제목과_내용이_null_이거나_비어있으면_안된다(final String title, final String content) throws Exception {
             // given
-            String createContent = "content";
-            BoardCreateRequest request = new BoardCreateRequest(createTitle, createContent);
+            BoardCreateRequest request = new BoardCreateRequest(title, content);
 
             // when & then
             mockMvc.perform(post("/boards")
@@ -156,46 +156,22 @@ class BoardControllerTest {
                     .andDo(print());
         }
 
-        @ParameterizedTest(name = "내용이 [{0}]인 경우")
-        @NullAndEmptySource
-        void 저장할_게시글의_내용이_null_이거나_비어있으면_안된다(final String createContent) throws Exception {
-            // given
-            String createTitle = "title";
-            BoardCreateRequest request = new BoardCreateRequest(createTitle, createContent);
-
-            // when & then
-            mockMvc.perform(post("/boards")
-                            .contentType(APPLICATION_JSON)
-                            .content(objectMapper.writeValueAsString(request)))
-                    .andExpect(status().isBadRequest())
-                    .andExpect(jsonPath("$.error").exists())
-                    .andDo(print());
+        private static Stream<String[]> exceptionTitleAndContent() {
+            return Stream.of(
+                    new String[]{"title", ""},
+                    new String[]{"", "content"},
+                    new String[]{"", ""},
+                    new String[]{"title", null},
+                    new String[]{null, "content"},
+                    new String[]{null, null}
+            );
         }
 
-        @ParameterizedTest(name = "제목이 [{0}]인 경우")
-        @NullAndEmptySource
-        void 수정할_게시글의_제목이_null_이거나_비어있으면_안된다(final String editTitle) throws Exception {
+        @ParameterizedTest(name = "제목이 [{0}], 내용이 [{1}]인 경우")
+        @MethodSource("exceptionTitleAndContent")
+        void 수정할_게시글의_제목과_내용이_null_이거나_비어있으면_안된다(final String title, final String content) throws Exception {
             // given
-            String editContent = "content (edited)";
-            BoardTextUpdateRequest request = new BoardTextUpdateRequest(editTitle, editContent);
-            Board savedBoard = 게시글_id_있음();
-            Long boardId = savedBoard.getId();
-
-            // when & then
-            mockMvc.perform(patch("/boards/{id}", boardId)
-                            .contentType(APPLICATION_JSON)
-                            .content(objectMapper.writeValueAsString(request)))
-                    .andExpect(status().isBadRequest())
-                    .andExpect(jsonPath("$.error").exists())
-                    .andDo(print());
-        }
-
-        @ParameterizedTest(name = "내용이 [{0}]인 경우")
-        @NullAndEmptySource
-        void 수정할_게시글의_내용이_null_이거나_비어있으면_안된다(final String editContent) throws Exception {
-            // given
-            String editTitle = "title (edited)";
-            BoardTextUpdateRequest request = new BoardTextUpdateRequest(editTitle, editContent);
+            BoardTextUpdateRequest request = new BoardTextUpdateRequest(title, content);
             Board savedBoard = 게시글_id_있음();
             Long boardId = savedBoard.getId();
 
