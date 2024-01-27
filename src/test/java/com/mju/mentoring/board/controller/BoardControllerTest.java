@@ -9,6 +9,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -63,7 +64,8 @@ class BoardControllerTest {
                 .contentType(APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.id").value(newBoard.getId()));
+                .andExpect(jsonPath("$.id").value(newBoard.getId()))
+                .andDo(print());
 
         verify(boardService).save(request);
     }
@@ -81,7 +83,8 @@ class BoardControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(boardId))
                 .andExpect(jsonPath("$.title").value(newBoard.getTitle()))
-                .andExpect(jsonPath("$.content").value(newBoard.getContent()));
+                .andExpect(jsonPath("$.content").value(newBoard.getContent()))
+                .andDo(print());
     }
 
     @Test
@@ -96,7 +99,8 @@ class BoardControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(4))
                 .andExpect(jsonPath("$[0].title").value(게시글_id_없음().getTitle()))
-                .andExpect(jsonPath("$[0].content").value(게시글_id_없음().getContent()));
+                .andExpect(jsonPath("$[0].content").value(게시글_id_없음().getContent()))
+                .andDo(print());
     }
 
     @Test
@@ -112,7 +116,8 @@ class BoardControllerTest {
         mockMvc.perform(patch("/boards/{id}", boardId)
                         .contentType(APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
-                .andExpect(jsonPath("$.id").value(savedBoard.getId()));
+                .andExpect(jsonPath("$.id").value(savedBoard.getId()))
+                .andDo(print());
 
         verify(boardService).updateText(boardId, request);
     }
@@ -126,7 +131,8 @@ class BoardControllerTest {
         // when & then
         mockMvc.perform(delete("/boards/{id}", boardId)
                 .contentType(APPLICATION_JSON))
-                .andExpect(status().isNoContent());
+                .andExpect(status().isNoContent())
+                .andDo(print());
 
         verify(boardService).deleteById(boardId);
     }
@@ -146,7 +152,8 @@ class BoardControllerTest {
                             .contentType(APPLICATION_JSON)
                             .content(objectMapper.writeValueAsString(request)))
                     .andExpect(status().isBadRequest())
-                    .andExpect(jsonPath("$.error").exists());
+                    .andExpect(jsonPath("$.error").exists())
+                    .andDo(print());
         }
 
         @ParameterizedTest(name = "내용이 [{0}]인 경우")
@@ -161,7 +168,8 @@ class BoardControllerTest {
                             .contentType(APPLICATION_JSON)
                             .content(objectMapper.writeValueAsString(request)))
                     .andExpect(status().isBadRequest())
-                    .andExpect(jsonPath("$.error").exists());
+                    .andExpect(jsonPath("$.error").exists())
+                    .andDo(print());
         }
 
         @ParameterizedTest(name = "제목이 [{0}]인 경우")
@@ -178,7 +186,8 @@ class BoardControllerTest {
                             .contentType(APPLICATION_JSON)
                             .content(objectMapper.writeValueAsString(request)))
                     .andExpect(status().isBadRequest())
-                    .andExpect(jsonPath("$.error").exists());
+                    .andExpect(jsonPath("$.error").exists())
+                    .andDo(print());
         }
 
         @ParameterizedTest(name = "내용이 [{0}]인 경우")
@@ -195,7 +204,8 @@ class BoardControllerTest {
                             .contentType(APPLICATION_JSON)
                             .content(objectMapper.writeValueAsString(request)))
                     .andExpect(status().isBadRequest())
-                    .andExpect(jsonPath("$.error").exists());
+                    .andExpect(jsonPath("$.error").exists())
+                    .andDo(print());
         }
 
         @Test
@@ -206,7 +216,8 @@ class BoardControllerTest {
 
             // when & then
             mockMvc.perform(get("/boards/{id}", searchId))
-                    .andExpect(status().isNotFound());
+                    .andExpect(status().isNotFound())
+                    .andDo(print());
         }
     }
 }
