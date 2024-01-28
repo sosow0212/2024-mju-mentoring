@@ -67,7 +67,7 @@ public class BoardJpaRepositoryTest {
 
         // then
         assertSoftly((softly) -> {
-            softly.assertThat(boards.size()).isEqualTo(2);
+            softly.assertThat(boards).hasSize(2);
             softly.assertThat(boards.contains(boardOne)).isTrue();
             softly.assertThat(boards.contains(boardTwo)).isTrue();
         });
@@ -83,6 +83,6 @@ public class BoardJpaRepositoryTest {
         boardJpaRepository.delete(targetBoard);
 
         // then
-        assertThat(boardJpaRepository.findById(targetBoard.getId()).isEmpty()).isTrue();
+        assertThat(boardJpaRepository.findById(targetBoard.getId())).isEmpty();
     }
 }
