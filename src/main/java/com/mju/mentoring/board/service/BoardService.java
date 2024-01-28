@@ -6,6 +6,7 @@ import com.mju.mentoring.board.repository.BoardRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import com.mju.mentoring.board.exception.CustomException; // CustomException을 import합니다.
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -48,7 +49,7 @@ public class BoardService {
     @Transactional
     public BoardDto update(Long id, BoardDto boardDetails) {
         Board board = boardRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("게시글을 찾을 수 없습니다. - " + id)); //게시글을 찾을 수 없는 경우 EntityNotFoundException 발생
+                .orElseThrow(() -> new CustomException(id)); //게시글을 찾을 수 없는 경우 CustomExeption 발생
         //board.setTitle(boardDetails.getTitle()); //title 업데이트
         //board.setContent(boardDetails.getContent()); //content 업데이트
         board.update(boardDetails.getTitle(), boardDetails.getContent()); //도메인 객체의 update 메서드를 이용한 데이터 업데이트
@@ -59,7 +60,7 @@ public class BoardService {
     @Transactional
     public void delete(Long id) {
         if (!boardRepository.existsById(id)) { //existsById를 활용하여 주어진 아이디가 DB에 있는지 확인(JpaRepository에 포함된 메소드)
-            throw new EntityNotFoundException("게시글을 찾을 수 없습니다. - " + id);
+            throw new CustomException(id); //게시글을 찾을 수 없는 경우 CustomExeption 발생
         }
         boardRepository.deleteById(id); //해당 id의 게시글 삭제
     }

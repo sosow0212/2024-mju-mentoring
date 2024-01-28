@@ -1,10 +1,14 @@
 package com.mju.mentoring.board.domain;
 
-import jakarta.persistence.*;
+//import jakarta.persistence.*; //와일드카드 지양
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Embedded;
+
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity //클래스를 엔티티로 선언 - 이 어노테이션을 붙임으로써 JPA가 해당 클래스를 관리하게 됨
 @Data // lombok - 컨틀롤러의 board.get 이용 //@Data에 @Getter @Setter가 포함되어 있음.
