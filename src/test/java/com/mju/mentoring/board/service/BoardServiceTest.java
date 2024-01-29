@@ -1,5 +1,6 @@
 package com.mju.mentoring.board.service;
 
+import static com.mju.mentoring.board.fixture.BoardFixtures.게시글_id_있음;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
@@ -133,7 +134,30 @@ class BoardServiceTest {
     }
 
     @Test
-    void 없는_id로_접근할_시_예외가_발생한다() {
+    void 없는_게시글을_수정할_시_예외가_발생한다() {
+        // given
+        String updatedTitle = "title for update (edited)";
+        String updatedContent = "content for update (edited)";
+        BoardTextUpdateRequest updateRequest = new BoardTextUpdateRequest(updatedTitle, updatedContent);
+        Long boardId = 100L;
+
+        // when & then
+        assertThatThrownBy(() -> boardService.updateText(boardId, updateRequest))
+                .isInstanceOf(BoardNotFoundException.class);
+    }
+
+    @Test
+    void 없는_게시글을_삭제할_시_예외가_발생한다() {
+        // given
+        Board notSavedBoard = 게시글_id_있음();
+
+        // when & then
+        assertThatThrownBy(() -> boardService.deleteById(notSavedBoard.getId()))
+                .isInstanceOf(BoardNotFoundException.class);
+    }
+
+    @Test
+    void 없는_게시글을_조회할_시_예외가_발생한다() {
         // when & then
         assertThatThrownBy(() -> boardService.searchById(100L))
                 .isInstanceOf(BoardNotFoundException.class);
