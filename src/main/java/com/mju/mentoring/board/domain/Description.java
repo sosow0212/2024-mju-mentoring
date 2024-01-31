@@ -1,12 +1,18 @@
 package com.mju.mentoring.board.domain;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
+import jakarta.persistence.Lob;
 import java.util.Objects;
 
 @Embeddable
 public class Description {
 
+    @Column(nullable = false)
     private String title;
+
+    @Lob
+    @Column(nullable = false)
     private String content;
 
     protected Description() {
@@ -19,6 +25,10 @@ public class Description {
     }
 
     public static Description of(final String title, final String content) {
+        return new Description(title, content);
+    }
+
+    public Description copy() {
         return new Description(title, content);
     }
 
