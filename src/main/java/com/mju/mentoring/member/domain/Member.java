@@ -23,10 +23,10 @@ public class Member {
     private String nickname;
 
     @Embedded
-    private MemberLogin memberLogin;
+    private MemberAuth memberAuth;
 
     public Member(final String username, final String nickname, final String password) {
         this.nickname = nickname;
-        this.memberLogin = new MemberLogin(username, password);
+        this.memberAuth = new MemberAuth(username, password);
     }
 }

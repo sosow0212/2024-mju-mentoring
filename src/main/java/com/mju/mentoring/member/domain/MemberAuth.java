@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Embeddable
-public class MemberLogin {
+public class MemberAuth {
 
     @Column(nullable = false)
     private String username;
@@ -19,7 +19,7 @@ public class MemberLogin {
     @Column(nullable = false)
     private String password;
 
-    public MemberLogin updatePassword(final String password) {
-        return new MemberLogin(username, password);
+    public MemberAuth updatePassword(final String password) {
+        return new MemberAuth(username, password);
     }
 }
