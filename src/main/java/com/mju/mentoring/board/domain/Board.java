@@ -36,12 +36,12 @@ public class Board {
         this.description = Description.of(title, content);
     }
 
-    public Long getId() {
-        return id;
+    public Description copyDescription() {
+        return description.copy();
     }
 
-    public Description getDescription() {
-        return description;
+    public Long getId() {
+        return id;
     }
 
     public String getTitle() {
