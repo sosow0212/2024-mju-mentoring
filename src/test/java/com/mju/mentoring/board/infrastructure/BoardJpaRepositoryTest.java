@@ -95,9 +95,9 @@ class BoardJpaRepositoryTest {
 
         // when
         boardJpaRepository.deleteById(savedBoard.getId());
-        List<Board> findBoards = boardJpaRepository.findAll();
 
         // then
+        List<Board> findBoards = boardJpaRepository.findAll();
         assertThat(findBoards.isEmpty()).isTrue();
     }
 }
