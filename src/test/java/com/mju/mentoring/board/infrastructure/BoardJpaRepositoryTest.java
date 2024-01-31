@@ -6,39 +6,22 @@ import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 import com.mju.mentoring.board.domain.Board;
 import com.mju.mentoring.global.DatabaseCleaner;
-import io.restassured.RestAssured;
 import java.util.List;
 import java.util.Optional;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
-import org.springframework.boot.test.web.server.LocalServerPort;
-import org.springframework.test.context.ActiveProfiles;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 @SuppressWarnings("NonAsciiCharacters")
-@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-@ActiveProfiles("test")
+@DataJpaTest
+@DatabaseCleaner
 class BoardJpaRepositoryTest {
-
-    @LocalServerPort
-    int port;
-
-    @Autowired
-    private DatabaseCleaner cleaner;
 
     @Autowired
     private BoardJpaRepository boardJpaRepository;
-
-    @BeforeEach
-    void setup() {
-        RestAssured.port = port;
-        cleaner.execute();
-    }
 
     @Test
     void 게시글_저장_테스트() {
@@ -49,7 +32,16 @@ class BoardJpaRepositoryTest {
         Board savedBoard = boardJpaRepository.save(board);
 
         // then
-        assertThat(savedBoard.getId()).isEqualTo(1L);
+        assertSoftly(softly -> {
+                softly.assertThat(savedBoard)
+                    .usingRecursiveComparison()
+                    .ignoringFields("id")
+                    .isEqualTo(board);
+
+                softly.assertThat(savedBoard.getId())
+                    .isEqualTo(1L);
+            }
+        );
     }
 
     @Test
@@ -98,6 +90,6 @@ class BoardJpaRepositoryTest {
 
         // then
         List<Board> findBoards = boardJpaRepository.findAll();
-        assertThat(findBoards.isEmpty()).isTrue();
+        assertThat(findBoards).isEmpty();
     }
 }
