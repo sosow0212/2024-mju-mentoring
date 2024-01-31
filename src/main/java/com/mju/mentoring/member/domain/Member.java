@@ -25,8 +25,8 @@ public class Member {
     @Embedded
     private MemberAuth memberAuth;
 
-    public Member(final String username, final String nickname, final String password) {
+    public Member(final String nickname, final MemberAuth memberAuth) {
         this.nickname = nickname;
-        this.memberAuth = new MemberAuth(username, password);
+        this.memberAuth = memberAuth;
     }
 }
