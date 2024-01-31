@@ -8,9 +8,10 @@ import java.util.Objects;
 public class AuthInformation {
 
     @Column(unique = true, nullable = false)
-    String username;
+    private String username;
+
     @Column(nullable = false)
-    String password;
+    private String password;
 
     protected AuthInformation() {
 
