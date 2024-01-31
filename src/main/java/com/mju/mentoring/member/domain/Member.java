@@ -1,6 +1,7 @@
 package com.mju.mentoring.member.domain;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -19,15 +20,13 @@ public class Member {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String username;
-
     private String nickname;
 
-    private String password;
+    @Embedded
+    private MemberLogin memberLogin;
 
     public Member(final String username, final String nickname, final String password) {
-        this.username = username;
         this.nickname = nickname;
-        this.password = password;
+        this.memberLogin = new MemberLogin(username, password);
     }
 }
