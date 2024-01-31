@@ -42,11 +42,7 @@ public class BoardController {
     @GetMapping("/{id}")
     public ResponseEntity<BoardSearchResponse> findById(@PathVariable final Long id) {
         Board findBoard = boardService.searchById(id);
-        BoardSearchResponse response = new BoardSearchResponse(
-                findBoard.getId(),
-                findBoard.getTitle(),
-                findBoard.getContent()
-        );
+        BoardSearchResponse response = BoardSearchResponse.from(findBoard);
 
         return ResponseEntity.ok(response);
     }
@@ -55,7 +51,7 @@ public class BoardController {
     public ResponseEntity<List<BoardSearchResponse>> findAll() {
         List<Board> allBoards = boardService.findAll();
         List<BoardSearchResponse> responses = allBoards.stream()
-                .map(board -> new BoardSearchResponse(board.getId(), board.getTitle(), board.getContent()))
+                .map(BoardSearchResponse::from)
                 .toList();
 
         return ResponseEntity.ok(responses);
