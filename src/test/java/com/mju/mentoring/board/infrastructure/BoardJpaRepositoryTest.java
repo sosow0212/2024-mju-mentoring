@@ -86,7 +86,7 @@ class BoardJpaRepositoryTest {
         Board savedBoard = boardJpaRepository.save(board);
 
         // when
-        boardJpaRepository.deleteById(savedBoard.getId());
+        boardJpaRepository.delete(savedBoard);
 
         // then
         List<Board> findBoards = boardJpaRepository.findAll();

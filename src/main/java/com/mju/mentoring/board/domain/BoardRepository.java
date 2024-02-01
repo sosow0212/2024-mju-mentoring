@@ -11,5 +11,5 @@ public interface BoardRepository {
 
     Optional<Board> findById(final Long id);
 
-    void deleteById(final Long id);
+    void delete(final Board board);
 }

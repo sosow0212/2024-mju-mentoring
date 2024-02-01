@@ -42,10 +42,17 @@ public class BoardFakeRepository implements BoardRepository {
     }
 
     @Override
-    public void deleteById(final Long id) {
-        if (!db.containsKey(id)) {
+    public void delete(final Board board) {
+        if (!db.containsValue(board)) {
             return;
         }
-        db.remove(id);
+
+        Long boardId = db.keySet()
+            .stream()
+            .filter(key -> db.get(key).equals(board))
+            .findAny()
+            .get();
+
+        db.remove(boardId);
     }
 }
