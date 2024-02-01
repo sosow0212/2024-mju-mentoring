@@ -42,6 +42,7 @@ public class BoardService {
 
     @Transactional
     public void deleteById(final Long id) {
-        boardRepository.deleteById(id);
+        Board board = findById(id);
+        boardRepository.delete(board);
     }
 }
