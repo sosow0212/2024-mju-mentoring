@@ -123,4 +123,25 @@ class BoardServiceTest {
         assertThatThrownBy(() -> boardService.update(0L, updateRequest))
             .isInstanceOf(BoardNotFoundException.class);
     }
+
+    @Test
+    void 게시물_삭제() {
+        // given
+        BoardCreateRequest request = new BoardCreateRequest("title", "content");
+
+        // when
+        Long savedId = boardService.save(request);
+        boardService.deleteById(savedId);
+
+        // then
+        List<Board> boards = boardService.findAll();
+        assertThat(boards).isEmpty();
+    }
+
+    @Test
+    void 없는_게시물_삭제_시_에외처리() {
+        // when & then
+        assertThatThrownBy(() -> boardService.deleteById(0L))
+            .isInstanceOf(BoardNotFoundException.class);
+    }
 }
