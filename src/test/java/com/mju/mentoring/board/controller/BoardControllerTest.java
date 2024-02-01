@@ -2,6 +2,7 @@ package com.mju.mentoring.board.controller;
 
 import static com.mju.mentoring.board.fixture.BoardFixtures.게시글_id_없음;
 import static com.mju.mentoring.board.fixture.BoardFixtures.게시글_id_있음;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
@@ -192,6 +193,9 @@ class BoardControllerTest {
 
             // when & then
             mockMvc.perform(get("/boards/{id}", searchId))
+                    .andExpect(result ->
+                            assertInstanceOf(BoardNotFoundException.class, result.getResolvedException())
+                    )
                     .andExpect(status().isNotFound())
                     .andDo(print());
         }
