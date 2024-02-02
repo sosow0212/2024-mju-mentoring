@@ -5,10 +5,13 @@ import static com.mju.mentoring.member.controller.helper.CookieHelper.generateCo
 import com.mju.mentoring.member.controller.dto.SignupResponse;
 import com.mju.mentoring.member.domain.Member;
 import com.mju.mentoring.member.service.AuthService;
+import com.mju.mentoring.member.service.dto.AuthRequest;
 import com.mju.mentoring.member.service.dto.LoginRequest;
 import com.mju.mentoring.member.service.dto.SignupRequest;
 import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,6 +23,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/auth")
 @RestController
 public class AuthController {
+
+    private static final String SESSION_KEY = "member";
+    private static final int SESSION_EXPIRE_SECONDS = 3600;
 
     private final AuthService authService;
 
@@ -43,5 +49,22 @@ public class AuthController {
 
         return ResponseEntity.ok()
                 .build();
+    }
+
+    @PostMapping("/login/session")
+    public ResponseEntity<Void> loginWithSession(@RequestBody final LoginRequest request,
+                                                 final HttpServletRequest httpRequest) {
+        Member loginMember = authService.login(request);
+        HttpSession session = httpRequest.getSession();
+        saveSessionProperties(session, loginMember);
+
+        return ResponseEntity.ok()
+                .build();
+    }
+
+    private static void saveSessionProperties(final HttpSession session, final Member loginMember) {
+        AuthRequest authRequest = new AuthRequest(loginMember.getUsername(), loginMember.getPassword());
+        session.setAttribute(SESSION_KEY, authRequest);
+        session.setMaxInactiveInterval(SESSION_EXPIRE_SECONDS);
     }
 }
