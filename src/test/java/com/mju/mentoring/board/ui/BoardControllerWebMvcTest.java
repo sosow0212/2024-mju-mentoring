@@ -1,8 +1,7 @@
 package com.mju.mentoring.board.ui;
 
 import static com.mju.mentoring.board.fixture.BoardFixture.게시글_생성;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.when;
+import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -43,7 +42,8 @@ class BoardControllerWebMvcTest {
         BoardCreateRequest req = new BoardCreateRequest("title", "content");
         Board board = 게시글_생성();
 
-        when(boardService.save(eq(req))).thenReturn(board.getId());
+        given(boardService.save(req))
+            .willReturn(board.getId());
 
         // when & then
         mockMvc.perform(post("/boards")
@@ -56,7 +56,8 @@ class BoardControllerWebMvcTest {
     void 게시글_조회() throws Exception {
         // given
         List<Board> response = List.of(게시글_생성());
-        when(boardService.findAll()).thenReturn(response);
+        given(boardService.findAll())
+            .willReturn(response);
 
         // when & then
         mockMvc.perform(get("/boards"))
@@ -67,7 +68,8 @@ class BoardControllerWebMvcTest {
     void 게시글_id로_조회() throws Exception {
         // given
         Board response = 게시글_생성();
-        when(boardService.findById(eq(1L))).thenReturn(response);
+        given(boardService.findById(1L))
+            .willReturn(response);
 
         // when & then
         mockMvc.perform(get("/boards/1"))
