@@ -1,5 +1,6 @@
 package com.mju.mentoring.board.ui;
 
+import com.mju.mentoring.board.application.dto.BoardDeleteRequest;
 import com.mju.mentoring.board.ui.dto.BoardResponse;
 import com.mju.mentoring.board.domain.Board;
 import com.mju.mentoring.board.application.BoardService;
@@ -61,6 +62,14 @@ public class BoardController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteById(@PathVariable(name = "id") final Long id) {
         boardService.deleteById(id);
+
+        return ResponseEntity.ok()
+            .build();
+    }
+
+    @DeleteMapping
+    public ResponseEntity<Void> deleteAllById(@RequestBody final BoardDeleteRequest deleteRequest) {
+        boardService.deleteAllById(deleteRequest);
 
         return ResponseEntity.ok()
             .build();
