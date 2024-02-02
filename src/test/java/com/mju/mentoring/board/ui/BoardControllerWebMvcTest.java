@@ -4,11 +4,14 @@ import static com.mju.mentoring.board.fixture.BoardFixture.게시글_생성;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mju.mentoring.board.application.BoardService;
 import com.mju.mentoring.board.application.dto.BoardCreateRequest;
+import com.mju.mentoring.board.application.dto.BoardDeleteRequest;
+import com.mju.mentoring.board.application.dto.BoardUpdateRequest;
 import com.mju.mentoring.board.domain.Board;
 import java.util.List;
 import org.junit.jupiter.api.DisplayNameGeneration;
@@ -39,16 +42,16 @@ class BoardControllerWebMvcTest {
     @Test
     void 게시글_저장() throws Exception {
         // given
-        BoardCreateRequest req = new BoardCreateRequest("title", "content");
+        BoardCreateRequest request = new BoardCreateRequest("title", "content");
         Board board = 게시글_생성();
 
-        given(boardService.save(req))
+        given(boardService.save(request))
             .willReturn(board.getId());
 
         // when & then
         mockMvc.perform(post("/boards")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(req)))
+                .content(objectMapper.writeValueAsString(request)))
             .andExpect(status().isCreated());
     }
 
@@ -73,6 +76,37 @@ class BoardControllerWebMvcTest {
 
         // when & then
         mockMvc.perform(get("/boards/1"))
+            .andExpect(status().isOk());
+    }
+
+    @Test
+    void 게시글_업데이트() throws Exception {
+        // given
+        BoardUpdateRequest request = new BoardUpdateRequest("update title", "update content");
+
+        // when & then
+        mockMvc.perform(put("/boards/1")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(objectMapper.writeValueAsString(request))
+        ).andExpect(status().isOk());
+    }
+
+    @Test
+    void 게시글_단건_삭제() throws Exception {
+        // when & then
+        mockMvc.perform(delete("/boards/1"))
+            .andExpect(status().isOk());
+    }
+
+    @Test
+    void 게시글_여러건_삭제() throws Exception {
+        // given
+        BoardDeleteRequest request = new BoardDeleteRequest(List.of(1L));
+
+        // when & then
+        mockMvc.perform(delete("/boards")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
             .andExpect(status().isOk());
     }
 }
