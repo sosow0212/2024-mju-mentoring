@@ -6,7 +6,6 @@ import com.mju.mentoring.exam.board.controller.BoardController;
 import com.mju.mentoring.exam.board.domain.Board;
 import com.mju.mentoring.exam.board.service.BoardService;
 import com.mju.mentoring.exam.board.service.dto.BoardCreateRequest;
-import com.mju.mentoring.exam.board.service.dto.BoardUpdateRequest;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
@@ -21,8 +20,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.List;
 
 import static com.mju.mentoring.board.fixture.BoardFixture.게시글_생성;
-import static com.mju.mentoring.board.fixture.BoardFixture.게시글_생성_id없음;
-import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
@@ -33,7 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureRestDocs
 @MockBean(JpaMetamodelMappingContext.class)
 @WebMvcTest(BoardController.class)
-class BoardControllerWebMvcTest {
+class BoardControllerTest {
 
     /**
      * 1.'컨트롤러'만 통합테스트 (슬라이스)
