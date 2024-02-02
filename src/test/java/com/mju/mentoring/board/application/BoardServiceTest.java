@@ -6,6 +6,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 import com.mju.mentoring.board.application.dto.BoardCreateRequest;
+import com.mju.mentoring.board.application.dto.BoardDeleteRequest;
 import com.mju.mentoring.board.application.dto.BoardUpdateRequest;
 import com.mju.mentoring.board.domain.Board;
 import com.mju.mentoring.board.domain.BoardRepository;
@@ -143,5 +144,22 @@ class BoardServiceTest {
         // when & then
         assertThatThrownBy(() -> boardService.deleteById(0L))
             .isInstanceOf(BoardNotFoundException.class);
+    }
+
+    @Test
+    void id로_여러_게시물_한번에_삭제() {
+        // given
+        BoardCreateRequest request1 = new BoardCreateRequest("title1", "content1");
+        BoardCreateRequest request2 = new BoardCreateRequest("title2", "content2");
+
+        Long savedId1 = boardService.save(request1);
+        Long savedId2 = boardService.save(request2);
+
+        // when
+        boardService.deleteAllById(new BoardDeleteRequest(List.of(savedId1, savedId2)));
+
+        // then
+        List<Board> boards = boardService.findAll();
+        assertThat(boards).isEmpty();
     }
 }

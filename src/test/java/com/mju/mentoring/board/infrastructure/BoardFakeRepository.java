@@ -55,4 +55,11 @@ public class BoardFakeRepository implements BoardRepository {
 
         db.remove(boardId);
     }
+
+    @Override
+    public void deleteAllById(final List<Long> ids) {
+        ids.stream()
+            .filter(db::containsKey)
+            .forEach(db::remove);
+    }
 }
