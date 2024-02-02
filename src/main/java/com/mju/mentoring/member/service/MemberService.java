@@ -4,6 +4,7 @@ import static com.mju.mentoring.member.service.helper.MemberServiceHelper.findMe
 
 import com.mju.mentoring.member.domain.Member;
 import com.mju.mentoring.member.domain.MemberRepository;
+import com.mju.mentoring.member.exception.MemberNotFoundException;
 import com.mju.mentoring.member.service.dto.AuthRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,7 +17,12 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
 
-    public Member getProfile(final AuthRequest request) {
+    public Member getProfileWithAuthRequest(final AuthRequest request) {
        return findMemberByAuth(memberRepository, request);
+    }
+
+    public Member getProfileWithUsername(final String username) {
+        return memberRepository.findByUsername(username)
+                .orElseThrow(MemberNotFoundException::new);
     }
 }

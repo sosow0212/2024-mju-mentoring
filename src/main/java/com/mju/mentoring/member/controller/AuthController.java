@@ -3,11 +3,13 @@ package com.mju.mentoring.member.controller;
 import static com.mju.mentoring.member.controller.helper.CookieHelper.generateCookieByMemberProperties;
 
 import com.mju.mentoring.member.controller.dto.SignupResponse;
+import com.mju.mentoring.member.controller.dto.TokenResponse;
 import com.mju.mentoring.member.domain.Member;
 import com.mju.mentoring.member.service.AuthService;
 import com.mju.mentoring.member.service.dto.AuthRequest;
 import com.mju.mentoring.member.service.dto.LoginRequest;
 import com.mju.mentoring.member.service.dto.SignupRequest;
+import com.mju.mentoring.member.util.JwtUtil;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -66,5 +68,14 @@ public class AuthController {
         AuthRequest authRequest = new AuthRequest(loginMember.getUsername(), loginMember.getPassword());
         session.setAttribute(SESSION_KEY, authRequest);
         session.setMaxInactiveInterval(SESSION_EXPIRE_SECONDS);
+    }
+
+    @PostMapping("/login/jwt")
+    public ResponseEntity<TokenResponse> loginWithJwt(@RequestBody final LoginRequest request) {
+        Member loginMember = authService.login(request);
+        String token = JwtUtil.generateToken(loginMember.getUsername());
+
+        return ResponseEntity.ok()
+                .body(new TokenResponse(token));
     }
 }
