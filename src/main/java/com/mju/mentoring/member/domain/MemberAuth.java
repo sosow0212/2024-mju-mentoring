@@ -1,5 +1,6 @@
 package com.mju.mentoring.member.domain;
 
+import com.mju.mentoring.member.exception.PasswordNotMatchException;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.AccessLevel;
@@ -18,6 +19,12 @@ public class MemberAuth {
 
     @Column(nullable = false)
     private String password;
+
+    public void validatePassword(final String inputPassword) {
+        if(!password.equals(inputPassword)) {
+            throw new PasswordNotMatchException();
+        }
+    }
 
     public MemberAuth updatePassword(final String password) {
         return new MemberAuth(username, password);
