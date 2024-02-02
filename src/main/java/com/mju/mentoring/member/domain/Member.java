@@ -29,4 +29,16 @@ public class Member {
         this.nickname = nickname;
         this.memberAuth = memberAuth;
     }
+
+    public void validatePassword(final String password) {
+        memberAuth.validatePassword(password);
+    }
+
+    public String getUsername() {
+        return memberAuth.getUsername();
+    }
+
+    public String getPassword() {
+        return memberAuth.getPassword();
+    }
 }
