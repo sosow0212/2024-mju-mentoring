@@ -1,5 +1,6 @@
 package com.mju.mentoring.board.application;
 
+import com.mju.mentoring.board.application.dto.BoardDeleteRequest;
 import com.mju.mentoring.board.application.dto.BoardUpdateRequest;
 import com.mju.mentoring.board.domain.Board;
 import com.mju.mentoring.board.domain.BoardRepository;
@@ -44,5 +45,10 @@ public class BoardService {
     public void deleteById(final Long id) {
         Board board = findById(id);
         boardRepository.delete(board);
+    }
+
+    @Transactional
+    public void deleteAllById(final BoardDeleteRequest deleteRequest) {
+        boardRepository.deleteAllById(deleteRequest.ids());
     }
 }
