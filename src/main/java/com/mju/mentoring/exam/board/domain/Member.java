@@ -1,7 +1,6 @@
 package com.mju.mentoring.exam.board.domain;
 
 import jakarta.persistence.*;
-import jdk.jshell.Snippet;
 import lombok.*;
 
 @Getter

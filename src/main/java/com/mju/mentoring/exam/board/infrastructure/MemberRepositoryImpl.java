@@ -1,12 +1,10 @@
 package com.mju.mentoring.exam.board.infrastructure;
 
-import com.mju.mentoring.exam.board.domain.Board;
 import com.mju.mentoring.exam.board.domain.Member;
 import com.mju.mentoring.exam.board.domain.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -26,18 +24,12 @@ public class MemberRepositoryImpl implements MemberRepository {
     }
 
     @Override
-    public List<Member> findAll() {
-        return memberJpaRepository.findAll();
-    }
-
-    @Override
     public void deleteById(Long id) {
-
+        memberJpaRepository.deleteById(id);
     }
 
     @Override
     public Optional<Member> findByMemberId(String memberId) {
         return memberJpaRepository.findMemberByMemberDescription_MemberId(memberId);
-
     }
 }

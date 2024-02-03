@@ -35,11 +35,6 @@ public class MemberFakeRepository implements MemberRepository {
     }
 
     @Override
-    public List<Member> findAll() {
-        return new ArrayList<>(map.values());
-    }
-
-    @Override
     public void deleteById(final Long id) {
         if (map.containsKey(id)) {
             map.remove(id);
