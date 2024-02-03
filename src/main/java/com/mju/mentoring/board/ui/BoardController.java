@@ -6,6 +6,7 @@ import com.mju.mentoring.board.domain.Board;
 import com.mju.mentoring.board.application.BoardService;
 import com.mju.mentoring.board.application.dto.BoardUpdateRequest;
 import com.mju.mentoring.board.application.dto.BoardCreateRequest;
+import com.mju.mentoring.board.ui.dto.BoardsResponse;
 import java.net.URI;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -35,12 +36,12 @@ public class BoardController {
     }
 
     @GetMapping
-    public ResponseEntity<List<BoardResponse>> findAll() {
-        List<BoardResponse> boardResponses = boardService.findAll().stream()
+    public ResponseEntity<BoardsResponse> findAll() {
+        List<BoardResponse> boardsResponse = boardService.findAll().stream()
             .map(BoardResponse::from)
             .toList();
 
-        return ResponseEntity.ok(boardResponses);
+        return ResponseEntity.ok(new BoardsResponse(boardsResponse));
     }
 
     @GetMapping("/{id}")
