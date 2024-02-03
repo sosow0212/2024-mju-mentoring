@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mju.mentoring.exam.board.controller.MemberController;
 import com.mju.mentoring.exam.board.domain.Member;
 import com.mju.mentoring.exam.board.domain.MemberRepository;
+import com.mju.mentoring.exam.board.service.MemberService;
 import com.mju.mentoring.exam.board.service.dto.LoginRequest;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
@@ -44,6 +45,9 @@ class MemberControllerTest {
 
     @MockBean
     private MemberRepository memberRepository;
+
+    @MockBean
+    private MemberService memberService;
 
     @Test
     void 로그인한다() throws Exception {
