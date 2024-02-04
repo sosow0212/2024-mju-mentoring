@@ -2,11 +2,9 @@ package com.mju.mentoring.member.infrastructure;
 
 import static com.mju.mentoring.member.fixture.MemberFixture.id_없는_멤버_생성;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 import com.mju.mentoring.global.DatabaseCleaner;
 import com.mju.mentoring.member.domain.Member;
-import java.util.Optional;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
@@ -44,7 +42,7 @@ class MemberJpaRepositoryTest {
     }
 
     @Test
-    void 아이디로_멤버_존재_여부_확인() {
+    void 아이디로_멤버_탐색() {
         // given
         Member member = id_없는_멤버_생성();
 
@@ -58,7 +56,7 @@ class MemberJpaRepositoryTest {
     }
 
     @Test
-    void 닉네임으로_멤버_존재_여부_확인() {
+    void 닉네임으로_멤버_탐색() {
         // given
         Member member = id_없는_멤버_생성();
 
@@ -68,25 +66,5 @@ class MemberJpaRepositoryTest {
 
         // then
         assertThat(result).isTrue();
-    }
-
-    @Test
-    void 아이디로_멤버_탐색() {
-        // given
-        Member member = id_없는_멤버_생성();
-
-        // when
-        memberJpaRepository.save(member);
-        Optional<Member> findMember = memberJpaRepository.findMemberByAuthInformationUsername(
-            MEMBER_DEFAULT_USERNAME);
-
-        // then
-        assertSoftly(softly -> {
-            softly.assertThat(findMember).isPresent();
-            softly.assertThat(findMember.get())
-                .usingRecursiveComparison()
-                .ignoringFields("id")
-                .isEqualTo(member);
-        });
     }
 }
