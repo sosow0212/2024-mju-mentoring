@@ -3,7 +3,6 @@ package com.mju.mentoring.member.infrastructure;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 import com.mju.mentoring.member.domain.PasswordManager;
-import com.mju.mentoring.member.exception.exceptions.EncodedException;
 import org.springframework.stereotype.Component;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
@@ -39,7 +38,7 @@ public class CryptoPasswordManager implements PasswordManager {
             return Base64.getEncoder()
                     .encodeToString(hash);
         } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
-            throw new EncodedException();
+            throw new IllegalStateException();
         }
     }
 

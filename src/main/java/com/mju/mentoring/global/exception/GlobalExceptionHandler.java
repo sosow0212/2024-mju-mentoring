@@ -26,8 +26,8 @@ public class GlobalExceptionHandler {
         return createExceptionResponseWithStatusAndMessage(BAD_REQUEST, errorMessage);
     }
 
-    @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<ExceptionResponse> handleIllegalArgumentException(final IllegalArgumentException exception) {
+    @ExceptionHandler(value = {IllegalStateException.class, IllegalArgumentException.class})
+    public ResponseEntity<ExceptionResponse> handleGlobalIllegalException(final RuntimeException exception) {
         log.error(exception.getMessage());
 
         return createExceptionResponseWithStatusAndMessage(INTERNAL_SERVER_ERROR, INTERNAL_SERVER_ERROR_MESSAGE);
