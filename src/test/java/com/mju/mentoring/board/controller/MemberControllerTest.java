@@ -1,12 +1,9 @@
 package com.mju.mentoring.board.controller;
 
+import static com.mju.mentoring.board.fixture.MemberFixture.*;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mju.mentoring.exam.board.controller.MemberController;
-import com.mju.mentoring.exam.board.domain.Member;
-import com.mju.mentoring.exam.board.domain.MemberRepository;
-import com.mju.mentoring.exam.board.service.MemberService;
-import com.mju.mentoring.exam.board.service.dto.LoginRequest;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
@@ -18,10 +15,12 @@ import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-
-import static com.mju.mentoring.board.fixture.MemberFixture.멤버_생성;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mju.mentoring.exam.board.controller.MemberController;
+import com.mju.mentoring.exam.board.domain.Member;
+import com.mju.mentoring.exam.board.domain.MemberRepository;
+import com.mju.mentoring.exam.board.service.MemberService;
+import com.mju.mentoring.exam.board.service.dto.LoginRequest;
 
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 @SuppressWarnings("NonAsciiCharacters")
@@ -30,36 +29,37 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(MemberController.class)
 class MemberControllerTest {
 
-    /**
-     * 1.'컨트롤러'만 통합테스트 (슬라이스)
-     * 문서화도 같이 진행하는 경우 많음
-     *
-     * 2. E2E 테스트 (모든레이어 거쳐감)
-     */
+	/**
+	 * 1.'컨트롤러'만 통합테스트 (슬라이스)
+	 * 문서화도 같이 진행하는 경우 많음
+	 *
+	 * 2. E2E 테스트 (모든레이어 거쳐감)
+	 */
 
-    @Autowired
-    private MockMvc mockMvc;
+	@Autowired
+	private MockMvc mockMvc;
 
-    @Autowired
-    private ObjectMapper objectMapper;
+	@Autowired
+	private ObjectMapper objectMapper;
 
-    @MockBean
-    private MemberRepository memberRepository;
+	@MockBean
+	private MemberRepository memberRepository;
 
-    @MockBean
-    private MemberService memberService;
+	@MockBean
+	private MemberService memberService;
 
-    @Test
-    void 로그인한다() throws Exception {
-        // given
-        Member member = 멤버_생성();
-        memberRepository.save(member);
-        LoginRequest req = new LoginRequest(member.getMemberDescription().getMemberId(), member.getMemberDescription().getPassword());
+	@Test
+	void 로그인한다() throws Exception {
+		// given
+		Member member = 멤버_생성();
+		memberRepository.save(member);
+		LoginRequest req = new LoginRequest(member.getMemberDescription().getMemberId(),
+			member.getMemberDescription().getPassword());
 
-        // when & then
-        mockMvc.perform(post("/login")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(req))
-        ).andExpect(status().isOk());
-    }
+		// when & then
+		mockMvc.perform(post("/login")
+			.contentType(MediaType.APPLICATION_JSON)
+			.content(objectMapper.writeValueAsString(req))
+		).andExpect(status().isOk());
+	}
 }

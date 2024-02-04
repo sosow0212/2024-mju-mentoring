@@ -11,19 +11,19 @@ import lombok.NoArgsConstructor;
 @Embeddable
 public class BoardDescription {
 
-    @Column(nullable = false)
-    private String title;
+	@Column(nullable = false)
+	private String title;
 
-    @Column(nullable = false)
-    private String content;
+	@Column(nullable = false)
+	private String content;
 
-    public BoardDescription(final String title, final String content) {
-        this.title = title;
-        this.content = content;
-    }
+	public BoardDescription(final String title, final String content) {
+		this.title = title;
+		this.content = content;
+	}
 
-    public void update(final String title, final String content) {
-        this.title = title;
-        this.content = content;
-    }
+	public void update(final String title, final String content) {
+		this.title = title;
+		this.content = content;
+	}
 }

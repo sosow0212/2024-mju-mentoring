@@ -11,22 +11,22 @@ import lombok.NoArgsConstructor;
 @Embeddable
 public class MemberDescription {
 
-    @Column(nullable = false,unique=true,name = "member_Id")
-    private String memberId;
+	@Column(nullable = false, unique = true, name = "member_Id")
+	private String memberId;
 
-    @Column(nullable = false,unique=true)
-    private String username;
+	@Column(nullable = false, unique = true)
+	private String username;
 
-    @Column(nullable = false)
-    private String password;
+	@Column(nullable = false)
+	private String password;
 
-    @Column(nullable = false)
-    private String nickname;
+	@Column(nullable = false)
+	private String nickname;
 
-    public MemberDescription(String memberId, String username, String password, String nickname) {
-        this.memberId = memberId;
-        this.username = username;
-        this.password = password;
-        this.nickname = nickname;
-    }
+	public MemberDescription(String memberId, String username, String password, String nickname) {
+		this.memberId = memberId;
+		this.username = username;
+		this.password = password;
+		this.nickname = nickname;
+	}
 }
