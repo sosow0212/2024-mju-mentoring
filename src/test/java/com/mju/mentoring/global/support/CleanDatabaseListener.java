@@ -1,4 +1,4 @@
-package com.mju.mentoring.board.support;
+package com.mju.mentoring.global.support;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.jdbc.core.JdbcTemplate;

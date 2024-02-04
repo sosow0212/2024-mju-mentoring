@@ -5,7 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 import com.mju.mentoring.board.domain.Board;
-import com.mju.mentoring.board.support.CleanDatabase;
+import com.mju.mentoring.global.support.CleanDatabase;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
