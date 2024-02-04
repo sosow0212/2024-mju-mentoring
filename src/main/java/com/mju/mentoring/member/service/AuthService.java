@@ -6,7 +6,7 @@ import com.mju.mentoring.member.domain.Member;
 import com.mju.mentoring.member.domain.MemberAuth;
 import com.mju.mentoring.member.domain.MemberRepository;
 import com.mju.mentoring.member.domain.PasswordManager;
-import com.mju.mentoring.member.infrastructure.jwtmanager.JwtManager;
+import com.mju.mentoring.member.domain.JwtManager;
 import com.mju.mentoring.member.service.dto.AuthRequest;
 import com.mju.mentoring.member.service.dto.LoginRequest;
 import com.mju.mentoring.member.service.dto.SignupRequest;

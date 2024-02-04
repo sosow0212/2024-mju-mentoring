@@ -1,4 +1,4 @@
-package com.mju.mentoring.member.infrastructure.jwtmanager;
+package com.mju.mentoring.member.domain;
 
 public interface JwtManager {
 

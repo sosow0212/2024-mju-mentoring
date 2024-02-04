@@ -1,6 +1,6 @@
 package com.mju.mentoring.member.infrastructure;
 
-import com.mju.mentoring.member.infrastructure.jwtmanager.JwtManager;
+import com.mju.mentoring.member.domain.JwtManager;
 
 public class TestJwtManager implements JwtManager {
 

@@ -1,6 +1,6 @@
-package com.mju.mentoring.member.domain;
+package com.mju.mentoring.member.infrastructure.jwtmanager;
 
-import com.mju.mentoring.member.infrastructure.jwtmanager.JwtManager;
+import com.mju.mentoring.member.domain.JwtManager;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;

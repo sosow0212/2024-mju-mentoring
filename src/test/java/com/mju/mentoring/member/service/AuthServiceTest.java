@@ -6,7 +6,7 @@ import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import com.mju.mentoring.member.domain.Member;
 import com.mju.mentoring.member.domain.MemberRepository;
 import com.mju.mentoring.member.domain.PasswordManager;
-import com.mju.mentoring.member.infrastructure.jwtmanager.JwtManager;
+import com.mju.mentoring.member.domain.JwtManager;
 import com.mju.mentoring.member.infrastructure.MemberTestRepository;
 import com.mju.mentoring.member.infrastructure.TestJwtManager;
 import com.mju.mentoring.member.infrastructure.TestPasswordManager;
