@@ -6,7 +6,6 @@ import com.mju.mentoring.member.controller.dto.ProfileResponse;
 import com.mju.mentoring.member.domain.Member;
 import com.mju.mentoring.member.service.MemberService;
 import com.mju.mentoring.member.service.dto.AuthRequest;
-import com.mju.mentoring.member.util.JwtUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -48,8 +47,7 @@ public class MemberController {
 
     @GetMapping("/profile/jwt")
     public ResponseEntity<ProfileResponse> profileWithJwt(@RequestHeader("Authorization") final String token) {
-        String username = JwtUtil.extractUsername(token);
-        Member profileMember = memberService.getProfileWithUsername(username);
+        Member profileMember = memberService.getProfileWithJwt(token);
 
         ProfileResponse response = new ProfileResponse(profileMember.getNickname(), profileMember.getUsername());
         return ResponseEntity.ok()

@@ -9,7 +9,6 @@ import com.mju.mentoring.member.service.AuthService;
 import com.mju.mentoring.member.service.dto.AuthRequest;
 import com.mju.mentoring.member.service.dto.LoginRequest;
 import com.mju.mentoring.member.service.dto.SignupRequest;
-import com.mju.mentoring.member.util.JwtUtil;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -73,9 +72,8 @@ public class AuthController {
 
     @PostMapping("/login/jwt")
     public ResponseEntity<TokenResponse> loginWithJwt(@RequestBody @Valid final LoginRequest request) {
-        Member loginMember = authService.login(request);
-        String token = JwtUtil.generateToken(loginMember.getUsername());
 
+        String token = authService.jwtLogin(request);
         return ResponseEntity.ok()
                 .body(new TokenResponse(token));
     }

@@ -6,7 +6,9 @@ import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import com.mju.mentoring.member.domain.Member;
 import com.mju.mentoring.member.domain.MemberRepository;
 import com.mju.mentoring.member.domain.PasswordManager;
+import com.mju.mentoring.member.infrastructure.JwtManager;
 import com.mju.mentoring.member.infrastructure.MemberTestRepository;
+import com.mju.mentoring.member.infrastructure.TestJwtManager;
 import com.mju.mentoring.member.infrastructure.TestPasswordManager;
 import com.mju.mentoring.member.service.dto.LoginRequest;
 import com.mju.mentoring.member.service.dto.SignupRequest;
@@ -20,14 +22,16 @@ import org.junit.jupiter.api.Test;
 public class AuthServiceTest {
 
     private PasswordManager passwordManager;
+    private JwtManager jwtManager;
     private MemberRepository memberRepository;
     private AuthService authService;
 
     @BeforeEach
     void init() {
         passwordManager = new TestPasswordManager();
+        jwtManager = new TestJwtManager();
         memberRepository = new MemberTestRepository();
-        authService = new AuthService(passwordManager, memberRepository);
+        authService = new AuthService(passwordManager, jwtManager, memberRepository);
     }
 
     @Test

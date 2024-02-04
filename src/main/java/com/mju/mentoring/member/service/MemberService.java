@@ -5,6 +5,7 @@ import static com.mju.mentoring.member.service.helper.MemberServiceHelper.findMe
 import com.mju.mentoring.member.domain.Member;
 import com.mju.mentoring.member.domain.MemberRepository;
 import com.mju.mentoring.member.exception.exceptions.MemberNotFoundException;
+import com.mju.mentoring.member.infrastructure.JwtManager;
 import com.mju.mentoring.member.service.dto.AuthRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,13 +16,15 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class MemberService {
 
+    private final JwtManager jwtManager;
     private final MemberRepository memberRepository;
 
     public Member getProfileWithAuthRequest(final AuthRequest request) {
        return findMemberByAuth(memberRepository, request);
     }
 
-    public Member getProfileWithUsername(final String username) {
+    public Member getProfileWithJwt(final String token) {
+        String username = jwtManager.extractUsername(token);
         return memberRepository.findByUsername(username)
                 .orElseThrow(MemberNotFoundException::new);
     }

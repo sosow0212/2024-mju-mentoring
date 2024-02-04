@@ -6,6 +6,7 @@ import com.mju.mentoring.member.domain.Member;
 import com.mju.mentoring.member.domain.MemberAuth;
 import com.mju.mentoring.member.domain.MemberRepository;
 import com.mju.mentoring.member.domain.PasswordManager;
+import com.mju.mentoring.member.infrastructure.JwtManager;
 import com.mju.mentoring.member.service.dto.AuthRequest;
 import com.mju.mentoring.member.service.dto.LoginRequest;
 import com.mju.mentoring.member.service.dto.SignupRequest;
@@ -19,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class AuthService {
 
     private final PasswordManager passwordManager;
+    private final JwtManager jwtManager;
     private final MemberRepository memberRepository;
 
     @Transactional
@@ -36,5 +38,12 @@ public class AuthService {
         String encodedPassword = passwordManager.encode(request.password());
         AuthRequest authRequest = new AuthRequest(request.username(), encodedPassword);
         return findMemberByAuth(memberRepository, authRequest);
+    }
+
+    public String jwtLogin(final LoginRequest request) {
+        String encodedPassword = passwordManager.encode(request.password());
+        AuthRequest authRequest = new AuthRequest(request.username(), encodedPassword);
+        Member loginMember = findMemberByAuth(memberRepository, authRequest);
+        return jwtManager.generateToken(loginMember.getUsername());
     }
 }
