@@ -3,7 +3,7 @@ package com.mju.mentoring.member.infrastructure;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 import com.mju.mentoring.member.domain.PasswordManager;
-import com.mju.mentoring.member.exception.EncodedException;
+import com.mju.mentoring.member.exception.exceptions.EncodedException;
 import org.springframework.stereotype.Component;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;

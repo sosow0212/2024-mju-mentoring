@@ -1,4 +1,4 @@
-package com.mju.mentoring.member.exception;
+package com.mju.mentoring.member.exception.exceptions;
 
 public class EncodedException extends RuntimeException {
 

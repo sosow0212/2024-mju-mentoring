@@ -1,6 +1,6 @@
 package com.mju.mentoring.member.controller.helper;
 
-import com.mju.mentoring.member.exception.CookieException;
+import com.mju.mentoring.member.exception.exceptions.CookieException;
 import com.mju.mentoring.member.service.dto.AuthRequest;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;

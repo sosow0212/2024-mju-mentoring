@@ -1,6 +1,6 @@
 package com.mju.mentoring.member.domain;
 
-import com.mju.mentoring.member.exception.PasswordNotMatchException;
+import com.mju.mentoring.member.exception.exceptions.PasswordNotMatchException;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.AccessLevel;
