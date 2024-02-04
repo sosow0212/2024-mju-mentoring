@@ -1,6 +1,7 @@
 package com.mju.mentoring.member.infrastructure.passwordmanager;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
+import static javax.xml.crypto.dsig.DigestMethod.SHA512;
 
 import com.mju.mentoring.member.domain.PasswordManager;
 import org.springframework.stereotype.Component;
@@ -18,7 +19,6 @@ public class CryptoPasswordManager implements PasswordManager {
     private static final String HASH_ALGORITHM = "PBKDF2WithHmacSHA1";
     private static final int HASH_LENGTH = 128;
     private static final int HASH_ITERATION = 85319;
-    private static final String SALT_ALGORITHM = "SHA-512";
 
     @Override
     public String encode(final String plainPassword) {
@@ -43,7 +43,7 @@ public class CryptoPasswordManager implements PasswordManager {
     }
 
     private byte[] genSalt(final String plainPassword) throws NoSuchAlgorithmException {
-        MessageDigest digest = MessageDigest.getInstance(SALT_ALGORITHM);
+        MessageDigest digest = MessageDigest.getInstance(SHA512);
         byte[] keyBytes = plainPassword.getBytes(UTF_8);
 
         return digest.digest(keyBytes);
