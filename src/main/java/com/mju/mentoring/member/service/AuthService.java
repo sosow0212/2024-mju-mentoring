@@ -25,12 +25,10 @@ public class AuthService {
 
     @Transactional
     public Member signup(final SignupRequest request) {
-        String nickname = request.nickname();
-        String username = request.username();
         String password = passwordManager.encode(request.password());
 
-        MemberAuth memberAuth = new MemberAuth(username, password);
-        Member member = new Member(nickname, memberAuth);
+        MemberAuth memberAuth = new MemberAuth(request.username(), password);
+        Member member = new Member(request.nickname(), memberAuth);
         return memberRepository.save(member);
     }
 
