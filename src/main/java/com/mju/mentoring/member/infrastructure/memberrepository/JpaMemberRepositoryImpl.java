@@ -1,4 +1,4 @@
-package com.mju.mentoring.member.infrastructure;
+package com.mju.mentoring.member.infrastructure.memberrepository;
 
 import com.mju.mentoring.member.domain.Member;
 import com.mju.mentoring.member.domain.MemberRepository;

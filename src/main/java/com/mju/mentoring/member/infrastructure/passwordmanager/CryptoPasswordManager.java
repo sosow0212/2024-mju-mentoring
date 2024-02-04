@@ -1,4 +1,4 @@
-package com.mju.mentoring.member.infrastructure;
+package com.mju.mentoring.member.infrastructure.passwordmanager;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 

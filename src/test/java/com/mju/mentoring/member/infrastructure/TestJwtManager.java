@@ -1,5 +1,7 @@
 package com.mju.mentoring.member.infrastructure;
 
+import com.mju.mentoring.member.infrastructure.jwtmanager.JwtManager;
+
 public class TestJwtManager implements JwtManager {
 
     private static final String TOKEN_SUFFIX = "token";

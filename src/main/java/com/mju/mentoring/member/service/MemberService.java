@@ -5,7 +5,7 @@ import static com.mju.mentoring.member.service.helper.MemberServiceHelper.findMe
 import com.mju.mentoring.member.domain.Member;
 import com.mju.mentoring.member.domain.MemberRepository;
 import com.mju.mentoring.member.exception.exceptions.MemberNotFoundException;
-import com.mju.mentoring.member.infrastructure.JwtManager;
+import com.mju.mentoring.member.infrastructure.jwtmanager.JwtManager;
 import com.mju.mentoring.member.service.dto.AuthRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
