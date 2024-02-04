@@ -72,7 +72,6 @@ public class AuthController {
 
     @PostMapping("/login/jwt")
     public ResponseEntity<TokenResponse> loginWithJwt(@RequestBody @Valid final LoginRequest request) {
-
         String token = authService.jwtLogin(request);
         return ResponseEntity.ok()
                 .body(new TokenResponse(token));
