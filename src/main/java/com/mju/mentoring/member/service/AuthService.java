@@ -32,16 +32,19 @@ public class AuthService {
         return memberRepository.save(member);
     }
 
-    public Member login(final LoginRequest request) {
-        String encodedPassword = passwordManager.encode(request.password());
-        AuthRequest authRequest = new AuthRequest(request.username(), encodedPassword);
+    public Member nonJwtLogin(final LoginRequest request) {
+        AuthRequest authRequest = convertLoginRequestToAuthRequest(request);
         return findMemberByAuth(memberRepository, authRequest);
     }
 
     public String jwtLogin(final LoginRequest request) {
-        String encodedPassword = passwordManager.encode(request.password());
-        AuthRequest authRequest = new AuthRequest(request.username(), encodedPassword);
+        AuthRequest authRequest = convertLoginRequestToAuthRequest(request);
         Member loginMember = findMemberByAuth(memberRepository, authRequest);
         return jwtManager.generateToken(loginMember.getUsername());
+    }
+
+    private AuthRequest convertLoginRequestToAuthRequest(final LoginRequest loginRequest) {
+        String encodedPassword = passwordManager.encode(loginRequest.password());
+        return new AuthRequest(loginRequest.username(), encodedPassword);
     }
 }

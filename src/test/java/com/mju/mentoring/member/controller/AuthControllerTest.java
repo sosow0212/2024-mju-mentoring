@@ -69,7 +69,7 @@ public class AuthControllerTest {
         String password = "password";
         LoginRequest request = new LoginRequest(username, password);
         Member savedMember = 회원_id_있음();
-        when(authService.login(request)).thenReturn(savedMember);
+        when(authService.nonJwtLogin(request)).thenReturn(savedMember);
 
         // when & then
         mockMvc.perform(post("/auth/login/cookie")
@@ -88,7 +88,7 @@ public class AuthControllerTest {
         String password = "password";
         LoginRequest request = new LoginRequest(username, password);
         Member savedMember = 회원_id_있음();
-        when(authService.login(request)).thenReturn(savedMember);
+        when(authService.nonJwtLogin(request)).thenReturn(savedMember);
 
         // when & then
         HttpSession session = mockMvc.perform(post("/auth/login/session")

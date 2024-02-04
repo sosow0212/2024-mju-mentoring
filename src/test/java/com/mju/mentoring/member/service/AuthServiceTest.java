@@ -64,7 +64,7 @@ public class AuthServiceTest {
         LoginRequest loginRequest = new LoginRequest(username, password);
 
         // when
-        Member loginMember = authService.login(loginRequest);
+        Member loginMember = authService.nonJwtLogin(loginRequest);
 
         // then
         assertThat(saveMember)

@@ -44,7 +44,7 @@ public class AuthController {
     @PostMapping("/login/cookie")
     public ResponseEntity<Void> loginWithCookie(@RequestBody @Valid final LoginRequest request,
                                                   final HttpServletResponse response) {
-        Member loginMember = authService.login(request);
+        Member loginMember = authService.nonJwtLogin(request);
 
         Cookie loginCookie = generateCookieByMemberProperties(loginMember.getUsername(), loginMember.getPassword());
         response.addCookie(loginCookie);
@@ -56,7 +56,7 @@ public class AuthController {
     @PostMapping("/login/session")
     public ResponseEntity<Void> loginWithSession(@RequestBody @Valid final LoginRequest request,
                                                  final HttpServletRequest httpRequest) {
-        Member loginMember = authService.login(request);
+        Member loginMember = authService.nonJwtLogin(request);
         HttpSession session = httpRequest.getSession();
         saveSessionProperties(session, loginMember);
 
