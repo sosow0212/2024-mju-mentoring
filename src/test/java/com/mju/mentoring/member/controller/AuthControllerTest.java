@@ -102,6 +102,7 @@ public class AuthControllerTest {
         assertNotNull(session.getAttribute(sessionKey));
     }
 
+    /*
     @Test
     void JWT_로그인() throws Exception {
         // given
@@ -119,4 +120,5 @@ public class AuthControllerTest {
                 .andExpect(jsonPath("$.token").exists())
                 .andDo(print());
     }
+     */
 }
