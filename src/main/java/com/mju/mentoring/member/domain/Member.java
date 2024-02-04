@@ -7,11 +7,15 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@Builder
 @Entity
 public class Member {
 
@@ -20,6 +24,7 @@ public class Member {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false, unique = true)
     private String nickname;
 
     @Embedded
@@ -32,6 +37,10 @@ public class Member {
 
     public void validatePassword(final String password) {
         memberAuth.validatePassword(password);
+    }
+
+    public boolean isSameUsername(final String username) {
+        return memberAuth.isSameUsername(username);
     }
 
     public String getUsername() {

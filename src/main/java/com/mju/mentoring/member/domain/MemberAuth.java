@@ -5,16 +5,18 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
+@EqualsAndHashCode
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Embeddable
 public class MemberAuth {
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String username;
 
     @Column(nullable = false)
@@ -28,5 +30,9 @@ public class MemberAuth {
 
     public MemberAuth updatePassword(final String password) {
         return new MemberAuth(username, password);
+    }
+
+    public boolean isSameUsername(final String username) {
+        return this.username.equals(username);
     }
 }
