@@ -25,13 +25,6 @@ public class JwtUtil {
                 .compact();
     }
 
-    public static void validateTokenWithKey(final String token, final SecretKey key) {
-        Jwts.parserBuilder()
-                .setSigningKey(key)
-                .build()
-                .parseClaimsJws(token);
-    }
-
     public static String extractUsername(final String token) {
         String removeBearerWordToken = token.substring(BEARER_LENGTH);
         SecretKey key = Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
@@ -44,5 +37,12 @@ public class JwtUtil {
                 .getBody();
 
         return claims.getSubject();
+    }
+
+    private static void validateTokenWithKey(final String token, final SecretKey key) {
+        Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(token);
     }
 }
