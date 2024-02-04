@@ -8,13 +8,16 @@ import org.junit.jupiter.api.Test;
 @SuppressWarnings("NonAsciiCharacters")
 public class MemberAcceptanceTest extends MemberAcceptanceTestFixture {
 
+    private static final String 회원가입_url = "/auth/signup";
+    private static final String 로그인_url = "/auth/signin";
+
     @Test
     void 회원가입_테스트() {
         // given
         var 회원가입_요청서 = 회원가입_요청();
 
         // when
-        var 회원가입_결과 = 회원가입(회원가입_요청서);
+        var 회원가입_결과 = 회원가입(회원가입_요청서, 회원가입_url);
 
         // then
         회원가입_검증(회원가입_결과);
@@ -26,7 +29,7 @@ public class MemberAcceptanceTest extends MemberAcceptanceTestFixture {
         var 로그인_요청서 = 로그인_요청();
 
         // when
-        var 로그인_결과 = 로그인(로그인_요청서);
+        var 로그인_결과 = 로그인(로그인_요청서, 로그인_url);
 
         // then
         로그인_검증(로그인_결과);
