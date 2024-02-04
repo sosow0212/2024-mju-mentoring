@@ -4,7 +4,7 @@ public interface MemberRepository {
 
     void save(final Member member);
 
-    boolean isExistByUsername(final String username);
+    boolean existsByUsername(final String username);
 
-    boolean isExistByNickname(final String nickname);
+    boolean existsByNickname(final String nickname);
 }

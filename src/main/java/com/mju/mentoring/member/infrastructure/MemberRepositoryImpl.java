@@ -17,12 +17,12 @@ public class MemberRepositoryImpl implements MemberRepository {
     }
 
     @Override
-    public boolean isExistByUsername(final String username) {
-        return memberJpaRepository.isExistByUsername(username);
+    public boolean existsByUsername(final String username) {
+        return memberJpaRepository.existsByAuthInformationUsername(username);
     }
 
     @Override
-    public boolean isExistByNickname(final String nickname) {
-        return memberJpaRepository.isExistByNickname(nickname);
+    public boolean existsByNickname(final String nickname) {
+        return memberJpaRepository.existsByNickname(nickname);
     }
 }
