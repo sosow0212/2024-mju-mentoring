@@ -14,6 +14,7 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -32,7 +33,7 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/signup")
-    public ResponseEntity<SignupResponse> signup(@RequestBody final SignupRequest request) {
+    public ResponseEntity<SignupResponse> signup(@RequestBody @Valid final SignupRequest request) {
         Member newMember = authService.signup(request);
         Long memberId = newMember.getId();
         SignupResponse response = new SignupResponse(memberId);
@@ -42,7 +43,7 @@ public class AuthController {
     }
 
     @PostMapping("/login/cookie")
-    public ResponseEntity<Void> loginWithCookie(@RequestBody final LoginRequest request,
+    public ResponseEntity<Void> loginWithCookie(@RequestBody @Valid final LoginRequest request,
                                                   final HttpServletResponse response) {
         Member loginMember = authService.login(request);
 
@@ -54,7 +55,7 @@ public class AuthController {
     }
 
     @PostMapping("/login/session")
-    public ResponseEntity<Void> loginWithSession(@RequestBody final LoginRequest request,
+    public ResponseEntity<Void> loginWithSession(@RequestBody @Valid final LoginRequest request,
                                                  final HttpServletRequest httpRequest) {
         Member loginMember = authService.login(request);
         HttpSession session = httpRequest.getSession();
@@ -71,7 +72,7 @@ public class AuthController {
     }
 
     @PostMapping("/login/jwt")
-    public ResponseEntity<TokenResponse> loginWithJwt(@RequestBody final LoginRequest request) {
+    public ResponseEntity<TokenResponse> loginWithJwt(@RequestBody @Valid final LoginRequest request) {
         Member loginMember = authService.login(request);
         String token = JwtUtil.generateToken(loginMember.getUsername());
 
