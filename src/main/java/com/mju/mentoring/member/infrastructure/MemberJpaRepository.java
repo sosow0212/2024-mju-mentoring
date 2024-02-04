@@ -3,11 +3,11 @@ package com.mju.mentoring.member.infrastructure;
 import com.mju.mentoring.member.domain.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface MemberJpaRepository extends JpaRepository<Long, Member> {
+public interface MemberJpaRepository extends JpaRepository<Member, Long> {
 
-    void save(final Member member);
+    Member save(final Member member);
 
-    boolean isExistByUsername(final String username);
+    boolean existsByAuthInformationUsername(final String username);
 
-    boolean isExistByNickname(final String nickname);
+    boolean existsByNickname(final String nickname);
 }
