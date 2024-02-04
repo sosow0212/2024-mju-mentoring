@@ -25,7 +25,7 @@ public class MemberController {
     private final MemberService memberService;
 
     @GetMapping("/profile/cookie")
-    public ResponseEntity<ProfileResponse> profile(final HttpServletRequest request) {
+    public ResponseEntity<ProfileResponse> profileWithCookie(final HttpServletRequest request) {
         AuthRequest authRequest = convertServletRequestToAuthRequest(request);
         Member profileMember = memberService.getProfileWithAuthRequest(authRequest);
 
