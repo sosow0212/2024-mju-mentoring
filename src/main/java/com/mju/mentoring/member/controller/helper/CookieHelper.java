@@ -8,13 +8,13 @@ import java.util.Arrays;
 
 public class CookieHelper {
 
-    private final static String COOKIE_DIVIDER = ".";
-    private static String COOKIE_NAME = "AUTH";
-    private static String COOKIE_PATH = "/";
-    private static int COOKIE_EXPIRE_SECONDS = 3600;
-    private final static String COOKIE_SPLITTER = "\\.";
-    private static int USERNAME_INDEX = 0;
-    private static int PASSWORD_INDEX = 1;
+    private static final String COOKIE_DIVIDER = ".";
+    private static final String COOKIE_NAME = "AUTH";
+    private static final String COOKIE_PATH = "/";
+    private static final int COOKIE_EXPIRE_SECONDS = 3600;
+    private static final String COOKIE_SPLITTER = "\\.";
+    private static final int USERNAME_INDEX = 0;
+    private static final int PASSWORD_INDEX = 1;
 
     public static Cookie generateCookieByMemberProperties(final String username, final String password) {
         String cookieValue = generateCookieValueByMemberProperties(username, password);
@@ -37,15 +37,15 @@ public class CookieHelper {
 
     public static AuthRequest convertServletRequestToAuthRequest(final HttpServletRequest request) {
         Cookie loginCookie = Arrays.stream(request.getCookies())
-                .filter(cookie -> isCookieNameSame(cookie, COOKIE_NAME))
+                .filter(CookieHelper::isCookieNameValid)
                 .findFirst()
                 .orElseThrow(CookieException::new);
         return convertCookieToAuthRequest(loginCookie);
     }
 
-    private static boolean isCookieNameSame(final Cookie cookie, final String name) {
+    private static boolean isCookieNameValid(final Cookie cookie) {
         String cookieName = cookie.getName();
-        return cookieName.equals(name);
+        return cookieName.equals(COOKIE_NAME);
     }
 
     private static AuthRequest convertCookieToAuthRequest(final Cookie cookie) {
