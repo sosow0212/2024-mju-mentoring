@@ -23,12 +23,8 @@ public class MemberAuth {
     private String password;
 
     public void validatePassword(final String inputPassword) {
-        if(!password.equals(inputPassword)) {
+        if (!password.equals(inputPassword)) {
             throw new PasswordNotMatchException();
         }
-    }
-
-    public MemberAuth updatePassword(final String password) {
-        return new MemberAuth(username, password);
     }
 }
