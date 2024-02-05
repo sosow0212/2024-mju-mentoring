@@ -1,6 +1,5 @@
 package com.mju.mentoring.exam.board.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,13 +14,10 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class MemberController {
 
-	@Autowired
 	private final MemberService memberService;
 
 	@PostMapping("/login")
 	public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest) {
-		System.out.println(loginRequest.memberId());
-		System.out.println(loginRequest.password());
 		String token = memberService.getLoginToken(loginRequest);
 		return ResponseEntity.ok(token);
 	}

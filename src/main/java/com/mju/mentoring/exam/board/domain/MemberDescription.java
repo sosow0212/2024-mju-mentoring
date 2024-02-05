@@ -29,4 +29,11 @@ public class MemberDescription {
 		this.password = password;
 		this.nickname = nickname;
 	}
+
+	public boolean isValidPassword(String password) {
+		if (this.getPassword().equals(password)) {
+			return true;
+		}
+		return false;
+	}
 }

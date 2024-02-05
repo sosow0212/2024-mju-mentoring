@@ -25,10 +25,7 @@ public class Member {
 	@Embedded
 	private MemberDescription memberDescription;
 
-	public boolean validation(String password) {
-		if (this.memberDescription.getPassword().equals(password)) {
-			return true;
-		}
-		return false;
+	public boolean isValidPassword(String password) {
+		return memberDescription.isValidPassword(password);
 	}
 }

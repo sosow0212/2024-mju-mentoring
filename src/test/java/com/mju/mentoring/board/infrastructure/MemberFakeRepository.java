@@ -43,7 +43,7 @@ public class MemberFakeRepository implements MemberRepository {
 	}
 
 	@Override
-	public Optional<Member> findByMemberId(String memberId) {
+	public Optional<Member> findByMemberId(final String memberId) {
 		return Optional.ofNullable(mapForId.get(memberId));
 	}
 }

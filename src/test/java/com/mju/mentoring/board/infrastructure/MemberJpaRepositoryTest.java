@@ -52,6 +52,7 @@ class MemberJpaRepositoryTest {
 		Optional<Member> foundBoard = memberJpaRepository.findById(member.getId());
 
 		// then
+		assertThat(foundBoard).isNotEmpty();
 		assertSoftly(softly -> {
 			softly.assertThat(foundBoard).isPresent();
 			softly.assertThat(foundBoard.get())
@@ -72,6 +73,7 @@ class MemberJpaRepositoryTest {
 			member.getMemberDescription().getMemberId());
 
 		// then
+		assertThat(foundBoard).isNotEmpty();
 		assertSoftly(softly -> {
 			softly.assertThat(foundBoard).isPresent();
 			softly.assertThat(foundBoard.get())

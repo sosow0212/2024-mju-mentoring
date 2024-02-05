@@ -2,7 +2,7 @@ package com.mju.mentoring.board.service;
 
 import static com.mju.mentoring.board.fixture.MemberFixture.*;
 import static com.mju.mentoring.exam.board.provider.JwtTokenProvider.*;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.SoftAssertions.*;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayNameGeneration;
@@ -28,11 +28,13 @@ class MemberServiceTest {
 
 	private MemberService memberService;
 	private MemberRepository memberRepository;
+	private JwtTokenProvider jwtTokenProvider;
 
 	@BeforeEach
 	void setup() {
+		jwtTokenProvider = new JwtTokenProvider();
 		memberRepository = new MemberFakeRepository();
-		memberService = new MemberService(memberRepository, new JwtTokenProvider());
+		memberService = new MemberService(memberRepository, jwtTokenProvider);
 	}
 
 	@Test
@@ -52,7 +54,10 @@ class MemberServiceTest {
 			.build()
 			.parseClaimsJws(token);
 
-		assertNotNull(jwtClaims.getBody());
-		assertEquals("user1", jwtClaims.getBody().get("user_id", String.class));
+		assertSoftly(softly -> {
+			softly.assertThat(jwtClaims.getBody()).isNotNull();
+			softly.assertThat(jwtClaims.getBody().get("user_id", String.class)).isEqualTo("user1");
+		});
+
 	}
 }

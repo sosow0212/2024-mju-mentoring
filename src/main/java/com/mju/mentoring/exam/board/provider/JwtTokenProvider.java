@@ -21,7 +21,8 @@ public class JwtTokenProvider {
 	public static SecretKey SECRET = Keys.secretKeyFor(SignatureAlgorithm.HS512);
 
 	public String createJwtAccessToken(String userId) {
-		Claims claims = Jwts.claims().setSubject("access_token");
+		Claims claims = Jwts.claims()
+			.setSubject("access_token");
 		claims.put("user_id", userId);
 		String jwt = Jwts.builder()
 			.addClaims(claims)
