@@ -1,5 +1,8 @@
 package com.mju.mentoring.member.ui;
 
+import static com.mju.mentoring.member.fixture.MemberFixture.멤버_생성;
+
+import com.mju.mentoring.member.domain.Member;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
@@ -26,6 +29,8 @@ public class MemberAcceptanceTest extends MemberAcceptanceTestFixture {
     @Test
     void 로그인_테스트() {
         // given
+        Member 멤버 = 멤버_생성();
+        로그인할_멤버_저장(멤버);
         var 로그인_요청서 = 로그인_요청();
 
         // when
