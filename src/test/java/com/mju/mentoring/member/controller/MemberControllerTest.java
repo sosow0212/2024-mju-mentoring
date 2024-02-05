@@ -1,17 +1,23 @@
 package com.mju.mentoring.member.controller;
 
 import static com.mju.mentoring.member.fixture.MemberFixtures.회원_id_있음;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.mju.mentoring.member.domain.Member;
+import com.mju.mentoring.member.exception.exceptions.JwtSignatureException;
+import com.mju.mentoring.member.exception.exceptions.PasswordNotMatchException;
 import com.mju.mentoring.member.service.MemberService;
 import com.mju.mentoring.member.service.dto.AuthRequest;
 import jakarta.servlet.http.Cookie;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
@@ -37,9 +43,9 @@ public class MemberControllerTest {
     @Test
     void 쿠키_프로필_조회() throws Exception {
         // given
-        Cookie cookie = new Cookie("AUTH", "username.password");
+        Cookie cookie = new Cookie("AUTH", "nickname.password");
         Member member = 회원_id_있음();
-        AuthRequest request = new AuthRequest("username", "password");
+        AuthRequest request = new AuthRequest("nickname", "password");
         when(memberService.getProfileWithAuthRequest(request)).thenReturn(member);
 
         // when & then
@@ -55,7 +61,7 @@ public class MemberControllerTest {
         // given
         MockHttpSession session = new MockHttpSession();
         Member member = 회원_id_있음();
-        AuthRequest request = new AuthRequest("username", "password");
+        AuthRequest request = new AuthRequest("nickname", "password");
         session.setAttribute("member", request);
         when(memberService.getProfileWithAuthRequest(request)).thenReturn(member);
 
@@ -67,21 +73,68 @@ public class MemberControllerTest {
                 .andDo(print());
     }
 
-    /*
     @Test
     void JWT_프로필_조회() throws Exception {
         // given
         String token = "hello";
         Member member = 회원_id_있음();
 
-        when(memberService.getProfileWithUsername(member.getUsername())).thenReturn(member);
+        when(memberService.getProfileWithJwt(token)).thenReturn(member);
 
         // when & then
         mockMvc.perform(get("/member/profile/jwt")
-                .header("Authorization", "Bearer " + token))
+                .header("Authorization", token))
+                .andExpect(status().isOk())
                 .andDo(print());
 
-        verify(memberService.getProfileWithUsername(member.getUsername()));
+        verify(memberService).getProfileWithJwt(token);
     }
-     */
+
+    @Nested
+    class 예외_테스트 {
+
+        /*
+        @Test
+        public void 쿠키_프로필_예외() throws Exception {
+            // given
+            Cookie cookie = new Cookie("AUTH", "nickname.password");
+            AuthRequest request = new AuthRequest("nickname", "1234");
+            when(memberService.getProfileWithAuthRequest(request)).thenThrow(PasswordNotMatchException.class);
+
+            // when & then
+            mockMvc.perform(get("/member/profile/cookie")
+                            .cookie(cookie))
+                    .andExpect(result -> assertInstanceOf(PasswordNotMatchException.class, result.getResolvedException()))
+                    .andDo(print());
+        }
+        */
+
+        @Test
+        void 세션_프로필_예외() throws Exception {
+            // given
+            MockHttpSession session = new MockHttpSession();
+            AuthRequest request = new AuthRequest("nickname", "1234");
+            session.setAttribute("member", request);
+            when(memberService.getProfileWithAuthRequest(request)).thenThrow(PasswordNotMatchException.class);
+
+            // when & then
+            mockMvc.perform(get("/member/profile/session")
+                            .session(session))
+                    .andExpect(result -> assertInstanceOf(PasswordNotMatchException.class, result.getResolvedException()))
+                    .andDo(print());
+        }
+
+        @Test
+        void JWT_프로필_토큰_예외() throws Exception {
+            // given
+            String token = "exception";
+            when(memberService.getProfileWithJwt(token)).thenThrow(JwtSignatureException.class);
+
+            // when & then
+            mockMvc.perform(get("/member/profile/jwt")
+                            .header("Authorization", token))
+                    .andExpect(status().isUnauthorized())
+                    .andDo(print());
+        }
+    }
 }
