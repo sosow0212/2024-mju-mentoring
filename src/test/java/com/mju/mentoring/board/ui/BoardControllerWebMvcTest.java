@@ -8,6 +8,7 @@ import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuild
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mju.mentoring.board.application.dto.BoardCreateRequest;
 import com.mju.mentoring.board.application.dto.BoardDeleteRequest;
 import com.mju.mentoring.board.application.dto.BoardUpdateRequest;
@@ -15,9 +16,17 @@ import com.mju.mentoring.board.domain.Board;
 import com.mju.mentoring.global.BaseControllerWebMvcTest;
 import java.util.List;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
 
 class BoardControllerWebMvcTest extends BaseControllerWebMvcTest {
+
+    @Autowired
+    MockMvc mockMvc;
+
+    @Autowired
+    ObjectMapper objectMapper;
 
     @Test
     void 게시글_저장() throws Exception {
