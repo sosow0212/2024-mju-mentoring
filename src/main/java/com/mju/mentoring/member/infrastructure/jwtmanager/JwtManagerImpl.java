@@ -16,21 +16,21 @@ public class JwtManagerImpl implements JwtManager {
     private static final int JWT_EXPIRE_SECONDS = 3600;
 
     @Override
-    public String generateToken(final String username) {
+    public String generateToken(final String nickname) {
         SecretKey key = Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
 
         Date now = new Date();
         Date expiration = new Date(now.getTime() + JWT_EXPIRE_SECONDS * 1000);
 
         return Jwts.builder()
-                .setSubject(username)
+                .setSubject(nickname)
                 .setExpiration(expiration)
                 .signWith(key)
                 .compact();
     }
 
     @Override
-    public String extractUsername(final String token) {
+    public String extractNickname(final String token) {
         String removeBearerWordToken = token.substring(BEARER_LENGTH);
         SecretKey key = Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
         validateTokenWithKey(removeBearerWordToken, key);

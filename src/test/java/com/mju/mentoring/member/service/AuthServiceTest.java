@@ -57,7 +57,7 @@ public class AuthServiceTest {
     }
 
     @Test
-    void 회원_로그인() {
+    void 회원_로그인_세션_쿠키() {
         // given
         String nickname = "nickname";
         String username = "username";
@@ -73,6 +73,23 @@ public class AuthServiceTest {
         assertThat(saveMember)
                 .usingRecursiveComparison()
                 .isEqualTo(loginMember);
+    }
+
+    @Test
+    void 회원_로그인_JWT() {
+        // given
+        String nickname = "nickname";
+        String username = "username";
+        String password = "password";
+        SignupRequest request = new SignupRequest(nickname, username, password);
+        Member member = authService.signup(request);
+        LoginRequest loginRequest = new LoginRequest(nickname, password);
+
+        // when
+        String token = authService.jwtLogin(loginRequest);
+
+        // then
+        assertThat(token.contains(member.getNickname())).isTrue();
     }
 
     @Nested

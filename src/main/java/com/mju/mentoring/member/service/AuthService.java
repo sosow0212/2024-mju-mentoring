@@ -50,7 +50,7 @@ public class AuthService {
     public String jwtLogin(final LoginRequest request) {
         AuthRequest authRequest = convertLoginRequestToAuthRequest(request);
         Member loginMember = findMemberByAuth(memberRepository, authRequest);
-        return jwtManager.generateToken(loginMember.getUsername());
+        return jwtManager.generateToken(loginMember.getNickname());
     }
 
     private AuthRequest convertLoginRequestToAuthRequest(final LoginRequest loginRequest) {
