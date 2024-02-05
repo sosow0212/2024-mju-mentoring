@@ -1,9 +1,12 @@
 package com.mju.mentoring.member.infrastructure.jwtmanager;
 
 import com.mju.mentoring.member.domain.JwtManager;
+import com.mju.mentoring.member.exception.exceptions.JwtSignatureException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.security.SignatureException;
 import org.springframework.stereotype.Component;
 import javax.crypto.SecretKey;
 import java.util.Date;
@@ -45,9 +48,13 @@ public class JwtManagerImpl implements JwtManager {
     }
 
     private void validateTokenWithKey(final String token, final SecretKey key) {
-        Jwts.parserBuilder()
-                .setSigningKey(key)
-                .build()
-                .parseClaimsJws(token);
+        try {
+            Jwts.parserBuilder()
+                    .setSigningKey(key)
+                    .build()
+                    .parseClaimsJws(token);
+        } catch (SignatureException | MalformedJwtException exception) {
+            throw new JwtSignatureException();
+        }
     }
 }
