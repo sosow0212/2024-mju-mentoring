@@ -24,8 +24,8 @@ public class MemberService {
     }
 
     public Member getProfileWithJwt(final String token) {
-        String username = jwtManager.extractNickname(token);
-        return memberRepository.findByNickname(username)
+        String nickname = jwtManager.extractNickname(token);
+        return memberRepository.findByNickname(nickname)
                 .orElseThrow(MemberNotFoundException::new);
     }
 }
