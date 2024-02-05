@@ -5,6 +5,7 @@ import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 import com.mju.mentoring.global.exception.ExceptionResponse;
+import com.mju.mentoring.member.exception.exceptions.AlreadyRegisteredException;
 import com.mju.mentoring.member.exception.exceptions.CookieException;
 import com.mju.mentoring.member.exception.exceptions.MemberNotFoundException;
 import com.mju.mentoring.member.exception.exceptions.PasswordNotMatchException;
@@ -20,7 +21,7 @@ public class MemberExceptionHandler {
         return createExceptionResponseWithStatusAndMessage(NOT_FOUND, exception.getMessage());
     }
 
-    @ExceptionHandler(value = {PasswordNotMatchException.class, CookieException.class})
+    @ExceptionHandler(value = {PasswordNotMatchException.class, CookieException.class, AlreadyRegisteredException.class})
     public ResponseEntity<ExceptionResponse> memberBadRequestExceptionHandler(final RuntimeException exception) {
         return createExceptionResponseWithStatusAndMessage(BAD_REQUEST, exception.getMessage());
     }

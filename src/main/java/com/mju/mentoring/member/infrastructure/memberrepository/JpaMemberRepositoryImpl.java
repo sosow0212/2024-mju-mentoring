@@ -18,8 +18,8 @@ public class JpaMemberRepositoryImpl implements MemberRepository {
     }
 
     @Override
-    public Optional<Member> findByUsername(final String username) {
-        return memberJpaRepository.findByUsername(username);
+    public Optional<Member> findByNickname(final String nickname) {
+        return memberJpaRepository.findByNickname(nickname);
     }
 
     @Override

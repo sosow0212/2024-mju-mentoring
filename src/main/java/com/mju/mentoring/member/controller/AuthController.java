@@ -46,7 +46,7 @@ public class AuthController {
                                                   final HttpServletResponse response) {
         Member loginMember = authService.nonJwtLogin(request);
 
-        Cookie loginCookie = generateCookieByMemberProperties(loginMember.getUsername(), loginMember.getPassword());
+        Cookie loginCookie = generateCookieByMemberProperties(loginMember.getNickname(), loginMember.getPassword());
         response.addCookie(loginCookie);
 
         return ResponseEntity.ok()
@@ -65,7 +65,7 @@ public class AuthController {
     }
 
     private static void saveSessionProperties(final HttpSession session, final Member loginMember) {
-        AuthRequest authRequest = new AuthRequest(loginMember.getUsername(), loginMember.getPassword());
+        AuthRequest authRequest = new AuthRequest(loginMember.getNickname(), loginMember.getPassword());
         session.setAttribute(SESSION_KEY, authRequest);
         session.setMaxInactiveInterval(SESSION_EXPIRE_SECONDS);
     }

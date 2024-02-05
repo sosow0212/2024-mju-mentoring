@@ -6,7 +6,7 @@ public interface MemberRepository {
 
     Member save(final Member member);
 
-    Optional<Member> findByUsername(final String username);
+    Optional<Member> findByNickname(final String nickname);
 
     void deleteById(final Long memberId);
 }

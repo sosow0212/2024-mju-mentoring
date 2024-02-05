@@ -61,7 +61,7 @@ public class AuthServiceTest {
         String password = "password";
         SignupRequest request = new SignupRequest(nickname, username, password);
         Member saveMember = authService.signup(request);
-        LoginRequest loginRequest = new LoginRequest(username, password);
+        LoginRequest loginRequest = new LoginRequest(nickname, password);
 
         // when
         Member loginMember = authService.nonJwtLogin(loginRequest);

@@ -39,8 +39,8 @@ public class Member {
         memberAuth.validatePassword(password);
     }
 
-    public boolean isSameUsername(final String username) {
-        return memberAuth.isSameUsername(username);
+    public boolean isSameNickname(final String nickname) {
+        return this.nickname.equals(nickname);
     }
 
     public String getUsername() {

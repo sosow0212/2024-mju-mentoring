@@ -27,10 +27,10 @@ public class MemberTestRepository implements MemberRepository {
     }
 
     @Override
-    public Optional<Member> findByUsername(final String username) {
+    public Optional<Member> findByNickname(final String nickname) {
         return store.values()
                 .stream()
-                .filter(member -> member.isSameUsername(username))
+                .filter(member -> member.isSameNickname(nickname))
                 .findFirst();
     }
 

@@ -8,7 +8,7 @@ import com.mju.mentoring.member.service.dto.AuthRequest;
 public class MemberServiceHelper {
 
     public static Member findMemberByAuth(final MemberRepository repository, final AuthRequest request) {
-        Member member = repository.findByUsername(request.username())
+        Member member = repository.findByNickname(request.nickname())
                 .orElseThrow(MemberNotFoundException::new);
         member.validatePassword(request.password());
     

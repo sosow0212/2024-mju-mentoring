@@ -13,7 +13,7 @@ public class CookieHelper {
     private static final String COOKIE_PATH = "/";
     private static final int COOKIE_EXPIRE_SECONDS = 3600;
     private static final String COOKIE_SPLITTER = "\\.";
-    private static final int USERNAME_INDEX = 0;
+    private static final int NICKNAME_INDEX = 0;
     private static final int PASSWORD_INDEX = 1;
 
     public static Cookie generateCookieByMemberProperties(final String username, final String password) {
@@ -51,9 +51,9 @@ public class CookieHelper {
     private static AuthRequest convertCookieToAuthRequest(final Cookie cookie) {
         String cookieValue = cookie.getValue();
         String[] splitValues = cookieValue.split(COOKIE_SPLITTER);
-        String username = splitValues[USERNAME_INDEX];
+        String nickname = splitValues[NICKNAME_INDEX];
         String password = splitValues[PASSWORD_INDEX];
 
-        return new AuthRequest(username, password);
+        return new AuthRequest(nickname, password);
     }
 }

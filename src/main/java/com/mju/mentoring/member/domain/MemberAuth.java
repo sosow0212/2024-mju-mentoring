@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 @Embeddable
 public class MemberAuth {
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String username;
 
     @Column(nullable = false)
@@ -30,9 +30,5 @@ public class MemberAuth {
 
     public MemberAuth updatePassword(final String password) {
         return new MemberAuth(username, password);
-    }
-
-    public boolean isSameUsername(final String username) {
-        return this.username.equals(username);
     }
 }
