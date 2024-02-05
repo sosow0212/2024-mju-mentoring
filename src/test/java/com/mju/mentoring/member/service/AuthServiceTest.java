@@ -1,12 +1,14 @@
 package com.mju.mentoring.member.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
+import com.mju.mentoring.member.domain.JwtManager;
 import com.mju.mentoring.member.domain.Member;
 import com.mju.mentoring.member.domain.MemberRepository;
 import com.mju.mentoring.member.domain.PasswordManager;
-import com.mju.mentoring.member.domain.JwtManager;
+import com.mju.mentoring.member.exception.exceptions.AlreadyRegisteredException;
 import com.mju.mentoring.member.infrastructure.MemberTestRepository;
 import com.mju.mentoring.member.infrastructure.TestJwtManager;
 import com.mju.mentoring.member.infrastructure.TestPasswordManager;
@@ -15,6 +17,7 @@ import com.mju.mentoring.member.service.dto.SignupRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
@@ -70,5 +73,27 @@ public class AuthServiceTest {
         assertThat(saveMember)
                 .usingRecursiveComparison()
                 .isEqualTo(loginMember);
+    }
+
+    @Nested
+    class 예외_테스트 {
+
+        @Test
+        void 이미_등록된_닉네임은_쓸_수_없다() {
+            // given
+            String nickname = "nickname";
+            String username = "username";
+            String password = "password";
+            SignupRequest signupRequest = new SignupRequest(nickname, username, password);
+            authService.signup(signupRequest);
+
+            String newUsername = "newUsername";
+            String newPassword = "newPassword";
+            SignupRequest newRequest = new SignupRequest(nickname, newUsername, newPassword);
+
+            // when & then
+            assertThatThrownBy(() -> authService.signup(newRequest))
+                    .isInstanceOf(AlreadyRegisteredException.class);
+        }
     }
 }
