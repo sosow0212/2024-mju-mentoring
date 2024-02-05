@@ -102,7 +102,6 @@ public class AuthControllerTest {
         assertNotNull(session.getAttribute(sessionKey));
     }
 
-    /*
     @Test
     void JWT_로그인() throws Exception {
         // given
@@ -110,7 +109,8 @@ public class AuthControllerTest {
         String password = "password";
         LoginRequest request = new LoginRequest(username, password);
         Member savedMember = 회원_id_있음();
-        when(authService.login(request)).thenReturn(savedMember);
+        String token = savedMember.getNickname() + "token";
+        when(authService.jwtLogin(request)).thenReturn(token);
 
         // when & then
         mockMvc.perform(post("/auth/login/jwt")
@@ -120,5 +120,4 @@ public class AuthControllerTest {
                 .andExpect(jsonPath("$.token").exists())
                 .andDo(print());
     }
-     */
 }
