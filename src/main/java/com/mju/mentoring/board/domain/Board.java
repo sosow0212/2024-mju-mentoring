@@ -5,14 +5,19 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import java.util.Objects;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder
+@Getter
+@EqualsAndHashCode(of = "id")
 public class Board {
 
     @Id
@@ -21,9 +26,6 @@ public class Board {
 
     @Embedded
     private Description description;
-
-    protected Board() {
-    }
 
     private Board(final Description description) {
         this.description = description;
@@ -41,32 +43,11 @@ public class Board {
         return description.copy();
     }
 
-    public Long getId() {
-        return id;
-    }
-
     public String getTitle() {
         return description.getTitle();
     }
 
     public String getContent() {
         return description.getContent();
-    }
-
-    @Override
-    public boolean equals(final Object object) {
-        if (this == object) {
-            return true;
-        }
-        if (object == null || getClass() != object.getClass()) {
-            return false;
-        }
-        Board board = (Board) object;
-        return Objects.equals(id, board.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
     }
 }
