@@ -31,5 +31,4 @@ public class MemberService {
 		return memberRepository.findByMemberId(memberId)
 			.orElseThrow(() -> new MemberNotFoundException("id가 일치하지 않습니다"));
 	}
-
 }
