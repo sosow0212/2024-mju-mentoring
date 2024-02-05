@@ -1,7 +1,7 @@
 package com.mju.mentoring.member.domain;
 
-import com.mju.mentoring.member.exception.exceptions.ExpiredTokenException;
-import com.mju.mentoring.member.exception.exceptions.InvalidTokenException;
+import com.mju.mentoring.member.exception.ExpiredTokenException;
+import com.mju.mentoring.member.exception.InvalidTokenException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
