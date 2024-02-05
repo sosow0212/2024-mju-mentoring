@@ -22,8 +22,8 @@ class MemberDescriptionTest {
 
 		// when & then
 		assertSoftly(softly -> {
-			softly.assertThat(member.isValidPassword(wrongpassword)).isEqualTo(false);
-			softly.assertThat(member.isValidPassword(rightpassword)).isEqualTo(true);
+			softly.assertThat(member.isValidPassword(wrongpassword)).isFalse();
+			softly.assertThat(member.isValidPassword(rightpassword)).isTrue();
 		});
 	}
 }

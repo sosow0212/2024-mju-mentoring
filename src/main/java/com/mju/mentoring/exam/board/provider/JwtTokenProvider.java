@@ -7,8 +7,6 @@ import javax.crypto.SecretKey;
 import org.springframework.stereotype.Component;
 
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Header;
-import io.jsonwebtoken.Jwt;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
@@ -33,9 +31,6 @@ public class JwtTokenProvider {
 			.signWith(SignatureAlgorithm.HS512, SECRET)
 			.setIssuer("manager")
 			.compact();
-		int i = jwt.lastIndexOf('.');
-		String withoutSignature = jwt.substring(0, i + 1);
-		Jwt<Header, Claims> temp = Jwts.parser().parseClaimsJwt(withoutSignature);
 		return jwt;
 	}
 }

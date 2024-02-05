@@ -5,7 +5,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.mju.mentoring.exam.board.domain.Member;
 import com.mju.mentoring.exam.board.domain.MemberRepository;
-import com.mju.mentoring.exam.board.exception.NoMemberException;
+import com.mju.mentoring.exam.board.exception.MemberNotFoundException;
 import com.mju.mentoring.exam.board.provider.JwtTokenProvider;
 import com.mju.mentoring.exam.board.service.dto.LoginRequest;
 
@@ -23,12 +23,13 @@ public class MemberService {
 	public String getLoginToken(LoginRequest loginRequest) {
 		Member member = findByMemberId(loginRequest.memberId());
 		if (!member.isValidPassword(loginRequest.password()))
-			throw new NoMemberException("비밀번호가 일치하지 않습니다");
+			throw new MemberNotFoundException("비밀번호가 일치하지 않습니다");
 		return jwtTokenProvider.createJwtAccessToken(member.getMemberDescription().getMemberId());
 	}
 
 	private Member findByMemberId(String memberId) {
-		return memberRepository.findByMemberId(memberId).orElseThrow(() -> new NoMemberException("id가 일치하지 않습니다"));
+		return memberRepository.findByMemberId(memberId)
+			.orElseThrow(() -> new MemberNotFoundException("id가 일치하지 않습니다"));
 	}
 
 }
