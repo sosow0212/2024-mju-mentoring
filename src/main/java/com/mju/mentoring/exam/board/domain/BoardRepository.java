@@ -5,11 +5,11 @@ import java.util.Optional;
 
 public interface BoardRepository {
 
-    Board save(final Board board);
+	Board save(final Board board);
 
-    Optional<Board> findById(final Long id);
+	Optional<Board> findById(final Long id);
 
-    List<Board> findAll();
+	List<Board> findAll();
 
-    void deleteById(final Long id);
+	void deleteById(final Long id);
 }

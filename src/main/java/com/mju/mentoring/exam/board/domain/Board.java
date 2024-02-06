@@ -20,18 +20,18 @@ import lombok.NoArgsConstructor;
 @Entity
 public class Board {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    @Embedded
-    private BoardDescription boardDescription;
+	@Embedded
+	private BoardDescription boardDescription;
 
-    public Board(final String title, final String content) {
-        this.boardDescription = new BoardDescription(title, content);
-    }
+	public Board(final String title, final String content) {
+		this.boardDescription = new BoardDescription(title, content);
+	}
 
-    public void update(final String title, final String content) {
-        this.boardDescription.update(title, content);
-    }
+	public void update(final String title, final String content) {
+		this.boardDescription.update(title, content);
+	}
 }
