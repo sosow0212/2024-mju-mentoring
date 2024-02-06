@@ -20,7 +20,7 @@ class NumberMakerTest {
     void 숫자가_5보다_큰_경우_true_를_반환한다() {
         // given
         NumberMaker numberMaker = null;
-        // numberMaker = new NumberMaker(XXX) -> 주석 풀고 구현하기!
+        numberMaker = new NumberMaker(new TestNumberGenerator(6)); // -> 주석 풀고 구현하기!
 
         // when
         boolean result = numberMaker.isHigherThanFive();
@@ -33,7 +33,7 @@ class NumberMakerTest {
     void 숫자가_5보다_작은_경우_false_를_반환한다() {
         // given
         NumberMaker numberMaker = null;
-        // numberMaker = new NumberMaker(XXX) -> 주석 풀고 구현하기!
+        numberMaker = new NumberMaker(new TestNumberGenerator(4)); //-> 주석 풀고 구현하기!
 
         // when
         boolean result = numberMaker.isHigherThanFive();

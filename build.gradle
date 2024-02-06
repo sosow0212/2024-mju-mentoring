@@ -42,6 +42,8 @@ dependencies {
     // db
     runtimeOnly 'com.h2database:h2'
     runtimeOnly 'com.mysql:mysql-connector-j'
+    //mariadb
+    runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
 
     // flyway
     implementation 'org.flywaydb:flyway-core'
@@ -54,6 +56,7 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
     testImplementation 'io.rest-assured:rest-assured:5.3.0'
+    testImplementation('org.junit.jupiter:junit-jupiter:5.6.2')
     annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
     asciidoctorExt 'org.springframework.restdocs:spring-restdocs-asciidoctor'
 
