@@ -1,10 +1,12 @@
 package com.mju.mentoring.board.ui;
 
+import com.mju.mentoring.board.application.dto.BoardDeleteRequest;
 import com.mju.mentoring.board.ui.dto.BoardResponse;
 import com.mju.mentoring.board.domain.Board;
 import com.mju.mentoring.board.application.BoardService;
-import com.mju.mentoring.board.application.BoardUpdateRequest;
+import com.mju.mentoring.board.application.dto.BoardUpdateRequest;
 import com.mju.mentoring.board.application.dto.BoardCreateRequest;
+import com.mju.mentoring.board.ui.dto.BoardsResponse;
 import java.net.URI;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -34,12 +36,12 @@ public class BoardController {
     }
 
     @GetMapping
-    public ResponseEntity<List<BoardResponse>> findAll() {
-        List<BoardResponse> boardResponses = boardService.findAll().stream()
+    public ResponseEntity<BoardsResponse> findAll() {
+        List<BoardResponse> boardsResponse = boardService.findAll().stream()
             .map(BoardResponse::from)
             .toList();
 
-        return ResponseEntity.ok(boardResponses);
+        return ResponseEntity.ok(new BoardsResponse(boardsResponse));
     }
 
     @GetMapping("/{id}")
@@ -61,6 +63,14 @@ public class BoardController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteById(@PathVariable(name = "id") final Long id) {
         boardService.deleteById(id);
+
+        return ResponseEntity.ok()
+            .build();
+    }
+
+    @DeleteMapping
+    public ResponseEntity<Void> deleteAllById(@RequestBody final BoardDeleteRequest deleteRequest) {
+        boardService.deleteAllById(deleteRequest);
 
         return ResponseEntity.ok()
             .build();
