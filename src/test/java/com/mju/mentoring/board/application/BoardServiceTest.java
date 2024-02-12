@@ -22,6 +22,8 @@ import org.junit.jupiter.api.Test;
 @SuppressWarnings("NonAsciiCharacters")
 class BoardServiceTest {
 
+    private static final Long DEFAULT_WRITER_ID = 1L;
+
     private BoardService boardService;
     private BoardRepository boardRepository;
 
@@ -37,7 +39,7 @@ class BoardServiceTest {
         BoardCreateRequest request = new BoardCreateRequest("title", "content");
 
         // when
-        Long savedId = boardService.save(request);
+        Long savedId = boardService.save(DEFAULT_WRITER_ID, request);
         List<Board> findBoards = boardService.findAll();
 
         // then
@@ -103,8 +105,8 @@ class BoardServiceTest {
         BoardUpdateRequest updateRequest = new BoardUpdateRequest(updateTitle, updateContent);
 
         // when
-        Long savedId = boardService.save(createRequest);
-        boardService.update(savedId, updateRequest);
+        Long savedId = boardService.save(DEFAULT_WRITER_ID, createRequest);
+        boardService.update(DEFAULT_WRITER_ID, savedId, updateRequest);
 
         // then
         assertSoftly(softly -> {
@@ -121,7 +123,7 @@ class BoardServiceTest {
         BoardUpdateRequest updateRequest = new BoardUpdateRequest(updateTitle, updateContent);
 
         // when & then
-        assertThatThrownBy(() -> boardService.update(0L, updateRequest))
+        assertThatThrownBy(() -> boardService.update(DEFAULT_WRITER_ID, 0L, updateRequest))
             .isInstanceOf(BoardNotFoundException.class);
     }
 
@@ -131,8 +133,8 @@ class BoardServiceTest {
         BoardCreateRequest request = new BoardCreateRequest("title", "content");
 
         // when
-        Long savedId = boardService.save(request);
-        boardService.deleteById(savedId);
+        Long savedId = boardService.save(DEFAULT_WRITER_ID, request);
+        boardService.deleteById(DEFAULT_WRITER_ID, savedId);
 
         // then
         List<Board> boards = boardService.findAll();
@@ -142,7 +144,7 @@ class BoardServiceTest {
     @Test
     void 없는_게시물_삭제_시_에외처리() {
         // when & then
-        assertThatThrownBy(() -> boardService.deleteById(0L))
+        assertThatThrownBy(() -> boardService.deleteById(DEFAULT_WRITER_ID, 0L))
             .isInstanceOf(BoardNotFoundException.class);
     }
 
@@ -152,8 +154,8 @@ class BoardServiceTest {
         BoardCreateRequest request1 = new BoardCreateRequest("title1", "content1");
         BoardCreateRequest request2 = new BoardCreateRequest("title2", "content2");
 
-        Long savedId1 = boardService.save(request1);
-        Long savedId2 = boardService.save(request2);
+        Long savedId1 = boardService.save(DEFAULT_WRITER_ID, request1);
+        Long savedId2 = boardService.save(DEFAULT_WRITER_ID, request2);
 
         // when
         boardService.deleteAllById(new BoardDeleteRequest(List.of(savedId1, savedId2)));

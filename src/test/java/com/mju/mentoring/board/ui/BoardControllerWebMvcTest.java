@@ -15,6 +15,7 @@ import com.mju.mentoring.board.application.dto.BoardUpdateRequest;
 import com.mju.mentoring.board.domain.Board;
 import com.mju.mentoring.global.BaseControllerWebMvcTest;
 import java.util.List;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -22,11 +23,22 @@ import org.springframework.test.web.servlet.MockMvc;
 
 class BoardControllerWebMvcTest extends BaseControllerWebMvcTest {
 
+    private static final Long DEFAULT_WRITER_ID = 1L;
+    private static final String HEADER_NAME = "Authorization";
+    private static final String AUTHORIZATION_PREFIX = "Bearer ";
+
     @Autowired
     MockMvc mockMvc;
 
     @Autowired
     ObjectMapper objectMapper;
+
+    private String token;
+
+    @BeforeEach
+    void init() {
+        token = tokenManager.create(DEFAULT_WRITER_ID);
+    }
 
     @Test
     void 게시글_저장() throws Exception {
@@ -34,11 +46,12 @@ class BoardControllerWebMvcTest extends BaseControllerWebMvcTest {
         BoardCreateRequest request = new BoardCreateRequest("title", "content");
         Board board = 게시글_생성();
 
-        given(boardService.save(request))
+        given(boardService.save(DEFAULT_WRITER_ID, request))
             .willReturn(board.getId());
 
         // when & then
         mockMvc.perform(post("/boards")
+                .header(HEADER_NAME, AUTHORIZATION_PREFIX + token)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
             .andExpect(status().isCreated());
@@ -52,7 +65,8 @@ class BoardControllerWebMvcTest extends BaseControllerWebMvcTest {
             .willReturn(response);
 
         // when & then
-        mockMvc.perform(get("/boards"))
+        mockMvc.perform(get("/boards")
+                .header(HEADER_NAME, AUTHORIZATION_PREFIX + token))
             .andExpect(status().isOk());
     }
 
@@ -64,7 +78,8 @@ class BoardControllerWebMvcTest extends BaseControllerWebMvcTest {
             .willReturn(response);
 
         // when & then
-        mockMvc.perform(get("/boards/1"))
+        mockMvc.perform(get("/boards/1")
+                .header(HEADER_NAME, AUTHORIZATION_PREFIX + token))
             .andExpect(status().isOk());
     }
 
@@ -75,6 +90,7 @@ class BoardControllerWebMvcTest extends BaseControllerWebMvcTest {
 
         // when & then
         mockMvc.perform(put("/boards/1")
+            .header(HEADER_NAME, AUTHORIZATION_PREFIX + token)
             .contentType(MediaType.APPLICATION_JSON)
             .content(objectMapper.writeValueAsString(request))
         ).andExpect(status().isOk());
@@ -83,7 +99,8 @@ class BoardControllerWebMvcTest extends BaseControllerWebMvcTest {
     @Test
     void 게시글_단건_삭제() throws Exception {
         // when & then
-        mockMvc.perform(delete("/boards/1"))
+        mockMvc.perform(delete("/boards/1")
+                .header(HEADER_NAME, AUTHORIZATION_PREFIX + token))
             .andExpect(status().isOk());
     }
 
@@ -94,6 +111,7 @@ class BoardControllerWebMvcTest extends BaseControllerWebMvcTest {
 
         // when & then
         mockMvc.perform(delete("/boards")
+                .header(HEADER_NAME, AUTHORIZATION_PREFIX + token)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
             .andExpect(status().isOk());
