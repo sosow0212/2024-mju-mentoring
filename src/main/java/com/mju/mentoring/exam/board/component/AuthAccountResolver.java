@@ -35,14 +35,12 @@ public class AuthAccountResolver implements HandlerMethodArgumentResolver {
 
 		if (httpServletRequest != null) {
 			String token = httpServletRequest.getHeader("Authorization");
-
 			if (token != null && !token.trim().equals("")) {
 				if (jwtTokenProvider.validateToken(token)) {
 					return jwtTokenProvider.getIdFromToken(token);
 				}
 			}
 		}
-		// 토큰 값이 없으면 에러
 		return -1L;
 	}
 
