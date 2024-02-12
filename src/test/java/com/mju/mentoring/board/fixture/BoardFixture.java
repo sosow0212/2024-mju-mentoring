@@ -12,12 +12,13 @@ public class BoardFixture {
     private static final Long DEFAULT_ID = 1L;
 
     public static Board id_없는_게시글_생성() {
-        return Board.of("테스트 제목", "테스트 내용");
+        return Board.of(1L, "테스트 제목", "테스트 내용");
     }
 
     public static Board 게시글_생성() {
         return Board.builder()
             .id(DEFAULT_ID)
+            .writerId(1L)
             .description(Description.of("테스트 제목", "테스트 내용"))
             .build();
     }
