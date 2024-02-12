@@ -1,7 +1,7 @@
 package com.mju.mentoring.board.service;
 
 import static com.mju.mentoring.board.fixture.MemberFixture.*;
-import static com.mju.mentoring.exam.board.provider.JwtTokenProvider.*;
+import static com.mju.mentoring.exam.board.component.JwtTokenProvider.*;
 import static org.assertj.core.api.SoftAssertions.*;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -10,9 +10,9 @@ import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
 
 import com.mju.mentoring.board.infrastructure.MemberFakeRepository;
+import com.mju.mentoring.exam.board.component.JwtTokenProvider;
 import com.mju.mentoring.exam.board.domain.Member;
 import com.mju.mentoring.exam.board.domain.MemberRepository;
-import com.mju.mentoring.exam.board.provider.JwtTokenProvider;
 import com.mju.mentoring.exam.board.service.MemberService;
 import com.mju.mentoring.exam.board.service.dto.LoginRequest;
 
@@ -41,7 +41,7 @@ class MemberServiceTest {
 	void 로그인_토큰을_생성한다() {
 		// given
 		Member member = 멤버_생성();
-		LoginRequest req = new LoginRequest(member.getMemberDescription().getMemberId(),
+		LoginRequest req = new LoginRequest(member.getMemberDescription().getLoginId(),
 			member.getMemberDescription().getPassword());
 		memberRepository.save(member);
 

@@ -1,6 +1,7 @@
 package com.mju.mentoring.board.service;
 
 import static com.mju.mentoring.board.fixture.BoardFixture.*;
+import static com.mju.mentoring.board.fixture.MemberFixture.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.api.SoftAssertions.*;
 
@@ -13,8 +14,11 @@ import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
 
 import com.mju.mentoring.board.infrastructure.BoardFakeRepository;
+import com.mju.mentoring.board.infrastructure.MemberFakeRepository;
 import com.mju.mentoring.exam.board.domain.Board;
 import com.mju.mentoring.exam.board.domain.BoardRepository;
+import com.mju.mentoring.exam.board.domain.Member;
+import com.mju.mentoring.exam.board.domain.MemberRepository;
 import com.mju.mentoring.exam.board.exception.BoardNotFoundException;
 import com.mju.mentoring.exam.board.service.BoardService;
 import com.mju.mentoring.exam.board.service.dto.BoardCreateRequest;
@@ -26,12 +30,15 @@ class BoardServiceTest {
 	// 1. stub 가짜 객체를 사용해서 단위테스트 수행 (실제 빈 띄우는 것이 아님)
 
 	private BoardService boardService;
+
 	private BoardRepository boardRepository;
+	private MemberRepository memberRepository;
 
 	@BeforeEach
 	void setup() {
 		boardRepository = new BoardFakeRepository();
-		boardService = new BoardService(boardRepository);
+		memberRepository = new MemberFakeRepository();
+		boardService = new BoardService(boardRepository, memberRepository);
 	}
 
 	@Test
@@ -41,6 +48,20 @@ class BoardServiceTest {
 
 		// when
 		Long savedBoard = boardService.save(req);
+
+		// then
+		assertThat(savedBoard).isEqualTo(1L);
+	}
+
+	@Test
+	void 로그인한_회원의_게시글을_저장한다() {
+		// given
+		Member member = 멤버_생성();
+		memberRepository.save(member);
+		BoardCreateRequest req = new BoardCreateRequest("title", "content");
+
+		// when
+		Long savedBoard = boardService.save(member.getId(), req);
 
 		// then
 		assertThat(savedBoard).isEqualTo(1L);

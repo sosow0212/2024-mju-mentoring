@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import com.mju.mentoring.exam.board.controller.dto.BoardResponse;
+import com.mju.mentoring.exam.board.domain.AuthAccount;
 import com.mju.mentoring.exam.board.domain.Board;
 import com.mju.mentoring.exam.board.service.BoardService;
 import com.mju.mentoring.exam.board.service.dto.BoardCreateRequest;
@@ -29,8 +30,14 @@ public class BoardController {
 	private final BoardService boardService;
 
 	@PostMapping("/boards")
-	public ResponseEntity<Void> save(@RequestBody final BoardCreateRequest boardCreateRequest) {
-		Long boardId = boardService.save(boardCreateRequest);
+	public ResponseEntity<Void> save(@AuthAccount Long memberId,
+		@RequestBody final BoardCreateRequest boardCreateRequest) {
+		Long boardId;
+		if (memberId == -1L) {
+			boardId = boardService.save(boardCreateRequest);
+		} else {
+			boardId = boardService.save(memberId, boardCreateRequest);
+		}
 		return ResponseEntity.created(URI.create("/boards/" + boardId)).build();
 	}
 

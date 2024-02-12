@@ -1,5 +1,6 @@
 package com.mju.mentoring.exam.board.domain;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -20,6 +21,7 @@ public class Member {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "member_id")
 	private Long id;
 
 	@Embedded
@@ -27,5 +29,13 @@ public class Member {
 
 	public boolean isValidPassword(String password) {
 		return memberDescription.isValidPassword(password);
+	}
+
+	public Member(MemberDescription memberDescription) {
+		this.memberDescription = memberDescription;
+	}
+
+	public Member(String memberId, String username, String password, String nickname) {
+		this.memberDescription = new MemberDescription(memberId, username, password, nickname);
 	}
 }

@@ -69,8 +69,8 @@ class MemberJpaRepositoryTest {
 		Member savedMember = memberJpaRepository.save(member);
 
 		// when
-		Optional<Member> foundBoard = memberJpaRepository.findMemberByMemberDescription_MemberId(
-			member.getMemberDescription().getMemberId());
+		Optional<Member> foundBoard = memberJpaRepository.findMemberByMemberDescription_LoginId(
+			member.getMemberDescription().getLoginId());
 
 		// then
 		assertThat(foundBoard).isNotEmpty();

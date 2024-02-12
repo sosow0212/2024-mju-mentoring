@@ -53,7 +53,7 @@ class MemberControllerTest {
 		// given
 		Member member = 멤버_생성();
 		memberRepository.save(member);
-		LoginRequest req = new LoginRequest(member.getMemberDescription().getMemberId(),
+		LoginRequest req = new LoginRequest(member.getMemberDescription().getLoginId(),
 			member.getMemberDescription().getPassword());
 
 		// when & then
