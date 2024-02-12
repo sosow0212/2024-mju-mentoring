@@ -1,11 +1,14 @@
 package com.mju.mentoring.board.infrastructure;
 
 import static com.mju.mentoring.board.fixture.BoardFixtures.게시글_id_없음;
+import static com.mju.mentoring.member.fixture.MemberFixtures.회원_id_없음;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 import com.mju.mentoring.board.domain.Board;
 import com.mju.mentoring.global.support.CleanDatabase;
+import com.mju.mentoring.member.infrastructure.memberrepository.MemberJpaRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
@@ -22,6 +25,14 @@ public class BoardJpaRepositoryTest {
 
     @Autowired
     private BoardJpaRepository boardJpaRepository;
+
+    @Autowired
+    private MemberJpaRepository memberJpaRepository;
+
+    @BeforeEach
+    void init() {
+        memberJpaRepository.save(회원_id_없음());
+    }
 
     @Test
     void 게시글을_저장한다() {

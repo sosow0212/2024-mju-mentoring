@@ -2,7 +2,9 @@ package com.mju.mentoring.board.controller;
 
 import static com.mju.mentoring.board.fixture.BoardFixtures.게시글_id_없음;
 import static com.mju.mentoring.board.fixture.BoardFixtures.게시글_id_있음;
+import static com.mju.mentoring.member.fixture.MemberFixtures.회원_id_있음;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
@@ -20,7 +22,8 @@ import com.mju.mentoring.board.exception.exceptions.BoardNotFoundException;
 import com.mju.mentoring.board.service.BoardService;
 import com.mju.mentoring.board.service.dto.BoardCreateRequest;
 import com.mju.mentoring.board.service.dto.BoardTextUpdateRequest;
-import com.mju.mentoring.member.service.MemberService;
+import com.mju.mentoring.member.domain.Member;
+import com.mju.mentoring.member.support.auth.AuthMemberResolver;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Nested;
@@ -53,17 +56,19 @@ class BoardControllerTest {
     private BoardService boardService;
 
     @MockBean
-    private MemberService memberService;
+    private AuthMemberResolver authMemberResolver;
 
     @Test
     void 게시글을_저장한다() throws Exception {
         // given
         String createTitle = "title";
         String createContent = "content";
+        Member member = 회원_id_있음();
         BoardCreateRequest request = new BoardCreateRequest(createTitle, createContent);
         Board newBoard = 게시글_id_있음();
-
-        when(boardService.save(request)).thenReturn(newBoard.getId());
+        when(authMemberResolver.supportsParameter(any())).thenReturn(true);
+        when(authMemberResolver.resolveArgument(any(), any(), any(), any())).thenReturn(member);
+        when(boardService.save(request, member)).thenReturn(newBoard.getId());
 
         // when & then
         mockMvc.perform(post("/boards")
@@ -73,7 +78,7 @@ class BoardControllerTest {
                 .andExpect(jsonPath("$.id").value(newBoard.getId()))
                 .andDo(print());
 
-        verify(boardService).save(request);
+        verify(boardService).save(request, member);
     }
 
     @Test

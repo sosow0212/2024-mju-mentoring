@@ -26,6 +26,9 @@ public class CookieAuthMemberHandler implements AuthMemberHandler {
     }
 
     private Cookie extractCookieFromServletRequest(final HttpServletRequest webRequest) {
+        if (webRequest.getCookies() == null) {
+            return null;
+        }
         return Arrays.stream(webRequest.getCookies())
                 .filter(this::isCookieNameValid)
                 .findFirst()
