@@ -3,6 +3,7 @@ package com.mju.mentoring.member.controller;
 import static com.mju.mentoring.member.fixture.MemberFixtures.회원_id_있음;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -15,6 +16,7 @@ import com.mju.mentoring.member.exception.exceptions.PasswordNotMatchException;
 import com.mju.mentoring.member.service.MemberService;
 import com.mju.mentoring.member.service.dto.AuthRequest;
 import com.mju.mentoring.member.support.auth.AuthMemberResolver;
+
 import jakarta.servlet.http.Cookie;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
@@ -50,6 +52,7 @@ public class MemberControllerTest {
         Cookie cookie = new Cookie("AUTH", "nickname.password");
         Member member = 회원_id_있음();
         AuthRequest request = new AuthRequest("nickname", "password");
+
         when(authMemberResolver.supportsParameter(any())).thenReturn(true);
         when(authMemberResolver.resolveArgument(any(), any(), any(), any())).thenReturn(member);
         when(memberService.getProfileWithAuthRequest(request)).thenReturn(member);
@@ -94,7 +97,7 @@ public class MemberControllerTest {
                 .header("Authorization", token))
                 .andExpect(status().isOk())
                 .andDo(print());
-
+      
         // verify(memberService).getProfileWithJwt(token);
     }
 

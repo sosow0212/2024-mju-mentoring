@@ -7,7 +7,9 @@ import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
 import com.mju.mentoring.global.exception.ExceptionResponse;
 import com.mju.mentoring.member.exception.exceptions.AlreadyRegisteredException;
+
 import com.mju.mentoring.member.exception.exceptions.AuthorizationException;
+
 import com.mju.mentoring.member.exception.exceptions.CookieException;
 import com.mju.mentoring.member.exception.exceptions.JwtSignatureException;
 import com.mju.mentoring.member.exception.exceptions.MemberNotFoundException;

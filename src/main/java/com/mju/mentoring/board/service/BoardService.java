@@ -7,6 +7,9 @@ import com.mju.mentoring.board.exception.exceptions.BoardNotFoundException;
 import com.mju.mentoring.board.service.dto.BoardCreateRequest;
 import com.mju.mentoring.board.service.dto.BoardTextUpdateRequest;
 import com.mju.mentoring.member.domain.Member;
+import com.mju.mentoring.board.exception.exceptions.BoardNotFoundException;
+import com.mju.mentoring.board.service.dto.BoardCreateRequest;
+import com.mju.mentoring.board.service.dto.BoardTextUpdateRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +26,8 @@ public class BoardService {
     public Long save(final BoardCreateRequest request, final Member member) {
         BoardText boardText = new BoardText(request.title(), request.content());
         Board newBoard = Board.createWithMember(boardText, member);
+    public Long save(final BoardCreateRequest request) {
+        Board newBoard = new Board(request.title(), request.content());
         boardRepository.save(newBoard);
 
         return newBoard.getId();

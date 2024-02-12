@@ -2,6 +2,7 @@ package com.mju.mentoring.board.service;
 
 import static com.mju.mentoring.board.fixture.BoardFixtures.게시글_id_있음;
 import static com.mju.mentoring.member.fixture.MemberFixtures.회원_id_있음;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
@@ -12,7 +13,9 @@ import com.mju.mentoring.board.exception.exceptions.BoardNotFoundException;
 import com.mju.mentoring.board.infrastructure.BoardTestRepository;
 import com.mju.mentoring.board.service.dto.BoardCreateRequest;
 import com.mju.mentoring.board.service.dto.BoardTextUpdateRequest;
+
 import com.mju.mentoring.member.domain.Member;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
@@ -73,6 +76,7 @@ class BoardServiceTest {
         String titleTwo = "title two";
         String contentOne = "content one";
         String contentTwo = "content two";
+      
         Member member = 회원_id_있음();
         BoardCreateRequest requestOne = new BoardCreateRequest(titleOne, contentOne);
         BoardCreateRequest requestTwo = new BoardCreateRequest(titleTwo, contentTwo);
@@ -102,6 +106,7 @@ class BoardServiceTest {
 
         String title = "title for update (origin)";
         String content = "content for update (origin)";
+
         Member member = 회원_id_있음();
         BoardCreateRequest createRequest = new BoardCreateRequest(title, content);
 
@@ -123,9 +128,11 @@ class BoardServiceTest {
         // given
         String title = "title for delete";
         String content = "content for delete";
+
         Member member = 회원_id_있음();
         BoardCreateRequest request = new BoardCreateRequest(title, content);
         boardService.save(request, member);
+
         Board findBoard = boardService.searchById(1L);
 
         // when

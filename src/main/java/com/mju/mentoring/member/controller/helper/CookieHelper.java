@@ -1,6 +1,11 @@
 package com.mju.mentoring.member.controller.helper;
 
 import jakarta.servlet.http.Cookie;
+import com.mju.mentoring.member.exception.exceptions.CookieException;
+import com.mju.mentoring.member.service.dto.AuthRequest;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import java.util.Arrays;
 
 public class CookieHelper {
 
@@ -26,5 +31,27 @@ public class CookieHelper {
         cookie.setSecure(true);
         cookie.setPath(COOKIE_PATH);
         cookie.setMaxAge(COOKIE_EXPIRE_SECONDS);
+    }
+
+    public static AuthRequest convertServletRequestToAuthRequest(final HttpServletRequest request) {
+        Cookie loginCookie = Arrays.stream(request.getCookies())
+                .filter(CookieHelper::isCookieNameValid)
+                .findFirst()
+                .orElseThrow(CookieException::new);
+        return convertCookieToAuthRequest(loginCookie);
+    }
+
+    private static boolean isCookieNameValid(final Cookie cookie) {
+        String cookieName = cookie.getName();
+        return cookieName.equals(COOKIE_NAME);
+    }
+
+    private static AuthRequest convertCookieToAuthRequest(final Cookie cookie) {
+        String cookieValue = cookie.getValue();
+        String[] splitValues = cookieValue.split(COOKIE_SPLITTER);
+        String nickname = splitValues[NICKNAME_INDEX];
+        String password = splitValues[PASSWORD_INDEX];
+
+        return new AuthRequest(nickname, password);
     }
 }

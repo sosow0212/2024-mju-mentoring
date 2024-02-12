@@ -6,6 +6,19 @@ import com.mju.mentoring.member.domain.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+
+import static com.mju.mentoring.member.controller.helper.CookieHelper.convertServletRequestToAuthRequest;
+
+import com.mju.mentoring.member.controller.dto.ProfileResponse;
+import com.mju.mentoring.member.domain.Member;
+import com.mju.mentoring.member.service.MemberService;
+import com.mju.mentoring.member.service.dto.AuthRequest;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
