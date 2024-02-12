@@ -20,7 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class AuthService {
 
     private final MemberRepository memberRepository;
-    private final TokenManager tokenManager;
+    private final TokenManager<Long> tokenManager;
 
     @Transactional
     public void signup(SignupRequest request) {
@@ -37,7 +37,7 @@ public class AuthService {
             throw new WrongPasswordException();
         }
 
-        String accessToken = tokenManager.createAccessToken(member.getId());
+        String accessToken = tokenManager.create(member.getId());
         return new TokenResponse(accessToken);
     }
 
