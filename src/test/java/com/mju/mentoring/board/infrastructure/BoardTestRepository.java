@@ -18,6 +18,7 @@ public class BoardTestRepository implements BoardRepository {
         Board newBoard = Board.builder()
                 .id(id)
                 .boardText(new BoardText(board.getTitle(), board.getContent()))
+                .member(board.getMember())
                 .build();
 
         store.put(id, newBoard);
