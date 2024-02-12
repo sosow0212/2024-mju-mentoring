@@ -20,6 +20,7 @@ import com.mju.mentoring.board.exception.exceptions.BoardNotFoundException;
 import com.mju.mentoring.board.service.BoardService;
 import com.mju.mentoring.board.service.dto.BoardCreateRequest;
 import com.mju.mentoring.board.service.dto.BoardTextUpdateRequest;
+import com.mju.mentoring.member.service.MemberService;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Nested;
@@ -50,6 +51,9 @@ class BoardControllerTest {
 
     @MockBean
     private BoardService boardService;
+
+    @MockBean
+    private MemberService memberService;
 
     @Test
     void 게시글을_저장한다() throws Exception {

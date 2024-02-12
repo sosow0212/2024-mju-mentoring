@@ -13,6 +13,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mju.mentoring.member.domain.Member;
 import com.mju.mentoring.member.service.AuthService;
+import com.mju.mentoring.member.service.MemberService;
 import com.mju.mentoring.member.service.dto.LoginRequest;
 import com.mju.mentoring.member.service.dto.SignupRequest;
 import jakarta.servlet.http.HttpSession;
@@ -45,6 +46,9 @@ public class AuthControllerTest {
 
     @MockBean
     private AuthService authService;
+
+    @MockBean
+    private MemberService memberService;
 
     @Test
     void 회원가입() throws Exception {
