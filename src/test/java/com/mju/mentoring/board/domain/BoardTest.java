@@ -11,6 +11,8 @@ import org.junit.jupiter.api.Test;
 @SuppressWarnings("NonAsciiCharacters")
 class BoardTest {
 
+    private static final Long DEFAULT_WRITER_ID = 1L;
+
     @Test
     public void 게시글_업데이트() {
         // given
@@ -19,7 +21,7 @@ class BoardTest {
         String updateContent = "업데이트 내용";
 
         // when
-        board.update(updateTitle, updateContent);
+        board.update(DEFAULT_WRITER_ID, updateTitle, updateContent);
 
         // then
         assertSoftly(softly -> {

@@ -38,7 +38,7 @@ class AuthServiceTest {
     private static final String MEMBER_DEFAULT_NICKNAME = "nickname";
 
     @Mock
-    private TokenManager tokenManager;
+    private TokenManager<Long> tokenManager;
     @Mock
     private MemberRepository memberRepository;
     @InjectMocks
@@ -92,7 +92,7 @@ class AuthServiceTest {
         // given
         String token = "token";
         Member member = id_없는_멤버_생성();
-        given(tokenManager.createAccessToken(member.getId()))
+        given(tokenManager.create(member.getId()))
             .willReturn(token);
         given(memberRepository.findByUsername(MEMBER_DEFAULT_USERNAME))
             .willReturn(Optional.of(member));

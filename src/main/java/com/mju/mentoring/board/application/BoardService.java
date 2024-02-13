@@ -19,8 +19,8 @@ public class BoardService {
     private final BoardRepository boardRepository;
 
     @Transactional
-    public Long save(final BoardCreateRequest boardCreateRequest) {
-        Board board = Board.of(boardCreateRequest.title(), boardCreateRequest.content());
+    public Long save(final Long writerId, final BoardCreateRequest boardCreateRequest) {
+        Board board = Board.of(writerId, boardCreateRequest.title(), boardCreateRequest.content());
         Board savedBoard = boardRepository.save(board);
 
         return savedBoard.getId();
@@ -36,14 +36,16 @@ public class BoardService {
     }
 
     @Transactional
-    public void update(final Long id, final BoardUpdateRequest boardUpdateRequest) {
+    public void update(final Long writerId, final Long id,
+        final BoardUpdateRequest boardUpdateRequest) {
         this.findById(id)
-            .update(boardUpdateRequest.title(), boardUpdateRequest.content());
+            .update(writerId, boardUpdateRequest.title(), boardUpdateRequest.content());
     }
 
     @Transactional
-    public void deleteById(final Long id) {
+    public void deleteById(final Long writerId, final Long id) {
         Board board = findById(id);
+        board.verifyWriter(writerId);
         boardRepository.delete(board);
     }
 

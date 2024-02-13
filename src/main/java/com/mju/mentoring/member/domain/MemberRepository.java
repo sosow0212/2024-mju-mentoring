@@ -11,4 +11,6 @@ public interface MemberRepository {
     boolean existsByNickname(final String nickname);
 
     Optional<Member> findByUsername(final String username);
+
+    Optional<Member> findById(final Long id);
 }

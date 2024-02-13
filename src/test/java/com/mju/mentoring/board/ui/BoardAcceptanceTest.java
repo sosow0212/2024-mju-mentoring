@@ -21,11 +21,15 @@ public class BoardAcceptanceTest extends BoardAcceptanceTestFixture {
 
     private Board 게시글1;
     private Board 게시글2;
+    private String 토큰;
+    private String 토큰2;
 
     @BeforeEach
     void setUp() {
         게시글1 = id_없는_게시글_생성();
         게시글2 = id_없는_게시글_생성();
+        토큰 = tokenManager.create(1L);
+        토큰2 = tokenManager.create(2L);
     }
 
     @Test
@@ -34,7 +38,7 @@ public class BoardAcceptanceTest extends BoardAcceptanceTestFixture {
         var 게시글_생성_요청서 = 게시글_생성_요청();
 
         // when
-        var 게시글_생성_요청_결과 = 게시글을_생성한다(게시글_생성_요청서, 게시글_생성_url);
+        var 게시글_생성_요청_결과 = 게시글을_생성한다(토큰, 게시글_생성_요청서, 게시글_생성_url);
 
         // then
         게시글_생성을_검증한다(게시글_생성_요청_결과);
@@ -46,7 +50,7 @@ public class BoardAcceptanceTest extends BoardAcceptanceTestFixture {
         var 생성_게시글 = 게시글을_저장한다(게시글1);
 
         // when
-        var 게시글_조회_결과 = 게시글을_단건_조회한다(게시글_단건_조회_url);
+        var 게시글_조회_결과 = 게시글을_단건_조회한다(토큰, 게시글_단건_조회_url);
 
         // then
         단건_게시글_조회_검증(게시글_조회_결과, 생성_게시글);
@@ -59,7 +63,7 @@ public class BoardAcceptanceTest extends BoardAcceptanceTestFixture {
         var 생성_게시글2 = 게시글을_저장한다(게시글2);
 
         // when
-        var 게시글_조회_결과 = 모든_게시물을_조회한다(게시글_여러건_조회_url);
+        var 게시글_조회_결과 = 모든_게시물을_조회한다(토큰, 게시글_여러건_조회_url);
 
         // then
         여러_게시물_조회_검증(게시글_조회_결과, 생성_게시글1, 생성_게시글2);
@@ -72,10 +76,23 @@ public class BoardAcceptanceTest extends BoardAcceptanceTestFixture {
         var 게시글_수정_요청서 = 게시글_수정_요청();
 
         // when
-        var 게시글_수정_결과 = 게시글을_수정한다(게시글_수정_요청서, 게시글_수정_url);
+        var 게시글_수정_결과 = 게시글을_수정한다(토큰, 게시글_수정_요청서, 게시글_수정_url);
 
         // then
         게시물_수정_검증(게시글_수정_결과);
+    }
+
+    @Test
+    void 작성자_이외에_수정_불가_테스트() {
+        // given
+        게시글을_저장한다(게시글1);
+        var 게시글_수정_요청서 = 게시글_수정_요청();
+
+        // when
+        var 게시글_수정_결과 = 게시글을_수정한다(토큰2, 게시글_수정_요청서, 게시글_수정_url);
+
+        // then
+        게시물_수정_실패_검증(게시글_수정_결과);
     }
 
     @Test
@@ -84,10 +101,22 @@ public class BoardAcceptanceTest extends BoardAcceptanceTestFixture {
         게시글을_저장한다(게시글1);
 
         // when
-        var 게시글_삭제_결과 = 단건_게시물을_삭제한다(게시글_단건_삭제_url);
+        var 게시글_삭제_결과 = 단건_게시물을_삭제한다(토큰, 게시글_단건_삭제_url);
 
         // then
         게시물_삭제_검증(게시글_삭제_결과);
+    }
+
+    @Test
+    void 작성자_이외에_삭제_불가_테스트() {
+        // given
+        게시글을_저장한다(게시글1);
+
+        // when
+        var 게시글_삭제_결과 = 단건_게시물을_삭제한다(토큰2, 게시글_단건_삭제_url);
+
+        // then
+        게시물_삭제_실패_검증(게시글_삭제_결과);
     }
 
     @Test
@@ -98,7 +127,7 @@ public class BoardAcceptanceTest extends BoardAcceptanceTestFixture {
         var 여러건_게시글_삭제_요청서 = 여러건_게시글_삭제_요청();
 
         // when
-        var 게시글_삭제_결과 = 여러_게시글을_삭제한다(게시글_여러건_삭제_url, 여러건_게시글_삭제_요청서);
+        var 게시글_삭제_결과 = 여러_게시글을_삭제한다(토큰, 게시글_여러건_삭제_url, 여러건_게시글_삭제_요청서);
 
         // then
         게시물_삭제_검증(게시글_삭제_결과);

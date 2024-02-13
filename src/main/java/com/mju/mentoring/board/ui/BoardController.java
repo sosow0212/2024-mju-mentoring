@@ -7,6 +7,7 @@ import com.mju.mentoring.board.application.BoardService;
 import com.mju.mentoring.board.application.dto.BoardUpdateRequest;
 import com.mju.mentoring.board.application.dto.BoardCreateRequest;
 import com.mju.mentoring.board.ui.dto.BoardsResponse;
+import com.mju.mentoring.member.ui.auth.support.AuthInformation;
 import java.net.URI;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -28,8 +29,9 @@ public class BoardController {
     private final BoardService boardService;
 
     @PostMapping
-    public ResponseEntity<Void> save(@RequestBody final BoardCreateRequest boardCreateRequest) {
-        Long createdBardId = boardService.save(boardCreateRequest);
+    public ResponseEntity<Void> save(@AuthInformation Long writerId,
+        @RequestBody final BoardCreateRequest boardCreateRequest) {
+        Long createdBardId = boardService.save(writerId, boardCreateRequest);
 
         return ResponseEntity.created(URI.create("/boards/" + createdBardId))
             .build();
@@ -52,17 +54,19 @@ public class BoardController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Void> updateById(@PathVariable(name = "id") final Long id,
+    public ResponseEntity<Void> updateById(@AuthInformation Long writerId,
+        @PathVariable(name = "id") final Long id,
         @RequestBody BoardUpdateRequest boardUpdateRequest) {
-        boardService.update(id, boardUpdateRequest);
+        boardService.update(writerId, id, boardUpdateRequest);
 
         return ResponseEntity.ok()
             .build();
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteById(@PathVariable(name = "id") final Long id) {
-        boardService.deleteById(id);
+    public ResponseEntity<Void> deleteById(@AuthInformation Long writerId,
+        @PathVariable(name = "id") final Long id) {
+        boardService.deleteById(writerId, id);
 
         return ResponseEntity.ok()
             .build();
