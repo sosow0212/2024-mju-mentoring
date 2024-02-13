@@ -10,6 +10,7 @@ import com.mju.mentoring.exam.board.domain.BoardRepository;
 import com.mju.mentoring.exam.board.domain.Member;
 import com.mju.mentoring.exam.board.domain.MemberRepository;
 import com.mju.mentoring.exam.board.exception.BoardNotFoundException;
+import com.mju.mentoring.exam.board.exception.MemberNotFoundException;
 import com.mju.mentoring.exam.board.service.dto.BoardCreateRequest;
 import com.mju.mentoring.exam.board.service.dto.BoardUpdateRequest;
 
@@ -23,17 +24,10 @@ public class BoardService {
 	private final MemberRepository memberRepository;
 
 	@Transactional
-	public Long save(final BoardCreateRequest request) {
-		Board board = new Board(request.title(), request.content());
-		Board savedBoard = boardRepository.save(board);
-		return savedBoard.getId();
-	}
-
-	@Transactional
 	public Long save(final long memberId, final BoardCreateRequest request) {
-		Board board = new Board(request.title(), request.content());
-		Member member = this.memberRepository.findById(memberId).get();
-		board.setMember(member);
+		Member member = this.memberRepository.findById(memberId)
+			.orElseThrow(() -> new MemberNotFoundException("id에 해당하는 member가 존재하지 않습니다"));
+		Board board = new Board(request.title(), request.content(), member);
 		Board savedBoard = boardRepository.save(board);
 		return savedBoard.getId();
 	}

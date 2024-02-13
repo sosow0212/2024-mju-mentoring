@@ -34,15 +34,12 @@ public class Board {
 	@JoinColumn(name = "member_id")
 	private Member member;
 
-	public Board(final String title, final String content) {
+	public Board(final String title, final String content, final Member member) {
 		this.boardDescription = new BoardDescription(title, content);
+		this.member = member;
 	}
 
 	public void update(final String title, final String content) {
 		this.boardDescription.update(title, content);
-	}
-
-	public void setMember(Member member) {
-		this.member = member;
 	}
 }

@@ -32,12 +32,7 @@ public class BoardController {
 	@PostMapping("/boards")
 	public ResponseEntity<Void> save(@AuthAccount Long memberId,
 		@RequestBody final BoardCreateRequest boardCreateRequest) {
-		Long boardId;
-		if (memberId == -1L) {
-			boardId = boardService.save(boardCreateRequest);
-		} else {
-			boardId = boardService.save(memberId, boardCreateRequest);
-		}
+		Long boardId = boardService.save(memberId, boardCreateRequest);
 		return ResponseEntity.created(URI.create("/boards/" + boardId)).build();
 	}
 

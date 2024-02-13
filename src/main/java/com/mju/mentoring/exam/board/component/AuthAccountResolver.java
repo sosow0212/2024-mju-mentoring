@@ -33,15 +33,11 @@ public class AuthAccountResolver implements HandlerMethodArgumentResolver {
 
 		HttpServletRequest httpServletRequest = webRequest.getNativeRequest(HttpServletRequest.class);
 
-		if (httpServletRequest != null) {
-			String token = httpServletRequest.getHeader("Authorization");
-			if (token != null && !token.trim().equals("")) {
-				if (jwtTokenProvider.validateToken(token)) {
-					return jwtTokenProvider.getIdFromToken(token);
-				}
-			}
+		String token = httpServletRequest.getHeader("Authorization");
+		if (jwtTokenProvider.validateToken(token)) {
+			return jwtTokenProvider.getIdFromToken(token);
 		}
-		return -1L;
+		throw new RuntimeException("권한 없음");
 	}
 
 }

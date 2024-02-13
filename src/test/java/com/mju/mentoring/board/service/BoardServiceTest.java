@@ -45,9 +45,11 @@ class BoardServiceTest {
 	void 게시글을_저장한다() {
 		// given
 		BoardCreateRequest req = new BoardCreateRequest("title", "content");
+		Member member = 멤버_생성();
+		memberRepository.save(member);
 
 		// when
-		Long savedBoard = boardService.save(req);
+		Long savedBoard = boardService.save(1L, req);
 
 		// then
 		assertThat(savedBoard).isEqualTo(1L);

@@ -23,8 +23,6 @@ public class MemberService {
 	@Transactional(readOnly = true)
 	public String getLoginToken(LoginRequest loginRequest) {
 		Member member = findByMemberId(loginRequest.memberId());
-		if (!member.isValidPassword(loginRequest.password()))
-			throw new MemberNotFoundException("비밀번호가 일치하지 않습니다");
 		return jwtTokenProvider.createJwtAccessToken(member);
 	}
 

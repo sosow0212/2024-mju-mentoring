@@ -1,5 +1,7 @@
 package com.mju.mentoring.exam.board.domain;
 
+import com.mju.mentoring.exam.board.exception.MemberNotFoundException;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.AccessLevel;
@@ -31,9 +33,9 @@ public class MemberDescription {
 	}
 
 	public boolean isValidPassword(String password) {
-		if (this.getPassword().equals(password)) {
-			return true;
+		if (!this.getPassword().equals(password)) {
+			throw new MemberNotFoundException("비밀번호가 일치하지 않습니다");
 		}
-		return false;
+		return true;
 	}
 }

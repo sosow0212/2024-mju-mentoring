@@ -1,7 +1,6 @@
 package com.mju.mentoring.board.controller;
 
 import static com.mju.mentoring.board.fixture.BoardFixture.*;
-import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -53,7 +52,7 @@ class BoardControllerTest {
 		// given
 		BoardCreateRequest req = new BoardCreateRequest("title", "content");
 
-		when(boardService.save(eq(req))).thenReturn(1L);
+		when(boardService.save(1L, req)).thenReturn(1L);
 
 		// when & then
 		mockMvc.perform(post("/boards")

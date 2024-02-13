@@ -5,6 +5,7 @@ import java.sql.Date;
 
 import javax.crypto.SecretKey;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.mju.mentoring.exam.board.domain.Member;
@@ -19,23 +20,20 @@ import io.jsonwebtoken.security.Keys;
 
 @Component
 public class JwtTokenProvider {
-
-	private static final long ACCESS_EXPIRED_TIME = 1000 * 60 * 30;            // 30분
+	@Value("${access.expired_time}")
+	private String ACCESS_EXPIRED_TIME;
 
 	public static SecretKey SECRET = Keys.secretKeyFor(SignatureAlgorithm.HS512);
 
 	public String createJwtAccessToken(Member member) {
 		Claims claims = Jwts.claims()
 			.setSubject("access_token");
-		claims.put("login_id", member.getMemberDescription().getLoginId());
-		claims.put("nickname", member.getMemberDescription().getNickname());
-		claims.put("user_name", member.getMemberDescription().getUsername());
 		claims.put("id", member.getId());
 
 		String jwt = Jwts.builder()
 			.addClaims(claims)
 			.setExpiration(
-				new Date(System.currentTimeMillis() + ACCESS_EXPIRED_TIME)
+				new Date(System.currentTimeMillis() + Long.parseLong(ACCESS_EXPIRED_TIME))
 			)
 			.setIssuedAt(new java.util.Date())
 			.signWith(SignatureAlgorithm.HS512, SECRET)
@@ -52,10 +50,8 @@ public class JwtTokenProvider {
 			}
 		} catch (SignatureException | MalformedJwtException |
 				 UnsupportedJwtException | IllegalArgumentException | ExpiredJwtException jwtException) {
-			throw jwtException;
 		} catch (Exception e) {
 		}
-
 		return true;
 	}
 
