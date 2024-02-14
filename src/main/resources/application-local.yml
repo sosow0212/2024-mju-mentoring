@@ -2,7 +2,7 @@ spring:
   datasource:
     url: jdbc:mysql://localhost:3306/mentoring?useSSL=false&serverTimezone=UTC&useUnicode=true&characterEncoding=utf8&allowPublicKeyRetrieval=true
     username: root
-    password: root
+    password: 1205
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   flyway:
@@ -17,3 +17,5 @@ spring:
       hibernate:
         format_sql: true
         show_sql: true
+access:
+  expired_time: 1800000

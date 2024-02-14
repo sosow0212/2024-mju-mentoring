@@ -1,9 +1,12 @@
+access:
+  expired_time: 1800000
 spring:
   datasource:
     url: jdbc:h2:mem:charge;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;MODE=MySQL
     username: sa
     password: sa
     driver-class-name: org.h2.Driver
+    config.activate.on-profile: test
   jpa:
     hibernate:
       ddl-auto: create
@@ -13,9 +16,9 @@ spring:
         format_sql: true
   flyway:
     enabled: false
-
 logging:
   level:
     org:
       springframework:
         jdbc: debug
+
