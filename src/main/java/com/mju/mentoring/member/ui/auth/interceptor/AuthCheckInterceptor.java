@@ -18,9 +18,8 @@ public class AuthCheckInterceptor implements HandlerInterceptor {
     private final TokenManager<Long> tokenManager;
 
     @Override
-    public boolean preHandle(HttpServletRequest request,
-        HttpServletResponse response, Object handler)
-        throws Exception {
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response,
+        Object handler) throws Exception {
         Optional<String> authorization = Optional.ofNullable(request.getHeader(HEADER_NAME));
         String token = TokenExtractor.extractToken(authorization);
         tokenManager.parse(token);
