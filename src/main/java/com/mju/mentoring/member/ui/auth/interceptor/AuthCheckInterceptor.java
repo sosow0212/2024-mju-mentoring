@@ -4,6 +4,7 @@ import com.mju.mentoring.member.domain.TokenManager;
 import com.mju.mentoring.member.ui.auth.support.TokenExtractor;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -20,7 +21,7 @@ public class AuthCheckInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request,
         HttpServletResponse response, Object handler)
         throws Exception {
-        String authorization = request.getHeader(HEADER_NAME);
+        Optional<String> authorization = Optional.ofNullable(request.getHeader(HEADER_NAME));
         String token = TokenExtractor.extractToken(authorization);
         tokenManager.parse(token);
         return true;
