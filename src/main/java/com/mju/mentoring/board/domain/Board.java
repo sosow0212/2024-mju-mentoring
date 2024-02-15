@@ -28,15 +28,17 @@ public class Board {
     @Embedded
     private Description description;
 
-    private Long writerId;
+    @Embedded
+    private Writer writer;
 
-    private Board(final Description description, final Long writerId) {
+    private Board(final Description description, final Writer writer) {
         this.description = description;
-        this.writerId = writerId;
+        this.writer = writer;
     }
 
-    public static Board of(final Long writerId, final String title, final String content) {
-        return new Board(Description.of(title, content), writerId);
+    public static Board of(final Long writerId, final String writerName, final String title,
+        final String content) {
+        return new Board(Description.of(title, content), Writer.of(writerId, writerName));
     }
 
     public void update(final Long writerId, final String title, final String content) {
@@ -45,7 +47,7 @@ public class Board {
     }
 
     public void verifyWriter(final Long writerId) {
-        if (!this.writerId.equals(writerId)) {
+        if (!writer.verifyEquality(writerId)) {
             throw new NotBoardWriterException();
         }
     }
@@ -60,5 +62,13 @@ public class Board {
 
     public String getContent() {
         return description.getContent();
+    }
+
+    public Long getWriterId() {
+        return writer.getWriterId();
+    }
+
+    public String getWriterName() {
+        return writer.getWriterName();
     }
 }
