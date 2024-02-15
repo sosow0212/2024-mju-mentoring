@@ -35,6 +35,7 @@ public class BoardAcceptanceTest extends BoardAcceptanceTestFixture {
     @Test
     void 게시글을_저장_테스트() {
         // given
+        작성자를_생성한다();
         var 게시글_생성_요청서 = 게시글_생성_요청();
 
         // when

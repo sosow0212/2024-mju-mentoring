@@ -21,7 +21,7 @@ public class BoardFakeRepository implements BoardRepository {
     public Board save(final Board board) {
         Board savedBoard = Board.builder()
             .id(id)
-            .writerId(board.getWriterId())
+            .writer(board.getWriter())
             .description(board.copyDescription())
             .build();
 

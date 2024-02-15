@@ -1,9 +1,11 @@
 package com.mju.mentoring.board.application;
 
 import static com.mju.mentoring.board.fixture.BoardFixture.id_없는_게시글_생성;
+import static com.mju.mentoring.member.fixture.MemberFixture.멤버_생성;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
+import static org.mockito.BDDMockito.given;
 
 import com.mju.mentoring.board.application.dto.BoardCreateRequest;
 import com.mju.mentoring.board.application.dto.BoardDeleteRequest;
@@ -12,11 +14,13 @@ import com.mju.mentoring.board.domain.Board;
 import com.mju.mentoring.board.domain.BoardRepository;
 import com.mju.mentoring.board.exception.exceptions.BoardNotFoundException;
 import com.mju.mentoring.board.infrastructure.BoardFakeRepository;
+import com.mju.mentoring.member.application.auth.AuthService;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 @SuppressWarnings("NonAsciiCharacters")
@@ -26,20 +30,23 @@ class BoardServiceTest {
 
     private BoardService boardService;
     private BoardRepository boardRepository;
+    private final AuthService authService = Mockito.mock(AuthService.class);
 
     @BeforeEach
     void setup() {
         boardRepository = new BoardFakeRepository();
-        boardService = new BoardService(boardRepository);
+        boardService = new BoardService(authService, boardRepository);
     }
 
     @Test
     void 게시물_저장() {
         // given
+        given(authService.findMemberById(DEFAULT_WRITER_ID))
+            .willReturn(멤버_생성());
         BoardCreateRequest request = new BoardCreateRequest("title", "content");
 
         // when
-        Long savedId = boardService.save(DEFAULT_WRITER_ID, request);
+        Long savedId = saveBoard(DEFAULT_WRITER_ID, request);
         List<Board> findBoards = boardService.findAll();
 
         // then
@@ -105,7 +112,7 @@ class BoardServiceTest {
         BoardUpdateRequest updateRequest = new BoardUpdateRequest(updateTitle, updateContent);
 
         // when
-        Long savedId = boardService.save(DEFAULT_WRITER_ID, createRequest);
+        Long savedId = saveBoard(DEFAULT_WRITER_ID, createRequest);
         boardService.update(DEFAULT_WRITER_ID, savedId, updateRequest);
 
         // then
@@ -133,7 +140,7 @@ class BoardServiceTest {
         BoardCreateRequest request = new BoardCreateRequest("title", "content");
 
         // when
-        Long savedId = boardService.save(DEFAULT_WRITER_ID, request);
+        Long savedId = saveBoard(DEFAULT_WRITER_ID, request);
         boardService.deleteById(DEFAULT_WRITER_ID, savedId);
 
         // then
@@ -154,8 +161,8 @@ class BoardServiceTest {
         BoardCreateRequest request1 = new BoardCreateRequest("title1", "content1");
         BoardCreateRequest request2 = new BoardCreateRequest("title2", "content2");
 
-        Long savedId1 = boardService.save(DEFAULT_WRITER_ID, request1);
-        Long savedId2 = boardService.save(DEFAULT_WRITER_ID, request2);
+        Long savedId1 = saveBoard(DEFAULT_WRITER_ID, request1);
+        Long savedId2 = saveBoard(DEFAULT_WRITER_ID, request2);
 
         // when
         boardService.deleteAllById(new BoardDeleteRequest(List.of(savedId1, savedId2)));
@@ -163,5 +170,11 @@ class BoardServiceTest {
         // then
         List<Board> boards = boardService.findAll();
         assertThat(boards).isEmpty();
+    }
+
+    Long saveBoard(final Long writerId, final BoardCreateRequest request) {
+        given(authService.findMemberById(DEFAULT_WRITER_ID))
+            .willReturn(멤버_생성());
+        return boardService.save(writerId, request);
     }
 }
