@@ -58,28 +58,26 @@ class BoardControllerWebMvcTest extends BaseControllerWebMvcTest {
     }
 
     @Test
-    void 게시글_조회() throws Exception {
+    void 토큰_없이_게시글_조회() throws Exception {
         // given
         List<Board> response = List.of(게시글_생성());
         given(boardService.findAll())
             .willReturn(response);
 
         // when & then
-        mockMvc.perform(get("/boards")
-                .header(HEADER_NAME, AUTHORIZATION_PREFIX + token))
+        mockMvc.perform(get("/boards"))
             .andExpect(status().isOk());
     }
 
     @Test
-    void 게시글_id로_조회() throws Exception {
+    void 토큰_없이_게시글_id로_조회() throws Exception {
         // given
         Board response = 게시글_생성();
         given(boardService.findById(1L))
             .willReturn(response);
 
         // when & then
-        mockMvc.perform(get("/boards/1")
-                .header(HEADER_NAME, AUTHORIZATION_PREFIX + token))
+        mockMvc.perform(get("/boards/1"))
             .andExpect(status().isOk());
     }
 

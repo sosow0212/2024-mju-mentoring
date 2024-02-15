@@ -77,9 +77,25 @@ public class BoardAcceptanceTestFixture extends BaseAcceptanceTest {
         assertThat(code).isEqualTo(HttpStatus.OK.value());
     }
 
+    protected ExtractableResponse 비회원_상태로_게시글을_단건_조회한다(final String url) {
+        return RestAssured.given().log().all()
+            .when()
+            .get(url)
+            .then().log().all()
+            .extract();
+    }
+
     protected ExtractableResponse 모든_게시물을_조회한다(final String token, final String url) {
         return RestAssured.given().log().all()
             .header(HEADER_NAME, AUTHORIZATION_PREFIX + token)
+            .when()
+            .get(url)
+            .then()
+            .extract();
+    }
+
+    protected ExtractableResponse 비회원_상태로_모든_게시물을_조회한다(final String url) {
+        return RestAssured.given().log().all()
             .when()
             .get(url)
             .then()
