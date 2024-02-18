@@ -1,9 +1,13 @@
 package com.mju.mentoring.member.ui;
 
 
+import static com.mju.mentoring.global.CustomRestDocsHandler.customDocument;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.willDoNothing;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
+import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
+import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -14,6 +18,7 @@ import com.mju.mentoring.member.ui.auth.dto.TokenResponse;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
 
 public class AuthControllerWebMvcTest extends BaseControllerWebMvcTest {
@@ -40,7 +45,15 @@ public class AuthControllerWebMvcTest extends BaseControllerWebMvcTest {
         mockMvc.perform(post("/auth/signin")
                 .content(objectMapper.writeValueAsString(request))
                 .contentType(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk());
+            .andExpect(status().isOk())
+            .andDo(customDocument("signin",
+                requestFields(
+                    fieldWithPath("username").type(JsonFieldType.STRING).description("아이디"),
+                    fieldWithPath("password").type(JsonFieldType.STRING).description("비밀번호")
+                ),
+                responseFields(
+                    fieldWithPath("accessToken").type(JsonFieldType.STRING).description("액세스 토큰")
+                )));
     }
 
     @Test
@@ -54,6 +67,12 @@ public class AuthControllerWebMvcTest extends BaseControllerWebMvcTest {
         mockMvc.perform(post("/auth/signup")
                 .content(objectMapper.writeValueAsString(request))
                 .contentType(MediaType.APPLICATION_JSON))
-            .andExpect(status().isCreated());
+            .andExpect(status().isCreated())
+            .andDo(customDocument("signup",
+                requestFields(
+                    fieldWithPath("username").type(JsonFieldType.STRING).description("아이디"),
+                    fieldWithPath("nickname").type(JsonFieldType.STRING).description("닉네임"),
+                    fieldWithPath("password").type(JsonFieldType.STRING).description("비밀번호")
+                )));
     }
 }
