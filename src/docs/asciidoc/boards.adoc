@@ -1,0 +1,66 @@
+ifndef::snippets[]
+:snippets: ./build/generated-snippets
+endif::[]
+
+== 게시글 생성 (POST /boards)
+
+== REQUEST
+
+include::{snippets}/board-controller-web-mvc-test/save-board/request-headers.adoc[]
+include::{snippets}/board-controller-web-mvc-test/save-board/request-fields.adoc[]
+include::{snippets}/board-controller-web-mvc-test/save-board/http-request.adoc[]
+
+== RESPONSE
+
+include::{snippets}/board-controller-web-mvc-test/save-board/http-response.adoc[]
+
+== 게시글 조회 (GET /boards)
+
+== REQUEST
+
+include::{snippets}/board-controller-web-mvc-test/read-boards/request-fields.adoc[]
+include::{snippets}/board-controller-web-mvc-test/read-boards/http-request.adoc[]
+
+== RESPONSE
+
+include::{snippets}/board-controller-web-mvc-test/read-boards/response-fields.adoc[]
+include::{snippets}/board-controller-web-mvc-test/read-boards/http-response.adoc[]
+
+== 게시글 단건 조회 (GET /boards/{id})
+
+== REQUEST
+
+include::{snippets}/board-controller-web-mvc-test/read-board/path-parameters.adoc[]
+include::{snippets}/board-controller-web-mvc-test/read-board/response-fields.adoc[]
+include::{snippets}/board-controller-web-mvc-test/read-board/http-request.adoc[]
+
+== RESPONSE
+
+include::{snippets}/board-controller-web-mvc-test/read-board/response-fields.adoc[]
+include::{snippets}/board-controller-web-mvc-test/read-board/http-response.adoc[]
+
+== 게시글 수정 (PUT /boards/{id})
+
+== REQUEST
+
+include::{snippets}/board-controller-web-mvc-test/update-board/path-parameters.adoc[]
+include::{snippets}/board-controller-web-mvc-test/update-board/request-headers.adoc[]
+include::{snippets}/board-controller-web-mvc-test/update-board/request-fields.adoc[]
+include::{snippets}/board-controller-web-mvc-test/update-board/http-request.adoc[]
+
+== RESPONSE
+
+include::{snippets}/board-controller-web-mvc-test/update-board/response-fields.adoc[]
+include::{snippets}/board-controller-web-mvc-test/update-board/http-response.adoc[]
+
+== 게시글 단건 삭제 (DELETE /boards/{id})
+
+== REQUEST
+
+include::{snippets}/board-controller-web-mvc-test/delete-board/path-parameters.adoc[]
+include::{snippets}/board-controller-web-mvc-test/delete-board/request-headers.adoc[]
+include::{snippets}/board-controller-web-mvc-test/delete-board/http-request.adoc[]
+
+== RESPONSE
+
+include::{snippets}/board-controller-web-mvc-test/delete-board/http-response.adoc[]
