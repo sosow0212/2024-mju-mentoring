@@ -6,6 +6,8 @@ import com.mju.mentoring.board.domain.Board;
 import com.mju.mentoring.board.domain.BoardRepository;
 import com.mju.mentoring.board.application.dto.BoardCreateRequest;
 import com.mju.mentoring.board.exception.exceptions.BoardNotFoundException;
+import com.mju.mentoring.member.application.auth.AuthService;
+import com.mju.mentoring.member.domain.Member;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,11 +18,14 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class BoardService {
 
+    private final AuthService authService;
     private final BoardRepository boardRepository;
 
     @Transactional
     public Long save(final Long writerId, final BoardCreateRequest boardCreateRequest) {
-        Board board = Board.of(writerId, boardCreateRequest.title(), boardCreateRequest.content());
+        Member writer = authService.findMemberById(writerId);
+        Board board = Board.of(writer.getId(), writer.getNickname(), boardCreateRequest.title(),
+            boardCreateRequest.content());
         Board savedBoard = boardRepository.save(board);
 
         return savedBoard.getId();

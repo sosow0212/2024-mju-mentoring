@@ -23,10 +23,15 @@ public class AuthService {
     private final TokenManager<Long> tokenManager;
 
     @Transactional
-    public void signup(SignupRequest request) {
+    public void signup(final SignupRequest request) {
         checkDuplicate(request.username(), request.nickname());
         Member member = Member.of(request.username(), request.password(), request.nickname());
         memberRepository.save(member);
+    }
+
+    public Member findMemberById(final Long id) {
+        return memberRepository.findById(id)
+            .orElseThrow(MemberNotFoundException::new);
     }
 
     public TokenResponse signIn(final SignInRequest request) {

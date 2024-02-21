@@ -1,6 +1,7 @@
 package com.mju.mentoring.member.ui.auth.support;
 
 import com.mju.mentoring.member.exception.exceptions.InvalidTokenException;
+import java.util.Optional;
 
 public class TokenExtractor {
 
@@ -10,15 +11,16 @@ public class TokenExtractor {
     private static final int TOKEN_INDEX = 1;
     private static final int PREFIX_INDEX = 0;
 
-    public static String extractToken(final String authorization) throws RuntimeException {
-        if (authorization == null) {
+    public static String extractToken(final Optional<String> authorization)
+        throws RuntimeException {
+        if (authorization.isEmpty()) {
             throw new InvalidTokenException();
         }
-        String[] splitAuthorization = authorization.split(HEADER_DELIMITER);
+
+        String[] splitAuthorization = authorization.get().split(HEADER_DELIMITER);
 
         validateAuthorization(splitAuthorization);
-        String token = splitAuthorization[TOKEN_INDEX];
-        return token;
+        return splitAuthorization[TOKEN_INDEX];
     }
 
     private static void validateAuthorization(final String[] splitAuthorization)

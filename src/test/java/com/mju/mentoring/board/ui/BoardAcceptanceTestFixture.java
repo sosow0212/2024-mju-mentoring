@@ -1,5 +1,6 @@
 package com.mju.mentoring.board.ui;
 
+import static com.mju.mentoring.member.fixture.MemberFixture.id_없는_멤버_생성;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
@@ -11,6 +12,7 @@ import com.mju.mentoring.board.domain.BoardRepository;
 import com.mju.mentoring.board.ui.dto.BoardResponse;
 import com.mju.mentoring.board.ui.dto.BoardsResponse;
 import com.mju.mentoring.global.BaseAcceptanceTest;
+import com.mju.mentoring.member.domain.MemberRepository;
 import com.mju.mentoring.member.domain.TokenManager;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
@@ -32,6 +34,9 @@ public class BoardAcceptanceTestFixture extends BaseAcceptanceTest {
     private BoardRepository boardRepository;
 
     @Autowired
+    private MemberRepository memberRepository;
+
+    @Autowired
     protected TokenManager<Long> tokenManager;
 
     protected Board 게시글을_저장한다(final Board board) {
@@ -40,6 +45,10 @@ public class BoardAcceptanceTestFixture extends BaseAcceptanceTest {
 
     protected BoardCreateRequest 게시글_생성_요청() {
         return new BoardCreateRequest("title", "content");
+    }
+
+    protected void 작성자를_생성한다() {
+        memberRepository.save(id_없는_멤버_생성());
     }
 
     protected ExtractableResponse 게시글을_생성한다(final String token, final BoardCreateRequest request,
@@ -77,9 +86,25 @@ public class BoardAcceptanceTestFixture extends BaseAcceptanceTest {
         assertThat(code).isEqualTo(HttpStatus.OK.value());
     }
 
+    protected ExtractableResponse 비회원_상태로_게시글을_단건_조회한다(final String url) {
+        return RestAssured.given().log().all()
+            .when()
+            .get(url)
+            .then().log().all()
+            .extract();
+    }
+
     protected ExtractableResponse 모든_게시물을_조회한다(final String token, final String url) {
         return RestAssured.given().log().all()
             .header(HEADER_NAME, AUTHORIZATION_PREFIX + token)
+            .when()
+            .get(url)
+            .then()
+            .extract();
+    }
+
+    protected ExtractableResponse 비회원_상태로_모든_게시물을_조회한다(final String url) {
+        return RestAssured.given().log().all()
             .when()
             .get(url)
             .then()
@@ -110,6 +135,7 @@ public class BoardAcceptanceTestFixture extends BaseAcceptanceTest {
             softly.assertThat(board.getId()).isEqualTo(result.boardId());
             softly.assertThat(board.getTitle()).isEqualTo(result.title());
             softly.assertThat(board.getContent()).isEqualTo(result.content());
+            softly.assertThat(board.getWriterName()).isEqualTo(result.writer());
         });
     }
 

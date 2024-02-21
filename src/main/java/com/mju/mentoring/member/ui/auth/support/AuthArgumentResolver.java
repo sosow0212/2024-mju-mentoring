@@ -1,6 +1,7 @@
 package com.mju.mentoring.member.ui.auth.support;
 
 import com.mju.mentoring.member.domain.TokenManager;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.MethodParameter;
@@ -30,7 +31,7 @@ public class AuthArgumentResolver implements HandlerMethodArgumentResolver {
         final ModelAndViewContainer mavContainer,
         final NativeWebRequest webRequest, final WebDataBinderFactory binderFactory)
         throws Exception {
-        String authorization = webRequest.getHeader(HEADER_NAME);
+        Optional<String> authorization = Optional.ofNullable(webRequest.getHeader(HEADER_NAME));
         String token = TokenExtractor.extractToken(authorization);
         return tokenManager.parse(token);
     }
