@@ -116,7 +116,7 @@ public class BoardAcceptanceTestFixture extends BaseAcceptanceTest {
                 });
             countDownLatch.await();
         } catch (InterruptedException exception) {
-            System.out.println(exception);
+            System.out.println(exception.getMessage());
         }
         return 비회원_상태로_게시글을_단건_조회한다(url);
     }
