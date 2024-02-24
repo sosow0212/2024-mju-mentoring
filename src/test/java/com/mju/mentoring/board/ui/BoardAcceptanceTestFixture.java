@@ -18,6 +18,10 @@ import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.response.ExtractableResponse;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.stream.IntStream;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +33,7 @@ public class BoardAcceptanceTestFixture extends BaseAcceptanceTest {
 
     private static final String HEADER_NAME = "Authorization";
     private static final String AUTHORIZATION_PREFIX = "Bearer ";
+    private static final Integer CONCURRENT_VIEW_COUNT = 5;
 
     @Autowired
     private BoardRepository boardRepository;
@@ -97,6 +102,25 @@ public class BoardAcceptanceTestFixture extends BaseAcceptanceTest {
             .extract();
     }
 
+    protected ExtractableResponse 여러번_동시에_게시글을_조회한다(final String url) {
+        ExecutorService executorService = Executors.newFixedThreadPool(CONCURRENT_VIEW_COUNT);
+        CountDownLatch countDownLatch = new CountDownLatch(CONCURRENT_VIEW_COUNT);
+
+        try {
+            IntStream.range(0, CONCURRENT_VIEW_COUNT)
+                .forEach(n -> {
+                    executorService.execute(() -> {
+                        비회원_상태로_게시글을_단건_조회한다(url);
+                        countDownLatch.countDown();
+                    });
+                });
+            countDownLatch.await();
+        } catch (InterruptedException exception) {
+            System.out.println(exception);
+        }
+        return 비회원_상태로_게시글을_단건_조회한다(url);
+    }
+
     protected ExtractableResponse 모든_게시물을_조회한다(final String token, final String url) {
         return RestAssured.given().log().all()
             .header(HEADER_NAME, AUTHORIZATION_PREFIX + token)
@@ -112,6 +136,11 @@ public class BoardAcceptanceTestFixture extends BaseAcceptanceTest {
             .get(url)
             .then()
             .extract();
+    }
+
+    protected void 게시글_조회수_검증(final ExtractableResponse response) {
+        BoardResponse result = response.as(BoardResponse.class);
+        assertThat(result.view()).isEqualTo(CONCURRENT_VIEW_COUNT + 1);
     }
 
     protected void 여러_게시물_조회_검증(final ExtractableResponse response, final Board board1,

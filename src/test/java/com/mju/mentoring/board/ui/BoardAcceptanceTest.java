@@ -70,6 +70,18 @@ public class BoardAcceptanceTest extends BoardAcceptanceTestFixture {
     }
 
     @Test
+    void 동시에_조회해도_조회수_올바르게_증가_테스트() {
+        // given
+        게시글을_저장한다(게시글1);
+
+        // when
+        var 게시글_조회_결과 = 여러번_동시에_게시글을_조회한다(게시글_단건_조회_url);
+
+        // then
+        게시글_조회수_검증(게시글_조회_결과);
+    }
+
+    @Test
     void 게시글_여러건_조회_테스트() {
         // given
         var 생성_게시글1 = 게시글을_저장한다(게시글1);
