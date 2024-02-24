@@ -1,0 +1,26 @@
+ifndef::snippets[]
+:snippets: ./build/generated-snippets
+endif::[]
+
+== 로그인 (POST /auth/signin)
+
+== REQUEST
+
+include::{snippets}/auth-controller-web-mvc-test/signin/request-fields.adoc[]
+include::{snippets}/auth-controller-web-mvc-test/signin/http-request.adoc[]
+
+== RESPONSE
+
+include::{snippets}/auth-controller-web-mvc-test/signin/response-fields.adoc[]
+include::{snippets}/auth-controller-web-mvc-test/signin/http-response.adoc[]
+
+== 로그인 (POST /auth/signin)
+
+== REQUEST
+
+include::{snippets}/auth-controller-web-mvc-test/signup/request-fields.adoc[]
+include::{snippets}/auth-controller-web-mvc-test/signup/http-request.adoc[]
+
+== RESPONSE
+
+include::{snippets}/auth-controller-web-mvc-test/signup/http-response.adoc[]
