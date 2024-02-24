@@ -83,7 +83,10 @@ public class BoardAcceptanceTestFixture extends BaseAcceptanceTest {
         BoardResponse result = response.as(BoardResponse.class);
 
         게시물_검증(result, board);
-        assertThat(code).isEqualTo(HttpStatus.OK.value());
+        assertSoftly(softly -> {
+            softly.assertThat(result.view()).isEqualTo(1);
+            softly.assertThat(code).isEqualTo(HttpStatus.OK.value());
+        });
     }
 
     protected ExtractableResponse 비회원_상태로_게시글을_단건_조회한다(final String url) {

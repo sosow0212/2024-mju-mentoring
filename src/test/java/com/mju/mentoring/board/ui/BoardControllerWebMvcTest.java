@@ -88,7 +88,9 @@ class BoardControllerWebMvcTest extends BaseControllerWebMvcTest {
                     fieldWithPath("boardsResponse[].title").type(JsonFieldType.STRING)
                         .description("게시글의 제목"),
                     fieldWithPath("boardsResponse[].content").type(JsonFieldType.STRING)
-                        .description("게시글의 본문")
+                        .description("게시글의 본문"),
+                    fieldWithPath("boardsResponse[].view").type(JsonFieldType.NUMBER)
+                        .description("게시글의 조회수")
                 )
             ));
     }
@@ -97,7 +99,7 @@ class BoardControllerWebMvcTest extends BaseControllerWebMvcTest {
     void 토큰_없이_게시글_id로_조회() throws Exception {
         // given
         Board response = 게시글_생성();
-        given(boardService.findById(1L))
+        given(boardService.readBoard(1L))
             .willReturn(response);
 
         // when & then
@@ -115,7 +117,9 @@ class BoardControllerWebMvcTest extends BaseControllerWebMvcTest {
                     fieldWithPath("title").type(JsonFieldType.STRING)
                         .description("게시글의 제목"),
                     fieldWithPath("content").type(JsonFieldType.STRING)
-                        .description("게시글의 본문")
+                        .description("게시글의 본문"),
+                    fieldWithPath("view").type(JsonFieldType.NUMBER)
+                        .description("게시글의 조회수")
                 )));
     }
 

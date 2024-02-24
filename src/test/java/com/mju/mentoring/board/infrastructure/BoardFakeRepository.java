@@ -23,6 +23,7 @@ public class BoardFakeRepository implements BoardRepository {
             .id(id)
             .writer(board.getWriter())
             .description(board.copyDescription())
+            .view(board.getView())
             .build();
 
         db.put(id++, savedBoard);
