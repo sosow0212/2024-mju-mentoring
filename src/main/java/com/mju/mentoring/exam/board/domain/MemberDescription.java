@@ -25,14 +25,14 @@ public class MemberDescription {
 	@Column(nullable = false)
 	private String nickname;
 
-	public MemberDescription(String loginId, String username, String password, String nickname) {
+	public MemberDescription(final String loginId, final String username, final String password, final String nickname) {
 		this.loginId = loginId;
 		this.username = username;
 		this.password = password;
 		this.nickname = nickname;
 	}
 
-	public boolean isValidPassword(String password) {
+	public boolean isValidPassword(final String password) {
 		if (!this.getPassword().equals(password)) {
 			throw new MemberNotFoundException("비밀번호가 일치하지 않습니다");
 		}

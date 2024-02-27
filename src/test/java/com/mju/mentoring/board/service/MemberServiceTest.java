@@ -53,10 +53,9 @@ class MemberServiceTest {
 			.setSigningKey(SECRET)
 			.build()
 			.parseClaimsJws(token);
-
 		assertSoftly(softly -> {
 			softly.assertThat(jwtClaims.getBody()).isNotNull();
-			softly.assertThat(jwtClaims.getBody().get("user_id", String.class)).isEqualTo("user1");
+			softly.assertThat(jwtClaims.getBody().get("id", Long.class)).isEqualTo(1L);
 		});
 
 	}
