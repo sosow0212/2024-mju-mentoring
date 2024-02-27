@@ -62,7 +62,9 @@ public class BoardService {
     }
 
     @Transactional
-    public void deleteAllById(final BoardDeleteRequest deleteRequest) {
+    public void deleteAllById(final Long writerId, final BoardDeleteRequest deleteRequest) {
+        List<Board> boards = boardRepository.findBoardsByBoardsId(deleteRequest.ids());
+        boards.forEach(board -> board.verifyWriter(writerId));
         boardRepository.deleteAllById(deleteRequest.ids());
     }
 

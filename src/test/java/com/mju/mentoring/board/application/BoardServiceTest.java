@@ -165,7 +165,8 @@ class BoardServiceTest {
         Long savedId2 = saveBoard(DEFAULT_WRITER_ID, request2);
 
         // when
-        boardService.deleteAllById(new BoardDeleteRequest(List.of(savedId1, savedId2)));
+        boardService.deleteAllById(DEFAULT_WRITER_ID,
+            new BoardDeleteRequest(List.of(savedId1, savedId2)));
 
         // then
         List<Board> boards = boardService.findAll();

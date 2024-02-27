@@ -73,8 +73,9 @@ public class BoardController {
     }
 
     @DeleteMapping
-    public ResponseEntity<Void> deleteAllById(@RequestBody final BoardDeleteRequest deleteRequest) {
-        boardService.deleteAllById(deleteRequest);
+    public ResponseEntity<Void> deleteAllById(@AuthInformation final Long writerId,
+        @RequestBody final BoardDeleteRequest deleteRequest) {
+        boardService.deleteAllById(writerId, deleteRequest);
 
         return ResponseEntity.ok()
             .build();

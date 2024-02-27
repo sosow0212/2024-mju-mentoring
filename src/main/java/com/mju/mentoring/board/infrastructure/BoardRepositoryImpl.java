@@ -35,11 +35,16 @@ public class BoardRepositoryImpl implements BoardRepository {
 
     @Override
     public void deleteAllById(final List<Long> ids) {
-        boardJpaRepository.deleteAllByIdInBatch(ids);
+        boardJpaRepository.deleteAllById(ids);
     }
 
     @Override
     public List<Board> findBoardsByWriterId(final Long writerId) {
         return boardJpaRepository.findAllByWriterId(writerId);
+    }
+
+    @Override
+    public List<Board> findBoardsByBoardsId(final List<Long> ids) {
+        return boardJpaRepository.findAllById(ids);
     }
 }
