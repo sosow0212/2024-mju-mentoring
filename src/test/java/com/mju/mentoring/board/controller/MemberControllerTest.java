@@ -16,6 +16,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mju.mentoring.exam.board.component.JwtTokenProvider;
 import com.mju.mentoring.exam.board.controller.MemberController;
 import com.mju.mentoring.exam.board.domain.Member;
 import com.mju.mentoring.exam.board.domain.MemberRepository;
@@ -47,6 +48,9 @@ class MemberControllerTest {
 
 	@MockBean
 	private MemberService memberService;
+
+	@MockBean
+	private JwtTokenProvider jwtTokenProvider;
 
 	@Test
 	void 로그인한다() throws Exception {

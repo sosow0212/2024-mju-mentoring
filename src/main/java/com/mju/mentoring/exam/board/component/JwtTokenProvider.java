@@ -5,7 +5,6 @@ import java.sql.Date;
 
 import javax.crypto.SecretKey;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.mju.mentoring.exam.board.domain.Member;
@@ -20,8 +19,8 @@ import io.jsonwebtoken.security.Keys;
 
 @Component
 public class JwtTokenProvider {
-	@Value("${access.expired_time}")
-	private String ACCESS_EXPIRED_TIME;
+	//@Value("${access.expired_time}")
+	private String ACCESS_EXPIRED_TIME = "180000";
 
 	public static SecretKey SECRET = Keys.secretKeyFor(SignatureAlgorithm.HS512);
 
