@@ -29,7 +29,7 @@ public class BoardController {
     private final BoardService boardService;
 
     @PostMapping
-    public ResponseEntity<Void> save(@AuthInformation Long writerId,
+    public ResponseEntity<Void> save(@AuthInformation final Long writerId,
         @RequestBody final BoardCreateRequest boardCreateRequest) {
         Long createdBardId = boardService.save(writerId, boardCreateRequest);
 
@@ -54,7 +54,7 @@ public class BoardController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Void> updateById(@AuthInformation Long writerId,
+    public ResponseEntity<Void> updateById(@AuthInformation final Long writerId,
         @PathVariable(name = "id") final Long id,
         @RequestBody BoardUpdateRequest boardUpdateRequest) {
         boardService.update(writerId, id, boardUpdateRequest);
@@ -64,7 +64,7 @@ public class BoardController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteById(@AuthInformation Long writerId,
+    public ResponseEntity<Void> deleteById(@AuthInformation final Long writerId,
         @PathVariable(name = "id") final Long id) {
         boardService.deleteById(writerId, id);
 

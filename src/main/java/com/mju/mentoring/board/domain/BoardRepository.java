@@ -13,5 +13,7 @@ public interface BoardRepository {
 
     void delete(final Board board);
 
-    void deleteAllById(List<Long> ids);
+    void deleteAllById(final List<Long> ids);
+
+    List<Board> findBoardsByWriterId(final Long writerId);
 }

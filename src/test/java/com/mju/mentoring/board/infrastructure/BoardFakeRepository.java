@@ -64,4 +64,11 @@ public class BoardFakeRepository implements BoardRepository {
             .filter(db::containsKey)
             .forEach(db::remove);
     }
+
+    @Override
+    public List<Board> findBoardsByWriterId(final Long writerId) {
+        return db.values().stream()
+            .filter(board -> board.getWriterId().equals(writerId))
+            .toList();
+    }
 }

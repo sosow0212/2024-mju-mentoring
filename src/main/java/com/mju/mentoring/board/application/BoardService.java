@@ -65,4 +65,10 @@ public class BoardService {
     public void deleteAllById(final BoardDeleteRequest deleteRequest) {
         boardRepository.deleteAllById(deleteRequest.ids());
     }
+
+    @Transactional
+    public void changeWriterName(final Long writerId, final String newWriterName) {
+        List<Board> boards = boardRepository.findBoardsByWriterId(writerId);
+        boards.forEach(board -> board.changeWriter(writerId, newWriterName));
+    }
 }
