@@ -16,7 +16,7 @@ public class MemberDescription {
 	@Column(nullable = false, unique = true, name = "login_Id")
 	private String loginId;
 
-	@Column(nullable = false, unique = true)
+	@Column(nullable = false)
 	private String username;
 
 	@Column(nullable = false)
