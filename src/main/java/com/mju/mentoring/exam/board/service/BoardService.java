@@ -14,6 +14,8 @@ import com.mju.mentoring.exam.board.exception.MemberNotFoundException;
 import com.mju.mentoring.exam.board.service.dto.BoardCreateRequest;
 import com.mju.mentoring.exam.board.service.dto.BoardUpdateRequest;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -22,12 +24,14 @@ public class BoardService {
 
 	private final BoardRepository boardRepository;
 	private final MemberRepository memberRepository;
+	@PersistenceContext
+	private EntityManager entityManager;
 
 	@Transactional
 	public Long save(final long memberId, final BoardCreateRequest request) {
 		Member member = this.memberRepository.findById(memberId)
 			.orElseThrow(() -> new MemberNotFoundException("id에 해당하는 member가 존재하지 않습니다"));
-		Board board = new Board(request.title(), request.content(), member);
+		Board board = new Board(request.title(), request.content(), member, 0L);
 		Board savedBoard = boardRepository.save(board);
 		return savedBoard.getId();
 	}
@@ -37,9 +41,10 @@ public class BoardService {
 		return boardRepository.findAll();
 	}
 
-	@Transactional(readOnly = true)
+	@Transactional
 	public Board findById(final Long id) {
 		Board board = findByIdOrThrowException(id);
+		board.addView();
 		return board;
 	}
 
