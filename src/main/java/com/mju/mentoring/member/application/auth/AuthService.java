@@ -1,5 +1,6 @@
 package com.mju.mentoring.member.application.auth;
 
+import com.mju.mentoring.member.application.auth.dto.ChangeNickNameRequest;
 import com.mju.mentoring.member.application.auth.dto.SignInRequest;
 import com.mju.mentoring.member.application.auth.dto.SignupRequest;
 import com.mju.mentoring.member.domain.Member;
@@ -44,6 +45,12 @@ public class AuthService {
 
         String accessToken = tokenManager.create(member.getId());
         return new TokenResponse(accessToken);
+    }
+
+    @Transactional
+    public void changeNickName(final Long memberId, final ChangeNickNameRequest request) {
+        Member member = findMemberById(memberId);
+        member.changeNickName(request.newNickname());
     }
 
     private Member findMemberByUsername(final String username) {
