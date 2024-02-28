@@ -48,9 +48,6 @@ public class Board {
 	}
 
 	public boolean writerValidation(Member member) {
-		if (this.member.equals(member)) {
-			return true;
-		}
-		return false;
+		return member.writerValidation(member);
 	}
 }

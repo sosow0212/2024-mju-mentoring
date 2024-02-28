@@ -55,8 +55,9 @@ public class BoardService {
 		Board board = findByIdOrThrowException(id);
 		if (board.writerValidation(member)) {
 			board.update(request.title(), request.content());
+		} else {
+			throw new MemberNotFoundException("작성자가 아닙니다");
 		}
-		throw new MemberNotFoundException("작성자가 아닙니다");
 	}
 
 	@Transactional
@@ -66,8 +67,9 @@ public class BoardService {
 		Board board = findByIdOrThrowException(id);
 		if (board.writerValidation(member)) {
 			boardRepository.deleteById(id);
+		} else {
+			throw new MemberNotFoundException("작성자가 아닙니다");
 		}
-		throw new MemberNotFoundException("작성자가 아닙니다");
 	}
 
 	private Board findByIdOrThrowException(Long id) {
