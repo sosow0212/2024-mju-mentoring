@@ -34,17 +34,23 @@ public class Board {
 	@JoinColumn(name = "member_id")
 	private Member member;
 
-	public Board(final String title, final String content, final Member member, final Long Views) {
-		this.boardDescription = new BoardDescription(title, content, Views);
+	public Board(final String title, final String content, final Member member, final Long views) {
+		this.boardDescription = new BoardDescription(title, content, views);
 		this.member = member;
 	}
 
 	public void update(final String title, final String content) {
-		this.boardDescription = new BoardDescription(title, content, this.boardDescription.getViews());
+		this.boardDescription.update(title, content);
 	}
 
 	public void addView() {
-		this.boardDescription = new BoardDescription(this.boardDescription.getTitle(),
-			this.boardDescription.getContent(), this.boardDescription.getViews() + 1);
+		this.boardDescription.addView();
+	}
+
+	public boolean writerValidation(Member member) {
+		if (this.member.equals(member)) {
+			return true;
+		}
+		return false;
 	}
 }

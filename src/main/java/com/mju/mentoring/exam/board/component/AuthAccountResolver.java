@@ -30,9 +30,7 @@ public class AuthAccountResolver implements HandlerMethodArgumentResolver {
 	@Override
 	public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
 		NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
-
 		HttpServletRequest httpServletRequest = webRequest.getNativeRequest(HttpServletRequest.class);
-
 		String token = httpServletRequest.getHeader("Authorization");
 		if (jwtTokenProvider.validateToken(token)) {
 			return jwtTokenProvider.getIdFromToken(token);

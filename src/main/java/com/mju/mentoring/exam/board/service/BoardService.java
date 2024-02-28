@@ -49,14 +49,25 @@ public class BoardService {
 	}
 
 	@Transactional
-	public void update(final Long id, final BoardUpdateRequest request) {
+	public void update(final Long memberId, final Long id, final BoardUpdateRequest request) {
+		Member member = this.memberRepository.findById(memberId)
+			.orElseThrow(() -> new MemberNotFoundException("id에 해당하는 member가 존재하지 않습니다"));
 		Board board = findByIdOrThrowException(id);
-		board.update(request.title(), request.content());
+		if (board.writerValidation(member)) {
+			board.update(request.title(), request.content());
+		}
+		throw new MemberNotFoundException("작성자가 아닙니다");
 	}
 
 	@Transactional
-	public void delete(final Long id) {
-		boardRepository.deleteById(id);
+	public void delete(final Long memberId, Long id) {
+		Member member = this.memberRepository.findById(memberId)
+			.orElseThrow(() -> new MemberNotFoundException("id에 해당하는 member가 존재하지 않습니다"));
+		Board board = findByIdOrThrowException(id);
+		if (board.writerValidation(member)) {
+			boardRepository.deleteById(id);
+		}
+		throw new MemberNotFoundException("작성자가 아닙니다");
 	}
 
 	private Board findByIdOrThrowException(Long id) {

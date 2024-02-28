@@ -20,7 +20,7 @@ import io.jsonwebtoken.security.Keys;
 @Component
 public class JwtTokenProvider {
 	//@Value("${access.expired_time}")
-	private String ACCESS_EXPIRED_TIME = "180000";
+	private static String ACCESS_EXPIRED_TIME = "180000";
 
 	public static SecretKey SECRET = Keys.secretKeyFor(SignatureAlgorithm.HS512);
 

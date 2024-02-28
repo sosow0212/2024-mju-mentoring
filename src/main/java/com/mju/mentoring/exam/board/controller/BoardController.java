@@ -51,15 +51,17 @@ public class BoardController {
 	}
 
 	@PutMapping("/boards/{id}")
-	public ResponseEntity<Void> update(@PathVariable("id") final Long id,
+	public ResponseEntity<Void> update(@AuthAccount Long memberId,
+		@PathVariable("id") final Long id,
 		@RequestBody final BoardUpdateRequest request) {
-		boardService.update(id, request);
+		boardService.update(memberId, id, request);
 		return ResponseEntity.ok().build();
 	}
 
 	@DeleteMapping("/boards/{id}")
-	public ResponseEntity<Void> deleteById(@PathVariable("id") final Long id) {
-		boardService.delete(id);
+	public ResponseEntity<Void> deleteById(@AuthAccount Long memberId,
+		@PathVariable("id") final Long id) {
+		boardService.delete(memberId, id);
 		return ResponseEntity.noContent().build();
 	}
 }
