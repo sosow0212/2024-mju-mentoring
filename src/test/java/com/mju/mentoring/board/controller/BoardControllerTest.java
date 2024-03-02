@@ -1,10 +1,13 @@
 package com.mju.mentoring.board.controller;
 
-import static com.mju.mentoring.board.fixture.BoardFixture.*;
-import static com.mju.mentoring.board.fixture.MemberFixture.*;
-import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static com.mju.mentoring.board.fixture.BoardFixture.게시글_생성;
+import static com.mju.mentoring.board.fixture.MemberFixture.멤버_생성;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.List;
 

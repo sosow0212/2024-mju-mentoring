@@ -1,5 +1,9 @@
 package com.mju.mentoring.exam.board.domain;
 
+import java.nio.file.AccessDeniedException;
+
+import com.mju.mentoring.exam.board.exception.BadCredentialsException;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -27,23 +31,17 @@ public class Member {
 	@Embedded
 	private MemberDescription memberDescription;
 
-	public boolean isValidPassword(String password) {
-		return memberDescription.isValidPassword(password);
+	public void isValidPassword(String password) throws BadCredentialsException {
+		this.memberDescription.isValidPassword(password);
 	}
 
 	public Member(MemberDescription memberDescription) {
 		this.memberDescription = memberDescription;
 	}
 
-	public Member(String memberId, String username, String password, String nickname) {
-		this.memberDescription = new MemberDescription(memberId, username, password, nickname);
-	}
-
-	public boolean writerValidation(Member member) {
-
-		if (member.id == id) {
-			return true;
+	public void writerValidation(Member member) throws AccessDeniedException {
+		if (member.id != id) {
+			throw new AccessDeniedException("작성자가 아닙니다");
 		}
-		return false;
 	}
 }

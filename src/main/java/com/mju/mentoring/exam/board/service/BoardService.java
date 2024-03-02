@@ -1,5 +1,6 @@
 package com.mju.mentoring.exam.board.service;
 
+import java.nio.file.AccessDeniedException;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -49,27 +50,22 @@ public class BoardService {
 	}
 
 	@Transactional
-	public void update(final Long memberId, final Long id, final BoardUpdateRequest request) {
+	public void update(final Long memberId, final Long id, final BoardUpdateRequest request) throws
+		AccessDeniedException {
 		Member member = this.memberRepository.findById(memberId)
 			.orElseThrow(() -> new MemberNotFoundException("id에 해당하는 member가 존재하지 않습니다"));
 		Board board = findByIdOrThrowException(id);
-		if (board.writerValidation(member)) {
-			board.update(request.title(), request.content());
-		} else {
-			throw new MemberNotFoundException("작성자가 아닙니다");
-		}
+		board.writerValidation(member);
+		board.update(request.title(), request.content());
 	}
 
 	@Transactional
-	public void delete(final Long memberId, Long id) {
+	public void delete(final Long memberId, Long id) throws AccessDeniedException {
 		Member member = this.memberRepository.findById(memberId)
 			.orElseThrow(() -> new MemberNotFoundException("id에 해당하는 member가 존재하지 않습니다"));
 		Board board = findByIdOrThrowException(id);
-		if (board.writerValidation(member)) {
-			boardRepository.deleteById(id);
-		} else {
-			throw new MemberNotFoundException("작성자가 아닙니다");
-		}
+		board.writerValidation(member);
+		boardRepository.deleteById(id);
 	}
 
 	private Board findByIdOrThrowException(Long id) {

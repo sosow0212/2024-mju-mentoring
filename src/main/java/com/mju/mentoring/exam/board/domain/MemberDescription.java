@@ -1,6 +1,6 @@
 package com.mju.mentoring.exam.board.domain;
 
-import com.mju.mentoring.exam.board.exception.MemberNotFoundException;
+import com.mju.mentoring.exam.board.exception.BadCredentialsException;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
@@ -32,10 +32,9 @@ public class MemberDescription {
 		this.nickname = nickname;
 	}
 
-	public boolean isValidPassword(String password) {
+	public void isValidPassword(String password) throws BadCredentialsException {
 		if (!this.getPassword().equals(password)) {
-			throw new MemberNotFoundException("비밀번호가 일치하지 않습니다");
+			throw new BadCredentialsException();
 		}
-		return true;
 	}
 }

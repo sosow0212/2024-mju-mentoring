@@ -1,8 +1,8 @@
 package com.mju.mentoring.board.service;
 
-import static com.mju.mentoring.board.fixture.MemberFixture.*;
-import static com.mju.mentoring.exam.board.component.JwtTokenProvider.*;
-import static org.assertj.core.api.SoftAssertions.*;
+import static com.mju.mentoring.board.fixture.MemberFixture.멤버_생성;
+import static com.mju.mentoring.exam.board.component.JwtTokenProvider.SECRET;
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayNameGeneration;

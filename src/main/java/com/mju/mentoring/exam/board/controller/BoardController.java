@@ -1,6 +1,7 @@
 package com.mju.mentoring.exam.board.controller;
 
 import java.net.URI;
+import java.nio.file.AccessDeniedException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,14 +54,14 @@ public class BoardController {
 	@PutMapping("/boards/{id}")
 	public ResponseEntity<Void> update(@AuthAccount Long memberId,
 		@PathVariable("id") final Long id,
-		@RequestBody final BoardUpdateRequest request) {
+		@RequestBody final BoardUpdateRequest request) throws AccessDeniedException {
 		boardService.update(memberId, id, request);
 		return ResponseEntity.ok().build();
 	}
 
 	@DeleteMapping("/boards/{id}")
 	public ResponseEntity<Void> deleteById(@AuthAccount Long memberId,
-		@PathVariable("id") final Long id) {
+		@PathVariable("id") final Long id) throws AccessDeniedException {
 		boardService.delete(memberId, id);
 		return ResponseEntity.noContent().build();
 	}

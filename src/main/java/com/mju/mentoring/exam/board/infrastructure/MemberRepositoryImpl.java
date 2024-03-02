@@ -32,6 +32,6 @@ public class MemberRepositoryImpl implements MemberRepository {
 
 	@Override
 	public Optional<Member> findByLoginId(String memberId) {
-		return memberJpaRepository.findMemberByMemberDescription_LoginId(memberId);
+		return memberJpaRepository.findMemberByMemberDescriptionLoginId(memberId);
 	}
 }

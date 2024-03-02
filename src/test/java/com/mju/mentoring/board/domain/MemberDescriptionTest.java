@@ -1,15 +1,15 @@
 package com.mju.mentoring.board.domain;
 
-import static com.mju.mentoring.board.fixture.MemberFixture.*;
-import static org.assertj.core.api.SoftAssertions.*;
-import static org.junit.jupiter.api.Assertions.*;
+import static com.mju.mentoring.board.fixture.MemberFixture.멤버_생성;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
 
 import com.mju.mentoring.exam.board.domain.Member;
-import com.mju.mentoring.exam.board.exception.MemberNotFoundException;
+import com.mju.mentoring.exam.board.exception.BadCredentialsException;
 
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 @SuppressWarnings("NonAsciiCharacters")
@@ -22,9 +22,7 @@ class MemberDescriptionTest {
 		Member member = 멤버_생성();
 
 		// when & then
-		assertSoftly(softly -> {
-			softly.assertThat(member.isValidPassword(rightpassword)).isTrue();
-		});
+		assertDoesNotThrow(() -> member.isValidPassword(rightpassword));
 	}
 
 	@Test
@@ -34,7 +32,7 @@ class MemberDescriptionTest {
 		Member member = 멤버_생성();
 
 		// when & then
-		assertThrows(MemberNotFoundException.class, () -> {
+		assertThrows(BadCredentialsException.class, () -> {
 			member.isValidPassword(wrongpassword);
 		});
 	}
