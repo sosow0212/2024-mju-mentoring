@@ -20,10 +20,10 @@ public class BoardDescription {
 	@Column(nullable = false)
 	private Long views;
 
-	public BoardDescription(final String title, final String content, final Long views) {
+	public BoardDescription(final String title, final String content) {
 		this.title = title;
 		this.content = content;
-		this.views = views;
+		this.views = 0L;
 	}
 
 	public void update(final String title, final String content) {

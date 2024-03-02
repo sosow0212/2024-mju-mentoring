@@ -34,8 +34,8 @@ public class Board {
 	@JoinColumn(name = "member_id")
 	private Member member;
 
-	public Board(final String title, final String content, final Member member, final Long views) {
-		this.boardDescription = new BoardDescription(title, content, views);
+	public Board(final String title, final String content, final Member member) {
+		this.boardDescription = new BoardDescription(title, content);
 		this.member = member;
 	}
 
