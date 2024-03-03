@@ -44,6 +44,14 @@ public class BoardFakeRepository implements BoardRepository {
     }
 
     @Override
+    public Optional<Board> viewById(final Long id) {
+        return db.values()
+            .stream()
+            .filter(board -> board.getId().equals(id))
+            .findAny();
+    }
+
+    @Override
     public void delete(final Board board) {
         if (!db.containsValue(board)) {
             return;

@@ -29,6 +29,11 @@ public class BoardRepositoryImpl implements BoardRepository {
     }
 
     @Override
+    public Optional<Board> viewById(final Long id) {
+        return boardJpaRepository.viewById(id);
+    }
+
+    @Override
     public void delete(final Board board) {
         boardJpaRepository.delete(board);
     }

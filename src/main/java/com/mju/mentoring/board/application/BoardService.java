@@ -38,7 +38,8 @@ public class BoardService {
 
     @Transactional
     public Board readBoard(final Long id) {
-        Board board = findById(id);
+        Board board = boardRepository.viewById(id)
+            .orElseThrow(BoardNotFoundException::new);
         board.viewBoard();
         return board;
     }

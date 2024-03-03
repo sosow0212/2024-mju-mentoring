@@ -16,10 +16,6 @@ public interface BoardJpaRepository extends JpaRepository<Board, Long> {
 
     Board save(final Board board);
 
-    @Lock(LockModeType.PESSIMISTIC_WRITE)
-    @QueryHints({
-        @QueryHint(name = "javax.persistence.lock.timeout", value = "2000")
-    })
     Optional<Board> findById(final Long id);
 
     List<Board> findAll();
@@ -35,5 +31,13 @@ public interface BoardJpaRepository extends JpaRepository<Board, Long> {
 
     @Modifying(clearAutomatically = true)
     @Query("UPDATE Board b set b.writer.writerName = :newWriterName WHERE b.writer.writerId = :writerId")
-    void updateWriterName(@Param("writerId") final Long writerId, @Param("newWriterName") final String newWriterName);
+    void updateWriterName(@Param("writerId") final Long writerId,
+        @Param("newWriterName") final String newWriterName);
+
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    @QueryHints({
+        @QueryHint(name = "javax.persistence.lock.timeout", value = "2000")
+    })
+    @Query("SELECT b FROM Board b WHERE b.id = :id")
+    Optional<Board> viewById(@Param("id") final Long id);
 }
