@@ -5,6 +5,7 @@ import com.mju.mentoring.board.application.dto.BoardUpdateRequest;
 import com.mju.mentoring.board.domain.Board;
 import com.mju.mentoring.board.domain.BoardRepository;
 import com.mju.mentoring.board.application.dto.BoardCreateRequest;
+import com.mju.mentoring.board.domain.Boards;
 import com.mju.mentoring.board.exception.exceptions.BoardNotFoundException;
 import com.mju.mentoring.member.application.auth.AuthService;
 import com.mju.mentoring.member.domain.Member;
@@ -63,8 +64,9 @@ public class BoardService {
 
     @Transactional
     public void deleteAllById(final Long writerId, final BoardDeleteRequest deleteRequest) {
-        List<Board> boards = boardRepository.findBoardsByBoardsId(deleteRequest.ids());
-        boards.forEach(board -> board.verifyWriter(writerId));
+        List<Board> targetBoards = boardRepository.findBoardsByBoardsId(deleteRequest.ids());
+        Boards boards = Boards.from(targetBoards);
+        boards.verifyAllWriter(writerId);
         boardRepository.deleteAllById(deleteRequest.ids());
     }
 
