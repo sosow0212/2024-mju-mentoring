@@ -1,6 +1,5 @@
 package com.mju.mentoring.member.domain;
 
-import com.mju.mentoring.global.event.Events;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -45,7 +44,6 @@ public class Member {
 
     public void changeNickName(final String newNickname) {
         this.nickname = newNickname;
-        Events.raise(new MemberNickNameChangedEvent(id, newNickname));
     }
 
     public String getUsername() {

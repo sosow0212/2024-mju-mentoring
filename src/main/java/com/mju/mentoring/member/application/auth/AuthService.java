@@ -1,9 +1,11 @@
 package com.mju.mentoring.member.application.auth;
 
+import com.mju.mentoring.global.event.Events;
 import com.mju.mentoring.member.application.auth.dto.ChangeNickNameRequest;
 import com.mju.mentoring.member.application.auth.dto.SignInRequest;
 import com.mju.mentoring.member.application.auth.dto.SignupRequest;
 import com.mju.mentoring.member.domain.Member;
+import com.mju.mentoring.member.domain.MemberNickNameChangedEvent;
 import com.mju.mentoring.member.domain.MemberRepository;
 import com.mju.mentoring.member.domain.TokenManager;
 import com.mju.mentoring.member.exception.exceptions.DuplicateNicknameException;
@@ -50,7 +52,9 @@ public class AuthService {
     @Transactional
     public void changeNickName(final Long memberId, final ChangeNickNameRequest request) {
         Member member = findMemberById(memberId);
-        member.changeNickName(request.newNickname());
+        String newNickname = request.newNickname();
+        member.changeNickName(newNickname);
+        Events.raise(new MemberNickNameChangedEvent(memberId, newNickname));
     }
 
     private Member findMemberByUsername(final String username) {
