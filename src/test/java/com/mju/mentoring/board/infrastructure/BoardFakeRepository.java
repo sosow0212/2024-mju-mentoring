@@ -66,16 +66,14 @@ public class BoardFakeRepository implements BoardRepository {
     }
 
     @Override
-    public List<Board> findBoardsByWriterId(final Long writerId) {
-        return db.values().stream()
-            .filter(board -> board.getWriterId().equals(writerId))
-            .toList();
-    }
-
-    @Override
     public List<Board> findBoardsByBoardsId(final List<Long> ids) {
         return db.values().stream()
             .filter(board -> ids.contains(board.getId()))
             .toList();
+    }
+
+    @Override
+    public void updateWriterName(final Long writerId, final String newWriterName) {
+        return;
     }
 }

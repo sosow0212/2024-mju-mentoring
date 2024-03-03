@@ -60,10 +60,6 @@ public class Board {
         }
     }
 
-    public void changeWriter(final Long writerId, final String newWriterName) {
-        this.writer = Writer.of(writerId, newWriterName);
-    }
-
     public Description copyDescription() {
         return description.copy();
     }

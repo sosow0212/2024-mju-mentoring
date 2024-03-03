@@ -39,12 +39,12 @@ public class BoardRepositoryImpl implements BoardRepository {
     }
 
     @Override
-    public List<Board> findBoardsByWriterId(final Long writerId) {
-        return boardJpaRepository.findAllByWriterId(writerId);
+    public List<Board> findBoardsByBoardsId(final List<Long> ids) {
+        return boardJpaRepository.findAllById(ids);
     }
 
     @Override
-    public List<Board> findBoardsByBoardsId(final List<Long> ids) {
-        return boardJpaRepository.findAllById(ids);
+    public void updateWriterName(final Long writerId, final String newWriterName) {
+        boardJpaRepository.updateWriterName(writerId, newWriterName);
     }
 }

@@ -72,7 +72,6 @@ public class BoardService {
 
     @Transactional
     public void changeWriterName(final Long writerId, final String newWriterName) {
-        List<Board> boards = boardRepository.findBoardsByWriterId(writerId);
-        boards.forEach(board -> board.changeWriter(writerId, newWriterName));
+        boardRepository.updateWriterName(writerId, newWriterName);
     }
 }

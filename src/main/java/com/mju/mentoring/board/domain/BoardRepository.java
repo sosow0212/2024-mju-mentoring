@@ -15,7 +15,7 @@ public interface BoardRepository {
 
     void deleteAllById(final List<Long> ids);
 
-    List<Board> findBoardsByWriterId(final Long writerId);
-
     List<Board> findBoardsByBoardsId(final List<Long> ids);
+
+    void updateWriterName(final Long writerId, final String newWriterName);
 }

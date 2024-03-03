@@ -30,9 +30,10 @@ public interface BoardJpaRepository extends JpaRepository<Board, Long> {
     @Query("DELETE FROM Board b WHERE b.id IN :ids")
     void deleteAllById(@Param("ids") final List<Long> ids);
 
-    @Query("SELECT b FROM Board b WHERE b.writer.writerId = :writerId")
-    List<Board> findAllByWriterId(@Param("writerId") final Long writerId);
-
     @Query("SELECT b FROM Board b WHERE b.id in :ids")
     List<Board> findAllById(@Param("ids") final List<Long> ids);
+
+    @Modifying(clearAutomatically = true)
+    @Query("UPDATE Board b set b.writer.writerName = :newWriterName WHERE b.writer.writerId = :writerId")
+    void updateWriterName(@Param("writerId") final Long writerId, @Param("newWriterName") final String newWriterName);
 }
