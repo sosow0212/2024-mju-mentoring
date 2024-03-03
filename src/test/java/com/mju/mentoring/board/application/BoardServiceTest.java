@@ -5,6 +5,7 @@ import static com.mju.mentoring.member.fixture.MemberFixture.멤버_생성;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 
 import com.mju.mentoring.board.application.dto.BoardCreateRequest;
@@ -12,6 +13,7 @@ import com.mju.mentoring.board.application.dto.BoardDeleteRequest;
 import com.mju.mentoring.board.application.dto.BoardUpdateRequest;
 import com.mju.mentoring.board.domain.Board;
 import com.mju.mentoring.board.domain.BoardRepository;
+import com.mju.mentoring.board.domain.ViewCountManager;
 import com.mju.mentoring.board.exception.exceptions.BoardNotFoundException;
 import com.mju.mentoring.board.infrastructure.BoardFakeRepository;
 import com.mju.mentoring.member.application.auth.AuthService;
@@ -27,15 +29,17 @@ import org.mockito.Mockito;
 class BoardServiceTest {
 
     private static final Long DEFAULT_WRITER_ID = 1L;
+    private static final Long DEFAULT_BOARD_ID = 1L;
 
     private BoardService boardService;
     private BoardRepository boardRepository;
     private final AuthService authService = Mockito.mock(AuthService.class);
+    private final ViewCountManager viewCountManager = Mockito.mock(ViewCountManager.class);
 
     @BeforeEach
     void setup() {
         boardRepository = new BoardFakeRepository();
-        boardService = new BoardService(authService, boardRepository);
+        boardService = new BoardService(authService, boardRepository, viewCountManager);
     }
 
     @Test
@@ -55,7 +59,7 @@ class BoardServiceTest {
                 .hasSize(1);
 
             softly.assertThat(savedId)
-                .isEqualTo(1L);
+                .isEqualTo(DEFAULT_BOARD_ID);
         });
     }
 
@@ -171,6 +175,20 @@ class BoardServiceTest {
         // then
         List<Board> boards = boardService.findAll();
         assertThat(boards).isEmpty();
+    }
+
+    @Test
+    void 조회수_중복_방지_테스트() {
+        // given
+        BoardCreateRequest request = new BoardCreateRequest("title1", "content1");
+        Long savedId = saveBoard(DEFAULT_WRITER_ID, request);
+        given(viewCountManager.isAlreadyRead(anyLong(), anyLong())).willReturn(true);
+
+        // when
+        Board board = boardService.readBoard(savedId, DEFAULT_WRITER_ID);
+
+        // then
+        assertThat(board.getViewCount()).isEqualTo(0);
     }
 
     Long saveBoard(final Long writerId, final BoardCreateRequest request) {
