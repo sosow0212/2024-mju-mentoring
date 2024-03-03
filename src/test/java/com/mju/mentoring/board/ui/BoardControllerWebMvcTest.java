@@ -2,6 +2,8 @@ package com.mju.mentoring.board.ui;
 
 import static com.mju.mentoring.board.fixture.BoardFixture.게시글_생성;
 import static com.mju.mentoring.global.CustomRestDocsHandler.customDocument;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
@@ -68,16 +70,21 @@ class BoardControllerWebMvcTest extends BaseControllerWebMvcTest {
     }
 
     @Test
-    void 토큰_없이_게시글_조회() throws Exception {
+    void 게시글_조회() throws Exception {
         // given
         List<Board> response = List.of(게시글_생성());
         given(boardService.findAll())
             .willReturn(response);
 
         // when & then
-        mockMvc.perform(get("/boards"))
+        mockMvc.perform(get("/boards")
+                .header(HEADER_NAME, TOKEN_FORMAT)
+            )
             .andExpect(status().isOk())
             .andDo(customDocument("read-boards",
+                requestHeaders(
+                    headerWithName("Authorization").description("액세스 토큰")
+                ),
                 responseFields(
                     fieldWithPath("boardsResponse").type(JsonFieldType.ARRAY)
                         .description("모든 게시글 배열"),
@@ -96,18 +103,23 @@ class BoardControllerWebMvcTest extends BaseControllerWebMvcTest {
     }
 
     @Test
-    void 토큰_없이_게시글_id로_조회() throws Exception {
+    void 게시글_id로_조회() throws Exception {
         // given
         Board response = 게시글_생성();
-        given(boardService.readBoard(1L))
+        given(boardService.readBoard(eq(DEFAULT_BOARD_ID), any()))
             .willReturn(response);
 
         // when & then
-        mockMvc.perform(get("/boards/{id}", DEFAULT_BOARD_ID))
+        mockMvc.perform(get("/boards/{id}", DEFAULT_BOARD_ID)
+                .header(HEADER_NAME, TOKEN_FORMAT)
+            )
             .andExpect(status().isOk())
             .andDo(customDocument("read-board",
                 pathParameters(
                     parameterWithName("id").description("게시글의 id")
+                ),
+                requestHeaders(
+                    headerWithName("Authorization").description("액세스 토큰")
                 ),
                 responseFields(
                     fieldWithPath("boardId").type(JsonFieldType.NUMBER)
