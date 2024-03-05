@@ -27,7 +27,7 @@ public class MemoryViewCountManager implements ViewCountManager {
             .add(writerId);
     }
 
-    @Scheduled(cron = "0 0 0 * *")
+    @Scheduled(cron = "0 0 0 * * *")
     private void clearSet() {
         views.clear();
     }
