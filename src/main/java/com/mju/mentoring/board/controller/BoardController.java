@@ -31,7 +31,8 @@ public class BoardController {
     private final BoardService boardService;
 
     @PostMapping
-    public ResponseEntity<BoardCreateResponse> create(@AuthMember final Member member, @RequestBody @Valid final BoardCreateRequest request) {
+    public ResponseEntity<BoardCreateResponse> create(@AuthMember final Member member,
+                                                      @RequestBody @Valid final BoardCreateRequest request) {
         Long newBoardId = boardService.save(request, member);
         BoardCreateResponse response = new BoardCreateResponse(newBoardId);
 
