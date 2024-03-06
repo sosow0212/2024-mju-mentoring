@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class MemberController {
 
     @GetMapping("/profile")
-    public ResponseEntity<ProfileResponse> getProfile(@AuthMember Member member) {
+    public ResponseEntity<ProfileResponse> getProfile(final @AuthMember Member member) {
         ProfileResponse response = new ProfileResponse(member.getNickname(), member.getUsername());
         return ResponseEntity.ok()
                 .body(response);
