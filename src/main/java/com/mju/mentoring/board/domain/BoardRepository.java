@@ -11,7 +11,13 @@ public interface BoardRepository {
 
     Optional<Board> findById(final Long id);
 
+    Optional<Board> viewById(final Long id);
+
     void delete(final Board board);
 
-    void deleteAllById(List<Long> ids);
+    void deleteAllById(final List<Long> ids);
+
+    List<Board> findBoardsByBoardsId(final List<Long> ids);
+
+    void updateWriterName(final Long writerId, final String newWriterName);
 }

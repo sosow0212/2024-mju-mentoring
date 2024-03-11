@@ -42,6 +42,10 @@ public class Member {
         return authInformation.isValidPassword(password);
     }
 
+    public void changeNickName(final String newNickname) {
+        this.nickname = newNickname;
+    }
+
     public String getUsername() {
         return authInformation.getUsername();
     }

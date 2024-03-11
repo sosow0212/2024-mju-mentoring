@@ -6,6 +6,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Index;
+import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,6 +21,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @Getter
 @EqualsAndHashCode(of = "id")
+@Table(indexes = @Index(name = "board_title_index", columnList = "title"))
 public class Board {
 
     @Id
@@ -31,14 +34,19 @@ public class Board {
     @Embedded
     private Writer writer;
 
-    private Board(final Description description, final Writer writer) {
+    @Embedded
+    private View view;
+
+    private Board(final Description description, final Writer writer, final View view) {
         this.description = description;
         this.writer = writer;
+        this.view = view;
     }
 
     public static Board of(final Long writerId, final String writerName, final String title,
         final String content) {
-        return new Board(Description.of(title, content), Writer.of(writerId, writerName));
+        return new Board(Description.of(title, content), Writer.of(writerId, writerName),
+            View.createDefault());
     }
 
     public void update(final Long writerId, final String title, final String content) {
@@ -56,6 +64,10 @@ public class Board {
         return description.copy();
     }
 
+    public void viewBoard() {
+        view.increaseView();
+    }
+
     public String getTitle() {
         return description.getTitle();
     }
@@ -70,5 +82,9 @@ public class Board {
 
     public String getWriterName() {
         return writer.getWriterName();
+    }
+
+    public Integer getViewCount() {
+        return view.getView();
     }
 }

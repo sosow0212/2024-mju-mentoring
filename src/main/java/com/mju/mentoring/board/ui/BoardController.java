@@ -29,7 +29,7 @@ public class BoardController {
     private final BoardService boardService;
 
     @PostMapping
-    public ResponseEntity<Void> save(@AuthInformation Long writerId,
+    public ResponseEntity<Void> save(@AuthInformation final Long writerId,
         @RequestBody final BoardCreateRequest boardCreateRequest) {
         Long createdBardId = boardService.save(writerId, boardCreateRequest);
 
@@ -47,14 +47,15 @@ public class BoardController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<BoardResponse> findBoardById(@PathVariable(name = "id") final Long id) {
-        Board board = boardService.findById(id);
+    public ResponseEntity<BoardResponse> findBoardById(@AuthInformation final Long writerId,
+        @PathVariable(name = "id") final Long id) {
+        Board board = boardService.readBoard(id, writerId);
 
         return ResponseEntity.ok(BoardResponse.from(board));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Void> updateById(@AuthInformation Long writerId,
+    public ResponseEntity<Void> updateById(@AuthInformation final Long writerId,
         @PathVariable(name = "id") final Long id,
         @RequestBody BoardUpdateRequest boardUpdateRequest) {
         boardService.update(writerId, id, boardUpdateRequest);
@@ -64,7 +65,7 @@ public class BoardController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteById(@AuthInformation Long writerId,
+    public ResponseEntity<Void> deleteById(@AuthInformation final Long writerId,
         @PathVariable(name = "id") final Long id) {
         boardService.deleteById(writerId, id);
 
@@ -73,8 +74,9 @@ public class BoardController {
     }
 
     @DeleteMapping
-    public ResponseEntity<Void> deleteAllById(@RequestBody final BoardDeleteRequest deleteRequest) {
-        boardService.deleteAllById(deleteRequest);
+    public ResponseEntity<Void> deleteAllById(@AuthInformation final Long writerId,
+        @RequestBody final BoardDeleteRequest deleteRequest) {
+        boardService.deleteAllById(writerId, deleteRequest);
 
         return ResponseEntity.ok()
             .build();

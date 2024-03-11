@@ -58,18 +58,6 @@ public class BoardAcceptanceTest extends BoardAcceptanceTestFixture {
     }
 
     @Test
-    void 비회원_상태로_게시글을_조회한다() {
-        // given
-        var 생성_게시글 = 게시글을_저장한다(게시글1);
-
-        // when
-        var 게시글_조회_결과 = 비회원_상태로_게시글을_단건_조회한다(게시글_단건_조회_url);
-
-        // then
-        단건_게시글_조회_검증(게시글_조회_결과, 생성_게시글);
-    }
-
-    @Test
     void 게시글_여러건_조회_테스트() {
         // given
         var 생성_게시글1 = 게시글을_저장한다(게시글1);
@@ -77,19 +65,6 @@ public class BoardAcceptanceTest extends BoardAcceptanceTestFixture {
 
         // when
         var 게시글_조회_결과 = 모든_게시물을_조회한다(토큰, 게시글_여러건_조회_url);
-
-        // then
-        여러_게시물_조회_검증(게시글_조회_결과, 생성_게시글1, 생성_게시글2);
-    }
-
-    @Test
-    void 비회원_상태로_게시글_여러건_조회_테스트() {
-        // given
-        var 생성_게시글1 = 게시글을_저장한다(게시글1);
-        var 생성_게시글2 = 게시글을_저장한다(게시글2);
-
-        // when
-        var 게시글_조회_결과 = 비회원_상태로_모든_게시물을_조회한다(게시글_여러건_조회_url);
 
         // then
         여러_게시물_조회_검증(게시글_조회_결과, 생성_게시글1, 생성_게시글2);
@@ -157,5 +132,18 @@ public class BoardAcceptanceTest extends BoardAcceptanceTestFixture {
 
         // then
         게시물_삭제_검증(게시글_삭제_결과);
+    }
+
+    @Test
+    void 게시글_조회수_중복_방지_테스트() {
+        // given
+        게시글을_저장한다(게시글1);
+
+        // when
+        var 게시글_조회_결과1 = 게시글을_단건_조회한다(토큰, 게시글_단건_조회_url);
+        var 게시글_조회_결과2 = 게시글을_단건_조회한다(토큰, 게시글_단건_조회_url);
+
+        // then
+        게시글_조회수_중복_방지_검증(게시글_조회_결과1, 게시글_조회_결과2);
     }
 }

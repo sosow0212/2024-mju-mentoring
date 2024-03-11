@@ -5,6 +5,8 @@ import com.mju.mentoring.board.application.dto.BoardUpdateRequest;
 import com.mju.mentoring.board.domain.Board;
 import com.mju.mentoring.board.domain.BoardRepository;
 import com.mju.mentoring.board.application.dto.BoardCreateRequest;
+import com.mju.mentoring.board.domain.Boards;
+import com.mju.mentoring.board.domain.ViewCountManager;
 import com.mju.mentoring.board.exception.exceptions.BoardNotFoundException;
 import com.mju.mentoring.member.application.auth.AuthService;
 import com.mju.mentoring.member.domain.Member;
@@ -20,6 +22,7 @@ public class BoardService {
 
     private final AuthService authService;
     private final BoardRepository boardRepository;
+    private final ViewCountManager viewCountManager;
 
     @Transactional
     public Long save(final Long writerId, final BoardCreateRequest boardCreateRequest) {
@@ -33,6 +36,17 @@ public class BoardService {
 
     public List<Board> findAll() {
         return boardRepository.findAll();
+    }
+
+    @Transactional
+    public Board readBoard(final Long id, final Long writerId) {
+        Board board = boardRepository.viewById(id)
+            .orElseThrow(BoardNotFoundException::new);
+        if (!viewCountManager.isAlreadyRead(id, writerId)) {
+            board.viewBoard();
+            viewCountManager.read(id, writerId);
+        }
+        return board;
     }
 
     public Board findById(final Long id) {
@@ -55,7 +69,15 @@ public class BoardService {
     }
 
     @Transactional
-    public void deleteAllById(final BoardDeleteRequest deleteRequest) {
+    public void deleteAllById(final Long writerId, final BoardDeleteRequest deleteRequest) {
+        List<Board> targetBoards = boardRepository.findBoardsByBoardsId(deleteRequest.ids());
+        Boards boards = Boards.from(targetBoards);
+        boards.verifyAllWriter(writerId);
         boardRepository.deleteAllById(deleteRequest.ids());
+    }
+
+    @Transactional
+    public void changeWriterName(final Long writerId, final String newWriterName) {
+        boardRepository.updateWriterName(writerId, newWriterName);
     }
 }

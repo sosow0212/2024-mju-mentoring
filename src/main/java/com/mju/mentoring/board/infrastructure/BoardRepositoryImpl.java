@@ -29,12 +29,27 @@ public class BoardRepositoryImpl implements BoardRepository {
     }
 
     @Override
+    public Optional<Board> viewById(final Long id) {
+        return boardJpaRepository.viewById(id);
+    }
+
+    @Override
     public void delete(final Board board) {
         boardJpaRepository.delete(board);
     }
 
     @Override
     public void deleteAllById(final List<Long> ids) {
-        boardJpaRepository.deleteAllByIdInBatch(ids);
+        boardJpaRepository.deleteAllById(ids);
+    }
+
+    @Override
+    public List<Board> findBoardsByBoardsId(final List<Long> ids) {
+        return boardJpaRepository.findAllById(ids);
+    }
+
+    @Override
+    public void updateWriterName(final Long writerId, final String newWriterName) {
+        boardJpaRepository.updateWriterName(writerId, newWriterName);
     }
 }

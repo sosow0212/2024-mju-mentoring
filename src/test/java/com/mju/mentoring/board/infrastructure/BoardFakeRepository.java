@@ -23,6 +23,7 @@ public class BoardFakeRepository implements BoardRepository {
             .id(id)
             .writer(board.getWriter())
             .description(board.copyDescription())
+            .view(board.getView())
             .build();
 
         db.put(id++, savedBoard);
@@ -36,6 +37,14 @@ public class BoardFakeRepository implements BoardRepository {
 
     @Override
     public Optional<Board> findById(final Long id) {
+        return db.values()
+            .stream()
+            .filter(board -> board.getId().equals(id))
+            .findAny();
+    }
+
+    @Override
+    public Optional<Board> viewById(final Long id) {
         return db.values()
             .stream()
             .filter(board -> board.getId().equals(id))
@@ -62,5 +71,17 @@ public class BoardFakeRepository implements BoardRepository {
         ids.stream()
             .filter(db::containsKey)
             .forEach(db::remove);
+    }
+
+    @Override
+    public List<Board> findBoardsByBoardsId(final List<Long> ids) {
+        return db.values().stream()
+            .filter(board -> ids.contains(board.getId()))
+            .toList();
+    }
+
+    @Override
+    public void updateWriterName(final Long writerId, final String newWriterName) {
+        return;
     }
 }

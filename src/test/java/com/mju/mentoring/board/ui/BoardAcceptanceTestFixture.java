@@ -18,6 +18,10 @@ import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.response.ExtractableResponse;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.stream.IntStream;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,28 +87,15 @@ public class BoardAcceptanceTestFixture extends BaseAcceptanceTest {
         BoardResponse result = response.as(BoardResponse.class);
 
         게시물_검증(result, board);
-        assertThat(code).isEqualTo(HttpStatus.OK.value());
-    }
-
-    protected ExtractableResponse 비회원_상태로_게시글을_단건_조회한다(final String url) {
-        return RestAssured.given().log().all()
-            .when()
-            .get(url)
-            .then().log().all()
-            .extract();
+        assertSoftly(softly -> {
+            softly.assertThat(result.view()).isEqualTo(1);
+            softly.assertThat(code).isEqualTo(HttpStatus.OK.value());
+        });
     }
 
     protected ExtractableResponse 모든_게시물을_조회한다(final String token, final String url) {
         return RestAssured.given().log().all()
             .header(HEADER_NAME, AUTHORIZATION_PREFIX + token)
-            .when()
-            .get(url)
-            .then()
-            .extract();
-    }
-
-    protected ExtractableResponse 비회원_상태로_모든_게시물을_조회한다(final String url) {
-        return RestAssured.given().log().all()
             .when()
             .get(url)
             .then()
@@ -200,5 +191,13 @@ public class BoardAcceptanceTestFixture extends BaseAcceptanceTest {
             .delete(url)
             .then()
             .extract();
+    }
+
+    protected void 게시글_조회수_중복_방지_검증(final ExtractableResponse response1,
+        final ExtractableResponse response2) {
+        BoardResponse result1 = response1.as(BoardResponse.class);
+        BoardResponse result2 = response2.as(BoardResponse.class);
+
+        assertThat(result1.view()).isEqualTo(result2.view());
     }
 }

@@ -4,10 +4,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 import com.mju.mentoring.global.BaseAcceptanceTest;
+import com.mju.mentoring.member.application.auth.dto.ChangeNickNameRequest;
 import com.mju.mentoring.member.application.auth.dto.SignInRequest;
 import com.mju.mentoring.member.application.auth.dto.SignupRequest;
 import com.mju.mentoring.member.domain.Member;
 import com.mju.mentoring.member.domain.MemberRepository;
+import com.mju.mentoring.member.domain.TokenManager;
 import com.mju.mentoring.member.ui.auth.dto.TokenResponse;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
@@ -20,11 +22,17 @@ public class MemberAcceptanceTestFixture extends BaseAcceptanceTest {
     private static final String MEMBER_DEFAULT_USERNAME = "id";
     private static final String MEMBER_DEFAULT_NICKNAME = "nickname";
     private static final String MEMBER_DEFAULT_PASSWORD = "password";
+    private static final String MEMBER_NEW_NICKNAME = "newNickname";
+    private static final String HEADER_NAME = "Authorization";
+    private static final String AUTHORIZATION_PREFIX = "Bearer ";
 
     @Autowired
     MemberRepository memberRepository;
 
-    protected void 로그인할_멤버_저장(final Member member) {
+    @Autowired
+    TokenManager<Long> tokenManager;
+
+    protected void 멤버를_생성한다(final Member member) {
         memberRepository.save(member);
     }
 
@@ -73,5 +81,28 @@ public class MemberAcceptanceTestFixture extends BaseAcceptanceTest {
             softly.assertThat(code).isEqualTo(HttpStatus.OK.value());
             softly.assertThat(tokenResponse).isNotNull();
         });
+    }
+
+    protected ChangeNickNameRequest 닉네임_변경_요청() {
+        return new ChangeNickNameRequest(MEMBER_NEW_NICKNAME);
+    }
+
+    protected ExtractableResponse 닉네임_변경(final ChangeNickNameRequest request, final String token,
+        final String url) {
+        return RestAssured.given().log().all()
+            .given()
+            .header(HEADER_NAME, AUTHORIZATION_PREFIX + token)
+            .body(request)
+            .contentType(ContentType.JSON)
+            .when()
+            .patch(url)
+            .then()
+            .extract();
+    }
+
+    protected void 닉네임_변경_검증(final ExtractableResponse response) {
+        int code = response.statusCode();
+
+        assertThat(code).isEqualTo(HttpStatus.OK.value());
     }
 }
