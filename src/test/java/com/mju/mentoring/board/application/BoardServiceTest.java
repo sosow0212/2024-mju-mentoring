@@ -51,7 +51,7 @@ class BoardServiceTest {
 
         // when
         Long savedId = saveBoard(DEFAULT_WRITER_ID, request);
-        List<Board> findBoards = boardService.findAll();
+        List<Board> findBoards = findAllBoard();
 
         // then
         assertSoftly(softly -> {
@@ -70,7 +70,7 @@ class BoardServiceTest {
         boardRepository.save(board);
 
         // when
-        List<Board> findBoards = boardService.findAll();
+        List<Board> findBoards = findAllBoard();
 
         // then
         assertSoftly(softly -> {
@@ -148,7 +148,7 @@ class BoardServiceTest {
         boardService.deleteById(DEFAULT_WRITER_ID, savedId);
 
         // then
-        List<Board> boards = boardService.findAll();
+        List<Board> boards = findAllBoard();
         assertThat(boards).isEmpty();
     }
 
@@ -173,7 +173,7 @@ class BoardServiceTest {
             new BoardDeleteRequest(List.of(savedId1, savedId2)));
 
         // then
-        List<Board> boards = boardService.findAll();
+        List<Board> boards = findAllBoard();
         assertThat(boards).isEmpty();
     }
 
@@ -191,9 +191,13 @@ class BoardServiceTest {
         assertThat(board.getViewCount()).isEqualTo(0);
     }
 
-    Long saveBoard(final Long writerId, final BoardCreateRequest request) {
+    private Long saveBoard(final Long writerId, final BoardCreateRequest request) {
         given(authService.findMemberById(DEFAULT_WRITER_ID))
             .willReturn(멤버_생성());
         return boardService.save(writerId, request);
+    }
+
+    private List<Board> findAllBoard() {
+        return boardService.findAll(null, 5, null);
     }
 }

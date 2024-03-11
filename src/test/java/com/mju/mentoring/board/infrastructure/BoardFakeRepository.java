@@ -2,16 +2,11 @@ package com.mju.mentoring.board.infrastructure;
 
 import com.mju.mentoring.board.domain.Board;
 import com.mju.mentoring.board.domain.BoardRepository;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import org.junit.jupiter.api.DisplayNameGeneration;
-import org.junit.jupiter.api.DisplayNameGenerator;
 
-@DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
-@SuppressWarnings("NonAsciiCharacters")
 public class BoardFakeRepository implements BoardRepository {
 
     private final Map<Long, Board> db = new HashMap<>();
@@ -31,8 +26,17 @@ public class BoardFakeRepository implements BoardRepository {
     }
 
     @Override
-    public List<Board> findAll() {
-        return new ArrayList<>(db.values());
+    public List<Board> findAll(final Long boardId, final int size, final String search) {
+        return db.keySet().stream()
+            .filter(id -> {
+                if (boardId == null) {
+                    return true;
+                }
+                return id < boardId;
+            })
+            .limit(size)
+            .map(db::get)
+            .toList();
     }
 
     @Override

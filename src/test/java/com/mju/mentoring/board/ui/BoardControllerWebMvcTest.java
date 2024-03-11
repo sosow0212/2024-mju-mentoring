@@ -33,6 +33,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 class BoardControllerWebMvcTest extends BaseControllerWebMvcTest {
 
+    private static final int DEFAULT_PAGE_SIZE = 5;
     private static final Long DEFAULT_WRITER_ID = 1L;
     private static final Long DEFAULT_BOARD_ID = 1L;
     private static final String HEADER_NAME = "Authorization";
@@ -73,7 +74,7 @@ class BoardControllerWebMvcTest extends BaseControllerWebMvcTest {
     void 게시글_조회() throws Exception {
         // given
         List<Board> response = List.of(게시글_생성());
-        given(boardService.findAll())
+        given(boardService.findAll(any(), eq(DEFAULT_PAGE_SIZE), any()))
             .willReturn(response);
 
         // when & then
@@ -86,18 +87,24 @@ class BoardControllerWebMvcTest extends BaseControllerWebMvcTest {
                     headerWithName("Authorization").description("액세스 토큰")
                 ),
                 responseFields(
-                    fieldWithPath("boardsResponse").type(JsonFieldType.ARRAY)
+                    fieldWithPath("data").type(JsonFieldType.ARRAY)
                         .description("모든 게시글 배열"),
-                    fieldWithPath("boardsResponse[].boardId").type(JsonFieldType.NUMBER)
+                    fieldWithPath("data[].boardId").type(JsonFieldType.NUMBER)
                         .description("게시글의 id"),
-                    fieldWithPath("boardsResponse[].writer").type(JsonFieldType.STRING)
+                    fieldWithPath("data[].writer").type(JsonFieldType.STRING)
                         .description("게시글의 작성자"),
-                    fieldWithPath("boardsResponse[].title").type(JsonFieldType.STRING)
+                    fieldWithPath("data[].title").type(JsonFieldType.STRING)
                         .description("게시글의 제목"),
-                    fieldWithPath("boardsResponse[].content").type(JsonFieldType.STRING)
+                    fieldWithPath("data[].content").type(JsonFieldType.STRING)
                         .description("게시글의 본문"),
-                    fieldWithPath("boardsResponse[].view").type(JsonFieldType.NUMBER)
-                        .description("게시글의 조회수")
+                    fieldWithPath("data[].view").type(JsonFieldType.NUMBER)
+                        .description("게시글의 조회수"),
+                    fieldWithPath("cursor").type(JsonFieldType.OBJECT)
+                        .description("다음 조회에 대한 정보"),
+                    fieldWithPath("cursor.lastId").type(JsonFieldType.NUMBER)
+                        .description("마지막 게시글 id"),
+                    fieldWithPath("cursor.hasMorePage").type(JsonFieldType.BOOLEAN)
+                        .description("다음 페이지의 존재 여부")
                 )
             ));
     }

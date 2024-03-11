@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 public class BoardRepositoryImpl implements BoardRepository {
 
     private final BoardJpaRepository boardJpaRepository;
+    private final BoardQueryDslRepository boardQueryDslRepository;
 
     @Override
     public Board save(final Board board) {
@@ -19,8 +20,8 @@ public class BoardRepositoryImpl implements BoardRepository {
     }
 
     @Override
-    public List<Board> findAll() {
-        return boardJpaRepository.findAll();
+    public List<Board> findAll(final Long boardId, final int size, final String search) {
+        return boardQueryDslRepository.findAll(boardId, size, search);
     }
 
     @Override

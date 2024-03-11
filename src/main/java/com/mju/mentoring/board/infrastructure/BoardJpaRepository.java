@@ -18,8 +18,6 @@ public interface BoardJpaRepository extends JpaRepository<Board, Long> {
 
     Optional<Board> findById(final Long id);
 
-    List<Board> findAll();
-
     void delete(final Board board);
 
     @Modifying

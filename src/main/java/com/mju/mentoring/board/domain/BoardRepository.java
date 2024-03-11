@@ -7,7 +7,7 @@ public interface BoardRepository {
 
     Board save(final Board board);
 
-    List<Board> findAll();
+    List<Board> findAll(final Long boardId, final int size, final String search);
 
     Optional<Board> findById(final Long id);
 
