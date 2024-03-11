@@ -11,6 +11,7 @@ import com.mju.mentoring.board.domain.Board;
 import com.mju.mentoring.board.domain.BoardRepository;
 import com.mju.mentoring.board.ui.dto.BoardResponse;
 import com.mju.mentoring.board.ui.dto.BoardsResponse;
+import com.mju.mentoring.board.ui.dto.CursorInfo;
 import com.mju.mentoring.global.BaseAcceptanceTest;
 import com.mju.mentoring.member.domain.MemberRepository;
 import com.mju.mentoring.member.domain.TokenManager;
@@ -18,10 +19,6 @@ import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.response.ExtractableResponse;
 import java.util.List;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.stream.IntStream;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -98,7 +95,7 @@ public class BoardAcceptanceTestFixture extends BaseAcceptanceTest {
             .header(HEADER_NAME, AUTHORIZATION_PREFIX + token)
             .when()
             .get(url)
-            .then()
+            .then().log().all()
             .extract();
     }
 
@@ -107,17 +104,20 @@ public class BoardAcceptanceTestFixture extends BaseAcceptanceTest {
 
         int code = response.statusCode();
         BoardsResponse results = response.as(BoardsResponse.class);
-        List<BoardResponse> result = results.boardsResponse();
+        List<BoardResponse> resultData = results.data();
+        CursorInfo cursor = results.cursor();
 
-        BoardResponse firstBoard = result.get(0);
-        BoardResponse secondBoard = result.get(1);
+        BoardResponse firstBoard = resultData.get(1);
+        BoardResponse secondBoard = resultData.get(0);
 
         게시물_검증(firstBoard, board1);
         게시물_검증(secondBoard, board2);
 
         assertSoftly(softly -> {
             softly.assertThat(code).isEqualTo(HttpStatus.OK.value());
-            softly.assertThat(result.size()).isEqualTo(2);
+            softly.assertThat(resultData.size()).isEqualTo(2);
+            softly.assertThat(cursor.lastId()).isEqualTo(1L);
+            softly.assertThat(cursor.hasMorePage()).isFalse();
         });
     }
 
