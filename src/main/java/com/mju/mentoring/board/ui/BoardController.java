@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -38,12 +39,13 @@ public class BoardController {
     }
 
     @GetMapping
-    public ResponseEntity<BoardsResponse> findAll() {
-        List<BoardResponse> boardsResponse = boardService.findAll().stream()
-            .map(BoardResponse::from)
-            .toList();
-
-        return ResponseEntity.ok(new BoardsResponse(boardsResponse));
+    public ResponseEntity<BoardsResponse> findAll(
+        @RequestParam(name = "boardId", required = false) final Long boardId,
+        @RequestParam(name = "size", required = false, defaultValue = "5") final int size,
+        @RequestParam(name = "search", required = false) final String search
+    ) {
+        List<Board> boards = boardService.findAll(boardId, size, search);
+        return ResponseEntity.ok(BoardsResponse.from(boards, size));
     }
 
     @GetMapping("/{id}")
