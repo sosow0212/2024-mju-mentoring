@@ -34,8 +34,8 @@ public class BoardService {
         return savedBoard.getId();
     }
 
-    public List<Board> findAll() {
-        return boardRepository.findAll();
+    public List<Board> findAll(final Long boardId, final int size, final String search) {
+        return boardRepository.findAll(boardId, size, search);
     }
 
     @Transactional
