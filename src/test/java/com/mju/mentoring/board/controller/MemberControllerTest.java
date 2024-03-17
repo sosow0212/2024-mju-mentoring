@@ -1,8 +1,8 @@
 package com.mju.mentoring.board.controller;
 
-import static com.mju.mentoring.board.fixture.MemberFixture.*;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static com.mju.mentoring.board.fixture.MemberFixture.멤버_생성;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
@@ -16,6 +16,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mju.mentoring.exam.board.component.JwtTokenProvider;
 import com.mju.mentoring.exam.board.controller.MemberController;
 import com.mju.mentoring.exam.board.domain.Member;
 import com.mju.mentoring.exam.board.domain.MemberRepository;
@@ -48,12 +49,15 @@ class MemberControllerTest {
 	@MockBean
 	private MemberService memberService;
 
+	@MockBean
+	private JwtTokenProvider jwtTokenProvider;
+
 	@Test
 	void 로그인한다() throws Exception {
 		// given
 		Member member = 멤버_생성();
 		memberRepository.save(member);
-		LoginRequest req = new LoginRequest(member.getMemberDescription().getMemberId(),
+		LoginRequest req = new LoginRequest(member.getMemberDescription().getLoginId(),
 			member.getMemberDescription().getPassword());
 
 		// when & then

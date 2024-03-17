@@ -1,8 +1,8 @@
 package com.mju.mentoring.board.infrastructure;
 
-import static com.mju.mentoring.board.fixture.MemberFixture.*;
-import static org.assertj.core.api.Assertions.*;
-import static org.assertj.core.api.SoftAssertions.*;
+import static com.mju.mentoring.board.fixture.MemberFixture.멤버_생성;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 import java.util.List;
 import java.util.Optional;
@@ -52,8 +52,8 @@ class MemberJpaRepositoryTest {
 		Optional<Member> foundBoard = memberJpaRepository.findById(member.getId());
 
 		// then
-		assertThat(foundBoard).isNotEmpty();
 		assertSoftly(softly -> {
+			softly.assertThat(foundBoard).isNotEmpty();
 			softly.assertThat(foundBoard).isPresent();
 			softly.assertThat(foundBoard.get())
 				.usingRecursiveComparison()
@@ -69,8 +69,8 @@ class MemberJpaRepositoryTest {
 		Member savedMember = memberJpaRepository.save(member);
 
 		// when
-		Optional<Member> foundBoard = memberJpaRepository.findMemberByMemberDescription_MemberId(
-			member.getMemberDescription().getMemberId());
+		Optional<Member> foundBoard = memberJpaRepository.findMemberByMemberDescriptionLoginId(
+			member.getMemberDescription().getLoginId());
 
 		// then
 		assertThat(foundBoard).isNotEmpty();

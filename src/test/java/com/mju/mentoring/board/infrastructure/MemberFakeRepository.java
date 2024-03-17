@@ -22,7 +22,7 @@ public class MemberFakeRepository implements MemberRepository {
 			.build();
 
 		map.put(id, saved);
-		mapForId.put(saved.getMemberDescription().getMemberId(), saved);
+		mapForId.put(saved.getMemberDescription().getLoginId(), saved);
 		id++;
 		return saved;
 	}
@@ -43,7 +43,7 @@ public class MemberFakeRepository implements MemberRepository {
 	}
 
 	@Override
-	public Optional<Member> findByMemberId(final String memberId) {
+	public Optional<Member> findByLoginId(final String memberId) {
 		return Optional.ofNullable(mapForId.get(memberId));
 	}
 }

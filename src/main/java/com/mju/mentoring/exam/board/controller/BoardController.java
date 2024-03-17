@@ -1,6 +1,7 @@
 package com.mju.mentoring.exam.board.controller;
 
 import java.net.URI;
+import java.nio.file.AccessDeniedException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import com.mju.mentoring.exam.board.controller.dto.BoardResponse;
+import com.mju.mentoring.exam.board.domain.AuthAccount;
 import com.mju.mentoring.exam.board.domain.Board;
 import com.mju.mentoring.exam.board.service.BoardService;
 import com.mju.mentoring.exam.board.service.dto.BoardCreateRequest;
@@ -29,8 +31,9 @@ public class BoardController {
 	private final BoardService boardService;
 
 	@PostMapping("/boards")
-	public ResponseEntity<Void> save(@RequestBody final BoardCreateRequest boardCreateRequest) {
-		Long boardId = boardService.save(boardCreateRequest);
+	public ResponseEntity<Void> save(@AuthAccount Long memberId,
+		@RequestBody final BoardCreateRequest boardCreateRequest) {
+		Long boardId = boardService.save(memberId, boardCreateRequest);
 		return ResponseEntity.created(URI.create("/boards/" + boardId)).build();
 	}
 
@@ -49,15 +52,17 @@ public class BoardController {
 	}
 
 	@PutMapping("/boards/{id}")
-	public ResponseEntity<Void> update(@PathVariable("id") final Long id,
-		@RequestBody final BoardUpdateRequest request) {
-		boardService.update(id, request);
+	public ResponseEntity<Void> update(@AuthAccount Long memberId,
+		@PathVariable("id") final Long id,
+		@RequestBody final BoardUpdateRequest request) throws AccessDeniedException {
+		boardService.update(memberId, id, request);
 		return ResponseEntity.ok().build();
 	}
 
 	@DeleteMapping("/boards/{id}")
-	public ResponseEntity<Void> deleteById(@PathVariable("id") final Long id) {
-		boardService.delete(id);
+	public ResponseEntity<Void> deleteById(@AuthAccount Long memberId,
+		@PathVariable("id") final Long id) throws AccessDeniedException {
+		boardService.delete(memberId, id);
 		return ResponseEntity.noContent().build();
 	}
 }

@@ -22,7 +22,7 @@ public class MemberRepositoryImpl implements MemberRepository {
 
 	@Override
 	public Optional<Member> findById(Long id) {
-		return Optional.empty();
+		return memberJpaRepository.findById(id);
 	}
 
 	@Override
@@ -31,7 +31,7 @@ public class MemberRepositoryImpl implements MemberRepository {
 	}
 
 	@Override
-	public Optional<Member> findByMemberId(String memberId) {
-		return memberJpaRepository.findMemberByMemberDescription_MemberId(memberId);
+	public Optional<Member> findByLoginId(String memberId) {
+		return memberJpaRepository.findMemberByMemberDescriptionLoginId(memberId);
 	}
 }

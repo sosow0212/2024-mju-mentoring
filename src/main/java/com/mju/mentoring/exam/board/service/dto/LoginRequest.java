@@ -1,4 +1,4 @@
 package com.mju.mentoring.exam.board.service.dto;
 
-public record LoginRequest(String memberId, String password) {
+public record LoginRequest(String loginId, String password) {
 }

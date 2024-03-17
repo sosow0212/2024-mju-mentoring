@@ -10,5 +10,5 @@ public interface MemberRepository {
 
 	void deleteById(final Long id);
 
-	Optional<Member> findByMemberId(final String memberId);
+	Optional<Member> findByLoginId(final String memberId);
 }

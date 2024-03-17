@@ -17,3 +17,5 @@ spring:
       hibernate:
         format_sql: true
         show_sql: true
+access:
+  expired_time: 1800000

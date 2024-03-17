@@ -1,6 +1,7 @@
+access:
+  expired_time: 1800000
 server:
   port: 8080
-
 spring:
   profiles:
     active: local
@@ -11,3 +12,4 @@ spring:
     scheduling:
       pool:
         size: 10
+
