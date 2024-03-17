@@ -7,6 +7,8 @@ import com.mju.mentoring.board.domain.Board;
 import com.mju.mentoring.board.service.BoardService;
 import com.mju.mentoring.board.service.dto.BoardCreateRequest;
 import com.mju.mentoring.board.service.dto.BoardTextUpdateRequest;
+import com.mju.mentoring.member.domain.Member;
+import com.mju.mentoring.member.support.auth.AuthMember;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -29,8 +31,9 @@ public class BoardController {
     private final BoardService boardService;
 
     @PostMapping
-    public ResponseEntity<BoardCreateResponse> create(@RequestBody @Valid final BoardCreateRequest request) {
-        Long newBoardId = boardService.save(request);
+    public ResponseEntity<BoardCreateResponse> create(@AuthMember final Member member,
+                                                      @RequestBody @Valid final BoardCreateRequest request) {
+        Long newBoardId = boardService.save(request, member);
         BoardCreateResponse response = new BoardCreateResponse(newBoardId);
 
         URI newBoardURI = URI.create("/boards/" + newBoardId);

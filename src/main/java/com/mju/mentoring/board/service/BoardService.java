@@ -2,9 +2,11 @@ package com.mju.mentoring.board.service;
 
 import com.mju.mentoring.board.domain.Board;
 import com.mju.mentoring.board.domain.BoardRepository;
+import com.mju.mentoring.board.domain.BoardText;
 import com.mju.mentoring.board.exception.exceptions.BoardNotFoundException;
 import com.mju.mentoring.board.service.dto.BoardCreateRequest;
 import com.mju.mentoring.board.service.dto.BoardTextUpdateRequest;
+import com.mju.mentoring.member.domain.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,10 +20,10 @@ public class BoardService {
     private final BoardRepository boardRepository;
 
     @Transactional
-    public Long save(final BoardCreateRequest request) {
-        Board newBoard = new Board(request.title(), request.content());
+    public Long save(final BoardCreateRequest request, final Member member) {
+        BoardText boardText = new BoardText(request.title(), request.content());
+        Board newBoard = Board.createWithMember(boardText, member);
         boardRepository.save(newBoard);
-
         return newBoard.getId();
     }
 

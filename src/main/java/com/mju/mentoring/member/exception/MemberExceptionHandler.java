@@ -7,6 +7,9 @@ import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
 import com.mju.mentoring.global.exception.ExceptionResponse;
 import com.mju.mentoring.member.exception.exceptions.AlreadyRegisteredException;
+
+import com.mju.mentoring.member.exception.exceptions.AuthorizationException;
+
 import com.mju.mentoring.member.exception.exceptions.CookieException;
 import com.mju.mentoring.member.exception.exceptions.JwtSignatureException;
 import com.mju.mentoring.member.exception.exceptions.MemberNotFoundException;
@@ -30,6 +33,11 @@ public class MemberExceptionHandler {
 
     @ExceptionHandler(JwtSignatureException.class)
     public ResponseEntity<ExceptionResponse> jwtSignatureExceptionHandler(final JwtSignatureException exception) {
+        return createExceptionResponseWithStatusAndMessage(UNAUTHORIZED, exception.getMessage());
+    }
+
+    @ExceptionHandler(AuthorizationException.class)
+    public ResponseEntity<ExceptionResponse> authorizationExceptionHandler(final AuthorizationException exception) {
         return createExceptionResponseWithStatusAndMessage(UNAUTHORIZED, exception.getMessage());
     }
 }
