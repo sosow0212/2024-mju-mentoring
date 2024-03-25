@@ -14,7 +14,7 @@ public class MemberAcceptanceTest extends MemberAcceptanceTestFixture {
 
     private static final String 회원가입_url = "/auth/signup";
     private static final String 로그인_url = "/auth/signin";
-    private static final String 닉네임_변경_url = "/auth/nickname";
+    private static final String 닉네임_변경_url = "/members/nickname";
 
     private String 토큰;
 

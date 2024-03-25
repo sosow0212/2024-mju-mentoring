@@ -16,7 +16,7 @@ import com.mju.mentoring.board.domain.BoardRepository;
 import com.mju.mentoring.board.domain.ViewCountManager;
 import com.mju.mentoring.board.exception.exceptions.BoardNotFoundException;
 import com.mju.mentoring.board.infrastructure.BoardFakeRepository;
-import com.mju.mentoring.member.application.auth.AuthService;
+import com.mju.mentoring.member.application.member.MemberService;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayNameGeneration;
@@ -33,19 +33,19 @@ class BoardServiceTest {
 
     private BoardService boardService;
     private BoardRepository boardRepository;
-    private final AuthService authService = Mockito.mock(AuthService.class);
+    private final MemberService memberService = Mockito.mock(MemberService.class);
     private final ViewCountManager viewCountManager = Mockito.mock(ViewCountManager.class);
 
     @BeforeEach
     void setup() {
         boardRepository = new BoardFakeRepository();
-        boardService = new BoardService(authService, boardRepository, viewCountManager);
+        boardService = new BoardService(memberService, boardRepository, viewCountManager);
     }
 
     @Test
     void 게시물_저장() {
         // given
-        given(authService.findMemberById(DEFAULT_WRITER_ID))
+        given(memberService.findMemberById(DEFAULT_WRITER_ID))
             .willReturn(멤버_생성());
         BoardCreateRequest request = new BoardCreateRequest("title", "content");
 
@@ -192,7 +192,7 @@ class BoardServiceTest {
     }
 
     private Long saveBoard(final Long writerId, final BoardCreateRequest request) {
-        given(authService.findMemberById(DEFAULT_WRITER_ID))
+        given(memberService.findMemberById(DEFAULT_WRITER_ID))
             .willReturn(멤버_생성());
         return boardService.save(writerId, request);
     }
