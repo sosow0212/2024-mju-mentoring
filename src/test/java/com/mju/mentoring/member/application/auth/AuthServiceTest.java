@@ -1,31 +1,26 @@
 package com.mju.mentoring.member.application.auth;
 
 import static com.mju.mentoring.member.fixture.MemberFixture.id_없는_멤버_생성;
-import static com.mju.mentoring.member.fixture.MemberFixture.멤버_생성;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.BDDMockito.then;
 
 import com.mju.mentoring.member.application.auth.dto.SignInRequest;
 import com.mju.mentoring.member.application.auth.dto.SignupRequest;
+import com.mju.mentoring.member.application.member.MemberService;
 import com.mju.mentoring.member.domain.Member;
 import com.mju.mentoring.member.domain.MemberRepository;
-import com.mju.mentoring.member.domain.TokenManager;
 import com.mju.mentoring.member.exception.exceptions.DuplicateNicknameException;
 import com.mju.mentoring.member.exception.exceptions.DuplicateUsernameException;
 import com.mju.mentoring.member.exception.exceptions.MemberNotFoundException;
 import com.mju.mentoring.member.exception.exceptions.WrongPasswordException;
+import com.mju.mentoring.member.fake.FakeFixedTokenManager;
+import com.mju.mentoring.member.fake.FakeMemberRepository;
 import com.mju.mentoring.member.ui.auth.dto.TokenResponse;
-import java.util.Optional;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
@@ -34,17 +29,19 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 class AuthServiceTest {
 
     private static final String MEMBER_DEFAULT_USERNAME = "id";
-    private static final String MEMBER_DEFAULT_PASSWORD = "password";
     private static final String MEMBER_DEFAULT_NICKNAME = "nickname";
+    private static final String MEMBER_DEFAULT_PASSWORD = "password";
+    private static final String FIXED_TOKEN = "1";
 
-    @Mock
-    private TokenManager<Long> tokenManager;
-    @Mock
-    private MemberRepository memberRepository;
-    @InjectMocks
     private AuthService authService;
-    @Captor
-    private ArgumentCaptor<Member> memberCaptor;
+    private MemberRepository memberRepository;
+
+    @BeforeEach
+    void init() {
+        memberRepository = new FakeMemberRepository();
+        authService = new AuthService(memberRepository, new FakeFixedTokenManager(),
+            new MemberService(memberRepository));
+    }
 
     @Test
     void 회원가입_테스트() {
@@ -52,50 +49,41 @@ class AuthServiceTest {
         Member member = id_없는_멤버_생성();
 
         // when
-        authService.signup(getSignupRequestDto());
-
-        then(memberRepository).should()
-            .save(memberCaptor.capture());
+        authService.signup(new SignupRequest(MEMBER_DEFAULT_USERNAME, MEMBER_DEFAULT_NICKNAME,
+            MEMBER_DEFAULT_PASSWORD));
 
         // then
-        assertThat(memberCaptor.getValue()).usingRecursiveComparison()
+        assertThat(memberRepository.findByUsername(MEMBER_DEFAULT_USERNAME)
+            .get()).usingRecursiveComparison()
             .ignoringFields("id")
             .isEqualTo(member);
     }
 
     @Test
     void 중복되는_아이디가_있는_경우_예외_처리() {
-        // given
-        given(memberRepository.existsByUsername(MEMBER_DEFAULT_USERNAME))
-            .willReturn(true);
+        //given
+        memberRepository.save(id_없는_멤버_생성());
 
         // when & then
-        assertThatThrownBy(() -> authService.signup(
-            getSignupRequestDto()))
+        assertThatThrownBy(() -> authService.signup(getSignupRequestDto()))
             .isInstanceOf(DuplicateUsernameException.class);
     }
 
     @Test
     void 중복되는_이름이_있는_경우_예외_처리() {
         // given
-        given(memberRepository.existsByNickname(MEMBER_DEFAULT_NICKNAME))
-            .willReturn(true);
+        memberRepository.save(id_없는_멤버_생성());
 
         // when & then
         assertThatThrownBy(() -> authService.signup(
-            getSignupRequestDto()))
+            new SignupRequest("other name", MEMBER_DEFAULT_NICKNAME, MEMBER_DEFAULT_PASSWORD)))
             .isInstanceOf(DuplicateNicknameException.class);
     }
 
     @Test
     void 로그인_테스트() {
         // given
-        String token = "token";
-        Member member = id_없는_멤버_생성();
-        given(tokenManager.create(member.getId()))
-            .willReturn(token);
-        given(memberRepository.findByUsername(MEMBER_DEFAULT_USERNAME))
-            .willReturn(Optional.of(member));
+        memberRepository.save(id_없는_멤버_생성());
 
         // when
         TokenResponse response = authService.signIn(
@@ -103,15 +91,13 @@ class AuthServiceTest {
 
         // then
         assertThat(response.accessToken())
-            .isEqualTo(token);
+            .isEqualTo(FIXED_TOKEN);
     }
 
     @Test
     void 비밀번호가_틀릴_경우_예외_처리() {
         // given
-        Member findMember = 멤버_생성();
-        given(memberRepository.findByUsername(MEMBER_DEFAULT_USERNAME))
-            .willReturn(Optional.of(findMember));
+        memberRepository.save(id_없는_멤버_생성());
 
         // when & then
         assertThatThrownBy(
@@ -121,10 +107,6 @@ class AuthServiceTest {
 
     @Test
     void 로그인시_해당_멤버가_없을_경우_예외_처리() {
-        // given
-        given(memberRepository.findByUsername(MEMBER_DEFAULT_USERNAME))
-            .willReturn(Optional.empty());
-
         // when & then
         assertThatThrownBy(
             () -> authService.signIn(
