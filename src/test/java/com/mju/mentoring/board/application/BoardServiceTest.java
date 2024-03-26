@@ -1,12 +1,10 @@
 package com.mju.mentoring.board.application;
 
 import static com.mju.mentoring.board.fixture.BoardFixture.id_없는_게시글_생성;
-import static com.mju.mentoring.member.fixture.MemberFixture.멤버_생성;
+import static com.mju.mentoring.member.fixture.MemberFixture.id_없는_멤버_생성;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.BDDMockito.given;
 
 import com.mju.mentoring.board.application.dto.BoardCreateRequest;
 import com.mju.mentoring.board.application.dto.BoardDeleteRequest;
@@ -16,13 +14,15 @@ import com.mju.mentoring.board.domain.BoardRepository;
 import com.mju.mentoring.board.domain.ViewCountManager;
 import com.mju.mentoring.board.exception.exceptions.BoardNotFoundException;
 import com.mju.mentoring.board.infrastructure.BoardFakeRepository;
+import com.mju.mentoring.board.infrastructure.MemoryViewCountManager;
 import com.mju.mentoring.member.application.member.MemberService;
+import com.mju.mentoring.member.domain.MemberRepository;
+import com.mju.mentoring.member.fake.FakeMemberRepository;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 @SuppressWarnings("NonAsciiCharacters")
@@ -33,20 +33,23 @@ class BoardServiceTest {
 
     private BoardService boardService;
     private BoardRepository boardRepository;
-    private final MemberService memberService = Mockito.mock(MemberService.class);
-    private final ViewCountManager viewCountManager = Mockito.mock(ViewCountManager.class);
+    private MemberService memberService;
+    private ViewCountManager viewCountManager;
+    private MemberRepository memberRepository;
 
     @BeforeEach
     void setup() {
+        memberRepository = new FakeMemberRepository();
         boardRepository = new BoardFakeRepository();
+        viewCountManager = new MemoryViewCountManager();
+        memberService = new MemberService(memberRepository);
         boardService = new BoardService(memberService, boardRepository, viewCountManager);
     }
 
     @Test
     void 게시물_저장() {
         // given
-        given(memberService.findMemberById(DEFAULT_WRITER_ID))
-            .willReturn(멤버_생성());
+        memberRepository.save(id_없는_멤버_생성());
         BoardCreateRequest request = new BoardCreateRequest("title", "content");
 
         // when
@@ -182,18 +185,17 @@ class BoardServiceTest {
         // given
         BoardCreateRequest request = new BoardCreateRequest("title1", "content1");
         Long savedId = saveBoard(DEFAULT_WRITER_ID, request);
-        given(viewCountManager.isAlreadyRead(anyLong(), anyLong())).willReturn(true);
 
         // when
-        Board board = boardService.readBoard(savedId, DEFAULT_WRITER_ID);
+        boardService.readBoard(savedId, DEFAULT_WRITER_ID);
+        Board secondViewedBoard = boardService.readBoard(savedId, DEFAULT_WRITER_ID);
 
         // then
-        assertThat(board.getViewCount()).isEqualTo(0);
+        assertThat(secondViewedBoard.getViewCount()).isEqualTo(1);
     }
 
     private Long saveBoard(final Long writerId, final BoardCreateRequest request) {
-        given(memberService.findMemberById(DEFAULT_WRITER_ID))
-            .willReturn(멤버_생성());
+        memberRepository.save(id_없는_멤버_생성());
         return boardService.save(writerId, request);
     }
 
