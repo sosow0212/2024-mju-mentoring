@@ -13,7 +13,11 @@ public class FakeMemberRepository implements MemberRepository {
 
     @Override
     public void save(final Member member) {
-        db.put(id++, member);
+        db.put(id, member.builder()
+            .id(id++)
+            .nickname(member.getNickname())
+            .authInformation(member.getAuthInformation())
+            .build());
     }
 
     @Override
