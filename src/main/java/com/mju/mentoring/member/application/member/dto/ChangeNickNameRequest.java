@@ -1,4 +1,4 @@
-package com.mju.mentoring.member.application.auth.dto;
+package com.mju.mentoring.member.application.member.dto;
 
 public record ChangeNickNameRequest(String newNickname) {
 

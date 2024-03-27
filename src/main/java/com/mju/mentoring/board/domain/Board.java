@@ -1,6 +1,7 @@
 package com.mju.mentoring.board.domain;
 
 import com.mju.mentoring.board.exception.exceptions.NotBoardWriterException;
+import com.mju.mentoring.global.domain.BaseEntity;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -22,7 +23,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @EqualsAndHashCode(of = "id")
 @Table(indexes = @Index(name = "board_title_index", columnList = "title"))
-public class Board {
+public class Board extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

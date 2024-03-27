@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 import com.mju.mentoring.global.BaseAcceptanceTest;
-import com.mju.mentoring.member.application.auth.dto.ChangeNickNameRequest;
+import com.mju.mentoring.member.application.member.dto.ChangeNickNameRequest;
 import com.mju.mentoring.member.application.auth.dto.SignInRequest;
 import com.mju.mentoring.member.application.auth.dto.SignupRequest;
 import com.mju.mentoring.member.domain.Member;

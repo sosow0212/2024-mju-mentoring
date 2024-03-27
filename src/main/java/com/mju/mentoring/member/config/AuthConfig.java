@@ -19,7 +19,6 @@ public class AuthConfig implements WebMvcConfigurer {
     private static final String ALL_URL_PATTERN = "/**";
     private static final String AUTH_URL_PATTERN = "/auth/**";
     private static final String BOARD_URL_PATTERN = "/boards/**";
-    private static final String CHANGE_NICKNAME_URL_PATTERN = "/auth/nickname";
 
     private final AuthArgumentResolver authArgumentResolver;
     private final AuthCheckInterceptor authCheckInterceptor;
@@ -39,7 +38,6 @@ public class AuthConfig implements WebMvcConfigurer {
         PathMatcherInterceptor interceptor = PathMatcherInterceptor.from(authCheckInterceptor);
         return interceptor.excludePathPattern(ALL_URL_PATTERN, HttpMethod.OPTION)
             .excludePathPattern(AUTH_URL_PATTERN, HttpMethod.ANY)
-            .excludePathPattern(BOARD_URL_PATTERN, HttpMethod.GET)
-            .includePathPattern(CHANGE_NICKNAME_URL_PATTERN, HttpMethod.PATCH);
+            .excludePathPattern(BOARD_URL_PATTERN, HttpMethod.GET);
     }
 }
