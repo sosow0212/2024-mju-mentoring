@@ -35,7 +35,7 @@ class MemberControllerTest extends BaseControllerWebMvcTest {
         willDoNothing().given(memberService).changeNickName(MEMBER_DEFAULT_ID, request);
 
         // when & then
-        mockMvc.perform(patch("/members/nickname")
+        mockMvc.perform(patch("/members")
                 .header(HEADER_NAME, TOKEN_FORMAT)
                 .content(objectMapper.writeValueAsString(request))
                 .contentType(MediaType.APPLICATION_JSON))

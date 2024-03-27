@@ -17,9 +17,9 @@ public class MemberController {
 
     private final MemberService memberService;
 
-    @PatchMapping("/nickname")
-    public ResponseEntity<Void> changeNickName(@AuthInformation final Long memberId,
-        @RequestBody ChangeNickNameRequest request) {
+    @PatchMapping
+    public ResponseEntity<Void> changeNickName(
+        @AuthInformation final Long memberId, @RequestBody ChangeNickNameRequest request) {
         memberService.changeNickName(memberId, request);
         return ResponseEntity.ok()
             .build();
