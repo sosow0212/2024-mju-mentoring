@@ -3,6 +3,7 @@ package com.mju.mentoring.member.application.auth;
 import static com.mju.mentoring.member.fixture.MemberFixture.id_없는_멤버_생성;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 import com.mju.mentoring.member.application.auth.dto.SignInRequest;
 import com.mju.mentoring.member.application.auth.dto.SignupRequest;
@@ -16,16 +17,14 @@ import com.mju.mentoring.member.exception.exceptions.WrongPasswordException;
 import com.mju.mentoring.member.fake.FakeFixedTokenManager;
 import com.mju.mentoring.member.fake.FakeMemberRepository;
 import com.mju.mentoring.member.ui.auth.dto.TokenResponse;
+import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 @SuppressWarnings("NonAsciiCharacters")
-@ExtendWith(SpringExtension.class)
 class AuthServiceTest {
 
     private static final String MEMBER_DEFAULT_USERNAME = "id";
@@ -53,10 +52,13 @@ class AuthServiceTest {
             MEMBER_DEFAULT_PASSWORD));
 
         // then
-        assertThat(memberRepository.findByUsername(MEMBER_DEFAULT_USERNAME)
-            .get()).usingRecursiveComparison()
-            .ignoringFields("id")
-            .isEqualTo(member);
+        Optional<Member> findMember = memberRepository.findByUsername(MEMBER_DEFAULT_USERNAME);
+        assertSoftly(softly -> {
+            softly.assertThat(findMember).isNotEmpty();
+            softly.assertThat(findMember.get()).usingRecursiveComparison()
+                .ignoringFields("id")
+                .isEqualTo(member);
+        });
     }
 
     @Test
