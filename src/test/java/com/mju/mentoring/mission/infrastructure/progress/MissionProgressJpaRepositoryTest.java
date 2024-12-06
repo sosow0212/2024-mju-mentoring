@@ -16,6 +16,7 @@ class MissionProgressJpaRepositoryTest {
     private static final Long DEFAULT_GOAL = 1L;
     private static final Long DEFAULT_MISSION_ID = 1L;
     private static final Long DEFAULT_CHALLENGE_ID = 1L;
+    private static final Long DEFAULT_REWARD = 1000L;
 
     @Autowired
     private MissionProgressJpaRepository missionProgressJpaRepository;
@@ -24,7 +25,7 @@ class MissionProgressJpaRepositoryTest {
     void 미션_id와_도전자_id로_진행도_조회_테스트() {
         // given
         missionProgressJpaRepository.save(
-            MissionProgress.of(DEFAULT_GOAL, DEFAULT_MISSION_ID, DEFAULT_CHALLENGE_ID));
+            MissionProgress.of(DEFAULT_GOAL, DEFAULT_MISSION_ID, DEFAULT_REWARD, DEFAULT_CHALLENGE_ID));
 
         // when
         Optional<MissionProgress> progress = missionProgressJpaRepository.findByMissionIdAndChallengerId(

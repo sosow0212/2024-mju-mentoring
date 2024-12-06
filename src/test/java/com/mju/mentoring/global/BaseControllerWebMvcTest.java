@@ -7,6 +7,8 @@ import com.mju.mentoring.member.application.member.MemberService;
 import com.mju.mentoring.member.domain.TokenManager;
 import com.mju.mentoring.member.ui.auth.AuthController;
 import com.mju.mentoring.member.ui.member.MemberController;
+import com.mju.mentoring.mission.application.progress.ProgressService;
+import com.mju.mentoring.mission.ui.progress.ProgressController;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
@@ -17,7 +19,8 @@ import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 @SuppressWarnings("NonAsciiCharacters")
 @MockBean(JpaMetamodelMappingContext.class)
-@WebMvcTest({BoardController.class, AuthController.class, MemberController.class})
+@WebMvcTest({BoardController.class, AuthController.class,
+    MemberController.class, ProgressController.class})
 @AutoConfigureRestDocs
 public abstract class BaseControllerWebMvcTest {
 
@@ -32,4 +35,7 @@ public abstract class BaseControllerWebMvcTest {
 
     @MockBean
     protected MemberService memberService;
+
+    @MockBean
+    protected ProgressService progressService;
 }

@@ -28,7 +28,7 @@ public class MemberExceptionHandler {
 
     @ExceptionHandler(MemberNotFoundException.class)
     public ResponseEntity<String> handleMemberNotFoundException(
-        final DuplicateNicknameException exception) {
+        final MemberNotFoundException exception) {
         return getResponseWithStatus(HttpStatus.NOT_FOUND, exception);
     }
 

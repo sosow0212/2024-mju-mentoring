@@ -46,4 +46,10 @@ public class MemberService {
             throw new DuplicateNicknameException();
         }
     }
+
+    @Transactional
+    public void increasePoint(final Long userId, final Long point) {
+        Member member = findMemberById(userId);
+        member.increasePoint(point);
+    }
 }

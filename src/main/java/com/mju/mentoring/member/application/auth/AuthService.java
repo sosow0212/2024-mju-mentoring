@@ -24,7 +24,7 @@ public class AuthService {
     @Transactional
     public void signup(final SignupRequest request) {
         memberService.checkDuplicate(request.username(), request.nickname());
-        Member member = Member.of(request.username(), request.password(), request.nickname());
+        Member member = Member.createDefault(request.username(), request.password(), request.nickname());
         memberRepository.save(member);
     }
 

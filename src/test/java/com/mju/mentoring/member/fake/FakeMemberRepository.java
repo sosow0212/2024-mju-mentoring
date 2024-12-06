@@ -2,6 +2,7 @@ package com.mju.mentoring.member.fake;
 
 import com.mju.mentoring.member.domain.Member;
 import com.mju.mentoring.member.domain.MemberRepository;
+import com.mju.mentoring.member.domain.Point;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -17,6 +18,7 @@ public class FakeMemberRepository implements MemberRepository {
             .id(id++)
             .nickname(member.getNickname())
             .authInformation(member.getAuthInformation())
+            .point(Point.createDefault())
             .build());
     }
 

@@ -11,10 +11,12 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
+@Builder
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @NoArgsConstructor
 @Embeddable
@@ -37,7 +39,7 @@ public class CurrentInfo {
     }
 
     public boolean canReceiveReward() {
-        return rewardStatus.canReceive();
+        return progressInfo.isSatisfiedGoal() && rewardStatus.canReceive();
     }
 
     public void increaseCount() {

@@ -1,4 +1,4 @@
-package com.mju.mentoring.ui.mission;
+package com.mju.mentoring.mission.ui.mission;
 
 import com.mju.mentoring.member.ui.auth.support.AuthInformation;
 import com.mju.mentoring.mission.application.mission.MissionService;

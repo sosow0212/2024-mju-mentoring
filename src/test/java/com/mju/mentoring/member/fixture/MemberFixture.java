@@ -11,7 +11,7 @@ public class MemberFixture {
     private static final Long DEFAULT_ID = 1L;
 
     public static Member id_없는_멤버_생성() {
-        return Member.of(MEMBER_DEFAULT_USERNAME, MEMBER_DEFAULT_PASSWORD, MEMBER_DEFAULT_NICKNAME);
+        return Member.createDefault(MEMBER_DEFAULT_USERNAME, MEMBER_DEFAULT_PASSWORD, MEMBER_DEFAULT_NICKNAME);
     }
 
     public static Member 멤버_생성() {

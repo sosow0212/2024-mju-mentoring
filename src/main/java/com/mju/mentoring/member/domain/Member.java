@@ -22,21 +22,33 @@ public class Member extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    private Long id;
 
     @Embedded
-    AuthInformation authInformation;
+    private AuthInformation authInformation;
 
     @Column(unique = true, nullable = false)
-    String nickname;
+    private String nickname;
 
-    private Member(final AuthInformation authInformation, final String nickname) {
+    @Embedded
+    private Point point;
+
+    private Member(
+        final AuthInformation authInformation, final String nickname, final Point point) {
         this.authInformation = authInformation;
         this.nickname = nickname;
+        this.point = point;
     }
 
-    public static Member of(final String username, final String password, final String nickname) {
-        return new Member(AuthInformation.of(username, password), nickname);
+    public static Member createDefault(
+        final String username, final String password, final String nickname) {
+        return new Member(AuthInformation.of(username, password), nickname, Point.createDefault());
+    }
+
+    public static Member of(
+        final String username, final String password, final String nickname, final Long point
+    ) {
+        return new Member(AuthInformation.of(username, password), nickname, Point.from(point));
     }
 
     public boolean isValidPassword(final String password) {
@@ -45,6 +57,10 @@ public class Member extends BaseEntity {
 
     public void changeNickName(final String newNickname) {
         this.nickname = newNickname;
+    }
+
+    public void increasePoint(final Long plusPoint) {
+        point.increasePoint(plusPoint);
     }
 
     public String getUsername() {

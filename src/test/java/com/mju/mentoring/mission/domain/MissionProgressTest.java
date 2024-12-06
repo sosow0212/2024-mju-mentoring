@@ -15,6 +15,7 @@ class MissionProgressTest {
     private static final Long DEFAULT_GOAL = 5L;
     private static final Long DEFAULT_MISSION_ID = 1L;
     private static final Long DEFAULT_CHALLENGER_ID = 1L;
+    private static final Long DEFAULT_REWARD = 1000L;
 
 
     @Test
@@ -99,6 +100,7 @@ class MissionProgressTest {
     }
 
     private static MissionProgress createDefaultProgress() {
-        return MissionProgress.of(DEFAULT_GOAL, DEFAULT_MISSION_ID, DEFAULT_CHALLENGER_ID);
+        return MissionProgress.of(
+            DEFAULT_GOAL, DEFAULT_MISSION_ID, DEFAULT_REWARD, DEFAULT_CHALLENGER_ID);
     }
 }

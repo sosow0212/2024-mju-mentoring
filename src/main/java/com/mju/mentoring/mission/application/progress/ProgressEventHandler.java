@@ -18,7 +18,7 @@ public class ProgressEventHandler {
     @EventListener
     public void challengeMission(final ChallengedMissionEvent event) {
         progressService.challengeMission(
-            event.getChallengerId(), event.getMissionId(), event.getGoal());
+            event.getChallengerId(), event.getMissionId(), event.getReward(), event.getGoal());
     }
 
     @TransactionalEventListener(

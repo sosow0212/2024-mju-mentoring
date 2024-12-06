@@ -21,10 +21,12 @@ public class MissionService {
         return missionRepository.findAll();
     }
 
+    @Transactional
     public void challengeMission(final Long challengerId, final Long missionId) {
         missionRepository.findById(missionId)
             .ifPresentOrElse(mission -> Events.raise(
-                    new ChallengedMissionEvent(challengerId, missionId, mission.getGoal())),
+                    new ChallengedMissionEvent(
+                        challengerId, missionId, mission.getGoal(), mission.getReward())),
                 () -> {
                     throw new NotFoundMissionException(missionId);
                 });

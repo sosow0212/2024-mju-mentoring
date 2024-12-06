@@ -12,4 +12,5 @@ public class ChallengedMissionEvent extends Event {
     private final Long challengerId;
     private final Long missionId;
     private final Long goal;
+    private final Long reward;
 }
